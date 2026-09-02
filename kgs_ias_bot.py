@@ -391,12 +391,12 @@ app.add_handler(
             pattern="^back$"
         )
     )
-app.add_handler(
-    MessageHandler(
-        filters.TEXT | filters.PHOTO,
-        payment_message
+    app.add_handler(
+        MessageHandler(
+            filters.TEXT | filters.PHOTO,
+            payment_message
+        )
     )
-)
     app.run_polling()
 
 
