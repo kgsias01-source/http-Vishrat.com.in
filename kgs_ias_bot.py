@@ -1,5 +1,6 @@
 import os
 import threading
+import sqlite3
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
@@ -12,16 +13,34 @@ from telegram.ext import (
     filters,
 )
 
-
-# =========================================================
-# SETTINGS
-# =========================================================
-
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 ADMIN_ID = 8604692393
+DB_FILE = "payments.db"
 
 if not BOT_TOKEN:
     raise RuntimeError("BOT_TOKEN environment variable is missing.")
+
+
+# =========================================================
+# DATABASE
+# =========================================================
+
+def init_db():
+    conn = sqlite3.connect(DB_FILE)
+    cur = conn.cursor()
+
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS payments (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            lecture INTEGER NOT NULL,
+            utr TEXT NOT NULL,
+            status TEXT DEFAULT 'pending'
+        )
+    """)
+
+    conn.commit()
+    conn.close()
 
 
 # =========================================================
@@ -29,7 +48,6 @@ if not BOT_TOKEN:
 # =========================================================
 
 class HealthHandler(BaseHTTPRequestHandler):
-
     def do_GET(self):
         self.send_response(200)
         self.send_header("Content-Type", "text/plain")
@@ -163,53 +181,46 @@ async def study_option(update: Update, context: ContextTypes.DEFAULT_TYPE):
         text = (
             "🏛️ UPSC Course\n\n"
             "UPSC Civil Services की तैयारी के लिए "
-            "यहाँ courses और study resources उपलब्ध होंगे।\n\n"
-            "🔗 Course link जल्द जोड़ा जाएगा।"
+            "courses और study resources उपलब्ध होंगे।"
         )
 
     elif option == "ncert":
         text = (
             "📚 NCERT Course\n\n"
             "Class 6 से 12 तक की NCERT आधारित "
-            "study सामग्री यहाँ उपलब्ध होगी।\n\n"
-            "🔗 NCERT resources जल्द जोड़े जाएंगे।"
+            "study सामग्री यहाँ उपलब्ध होगी।"
         )
 
     elif option == "material":
         text = (
             "📖 Study Material\n\n"
             "UPSC preparation के लिए notes, PDFs और "
-            "अन्य study material यहाँ मिलेगा।\n\n"
-            "📂 Study material जल्द जोड़ा जाएगा।"
+            "अन्य study material यहाँ मिलेगा।"
         )
 
     elif option == "current":
         text = (
             "📰 Current Affairs\n\n"
             "Daily और Monthly Current Affairs "
-            "यहाँ उपलब्ध कराए जाएंगे।\n\n"
-            "🗞️ Current Affairs resources जल्द जोड़े जाएंगे।"
+            "यहाँ उपलब्ध कराए जाएंगे।"
         )
 
     elif option == "test":
         text = (
             "📝 Test Series\n\n"
             "UPSC preparation के लिए test series और "
-            "practice questions यहाँ मिलेंगे।\n\n"
-            "📝 Test Series जल्द जोड़ी जाएगी।"
+            "practice questions यहाँ मिलेंगे।"
         )
 
     else:
         return
 
-    keyboard = [
-        [
-            InlineKeyboardButton(
-                "🔙 Back to Courses",
-                callback_data="courses"
-            )
-        ]
-    ]
+    keyboard = [[
+        InlineKeyboardButton(
+            "🔙 Back to Courses",
+            callback_data="courses"
+        )
+    ]]
 
     await query.edit_message_text(
         text,
@@ -226,19 +237,25 @@ async def paid_course(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
 
-    context.user_data["payment_waiting"] = True
-    context.user_data.pop("utr", None)
-
-    text = (
-        "🎓 Paid Course\n\n"
-        "5 free lectures के बाद हर lecture की कीमत ₹2 है।\n\n"
-        "💳 Payment के लिए UPI ID:\n"
-        "respect-girls@ybl\n\n"
-        "Payment के बाद UTR / Transaction ID भेजें।\n"
-        "उसके बाद payment screenshot भेजें 📸"
-    )
-
     keyboard = [
+        [
+            InlineKeyboardButton(
+                "🎥 Lecture 6 - ₹2",
+                callback_data="buy_6"
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                "🎥 Lecture 7 - ₹2",
+                callback_data="buy_7"
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                "🎥 Lecture 8 - ₹2",
+                callback_data="buy_8"
+            )
+        ],
         [
             InlineKeyboardButton(
                 "🌐 Open Website",
@@ -250,12 +267,41 @@ async def paid_course(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 "⬅️ Back to Courses",
                 callback_data="courses"
             )
-        ]
+        ],
     ]
 
     await query.edit_message_text(
-        text,
+        "🎓 Paid Lectures\n\n"
+        "5 lectures FREE हैं।\n"
+        "Lecture 6 के बाद हर lecture ₹2 का है।\n\n"
+        "जिस lecture को खरीदना है, उसे चुनें:",
         reply_markup=InlineKeyboardMarkup(keyboard)
+    )
+
+
+# =========================================================
+# BUY LECTURE
+# =========================================================
+
+async def buy_lecture(update: Update, context: ContextTypes.DEFAULT_TYPE):
+
+    query = update.callback_query
+    await query.answer()
+
+    lecture = int(query.data.split("_")[1])
+
+    context.user_data["payment_waiting"] = True
+    context.user_data["lecture"] = lecture
+    context.user_data.pop("utr", None)
+
+    await query.edit_message_text(
+        f"🎥 Lecture {lecture}\n\n"
+        "💰 Price: ₹2\n\n"
+        "💳 UPI ID:\n"
+        "respect-girls@ybl\n\n"
+        "₹2 payment करने के बाद\n"
+        "UTR / Transaction ID भेजें।\n\n"
+        "उसके बाद payment screenshot भेजें 📸"
     )
 
 
@@ -276,10 +322,9 @@ async def payment_message(
     if update.message is None:
         return
 
-    # -------------------------
-    # UTR
-    # -------------------------
+    lecture = context.user_data.get("lecture")
 
+    # UTR
     if update.message.text:
 
         utr = update.message.text.strip()
@@ -299,39 +344,54 @@ async def payment_message(
 
         return
 
-    # -------------------------
     # SCREENSHOT
-    # -------------------------
-
     if update.message.photo:
 
         utr = context.user_data.get("utr")
 
-        if not utr:
+        if not utr or not lecture:
             await update.message.reply_text(
-                "❌ पहले UTR / Transaction ID भेजें।"
+                "❌ पहले lecture select करके payment करें।"
             )
             return
+
+        conn = sqlite3.connect(DB_FILE)
+        cur = conn.cursor()
+
+        cur.execute(
+            """
+            INSERT INTO payments
+            (user_id, lecture, utr, status)
+            VALUES (?, ?, ?, 'pending')
+            """,
+            (user.id, lecture, utr)
+        )
+
+        payment_id = cur.lastrowid
+
+        conn.commit()
+        conn.close()
 
         caption = (
             "💰 PAYMENT VERIFICATION REQUEST\n\n"
             f"👤 Name: {user.full_name}\n"
             f"🆔 User ID: {user.id}\n"
-            f"🔢 UTR: {utr}"
+            f"🎥 Lecture: {lecture}\n"
+            f"💵 Amount: ₹2\n"
+            f"🔢 UTR: {utr}\n"
+            f"🧾 Payment ID: {payment_id}"
         )
 
-        keyboard = [
-            [
-                InlineKeyboardButton(
-                    "✅ Accept",
-                    callback_data=f"accept_{user.id}"
-                ),
-                InlineKeyboardButton(
-                    "❌ Reject",
-                    callback_data=f"reject_{user.id}"
-                )
-            ]
-        ]
+        keyboard = [[
+            InlineKeyboardButton(
+                "✅ Accept",
+                callback_data=f"accept_{payment_id}"
+            ),
+            InlineKeyboardButton(
+                "❌ Reject",
+                callback_data=f"reject_{payment_id}"
+            )
+        ]]
 
         await update.message.forward(
             chat_id=ADMIN_ID
@@ -345,11 +405,12 @@ async def payment_message(
 
         await update.message.reply_text(
             "✅ आपका payment proof admin को भेज दिया गया है।\n\n"
-            "Verification के बाद आपको जानकारी दी जाएगी।"
+            "Verification के बाद आपको बताया जाएगा।"
         )
 
         context.user_data["payment_waiting"] = False
         context.user_data.pop("utr", None)
+        context.user_data.pop("lecture", None)
 
 
 # =========================================================
@@ -366,16 +427,54 @@ async def payment_decision(
 
     data = query.data
 
+    payment_id = int(data.split("_")[1])
+
+    conn = sqlite3.connect(DB_FILE)
+    cur = conn.cursor()
+
+    cur.execute(
+        "SELECT user_id, lecture FROM payments WHERE id = ?",
+        (payment_id,)
+    )
+
+    row = cur.fetchone()
+
+    if not row:
+        conn.close()
+        await query.message.reply_text(
+            "❌ Payment record नहीं मिला।"
+        )
+        return
+
+    user_id, lecture = row
+
     if data.startswith("accept_"):
 
-        user_id = int(data.split("_")[1])
+        cur.execute(
+            """
+            UPDATE payments
+            SET status = 'approved'
+            WHERE id = ?
+            """,
+            (payment_id,)
+        )
+
+        conn.commit()
+        conn.close()
 
         await context.bot.send_message(
             chat_id=user_id,
             text=(
-                "✅ आपका payment verify हो गया है।\n\n"
-                "🎓 आपका paid course access जल्द activate किया जाएगा।"
-            )
+                "✅ Payment ACCEPTED\n\n"
+                f"🎥 Lecture {lecture} का payment verify हो गया है।\n\n"
+                "अब website खोलकर lecture देखें।"
+            ),
+            reply_markup=InlineKeyboardMarkup([[
+                InlineKeyboardButton(
+                    "🌐 Open Website",
+                    url="https://vishrat.com.in"
+                )
+            ]])
         )
 
         await query.edit_message_reply_markup(
@@ -383,18 +482,28 @@ async def payment_decision(
         )
 
         await query.message.reply_text(
-            "✅ Payment ACCEPTED"
+            f"✅ Payment ACCEPTED - Lecture {lecture}"
         )
 
     elif data.startswith("reject_"):
 
-        user_id = int(data.split("_")[1])
+        cur.execute(
+            """
+            UPDATE payments
+            SET status = 'rejected'
+            WHERE id = ?
+            """,
+            (payment_id,)
+        )
+
+        conn.commit()
+        conn.close()
 
         await context.bot.send_message(
             chat_id=user_id,
             text=(
-                "❌ आपका payment verification reject हो गया है।\n\n"
-                "कृपया सही payment proof / UTR के साथ दोबारा संपर्क करें।"
+                "❌ Payment verification reject हो गया है।\n\n"
+                "कृपया सही payment proof / UTR के साथ दोबारा payment करें।"
             )
         )
 
@@ -403,7 +512,7 @@ async def payment_decision(
         )
 
         await query.message.reply_text(
-            "❌ Payment REJECTED"
+            f"❌ Payment REJECTED - Lecture {lecture}"
         )
 
 
@@ -467,16 +576,15 @@ async def help_command(
 
 def main():
 
-    # Render health server
+    init_db()
+
     threading.Thread(
         target=run_health_server,
         daemon=True
     ).start()
 
-    # Telegram application
     app = Application.builder().token(BOT_TOKEN).build()
 
-    # Commands
     app.add_handler(
         CommandHandler("start", start)
     )
@@ -485,7 +593,6 @@ def main():
         CommandHandler("help", help_command)
     )
 
-    # Courses
     app.add_handler(
         CallbackQueryHandler(
             courses_menu,
@@ -493,7 +600,6 @@ def main():
         )
     )
 
-    # Paid course
     app.add_handler(
         CallbackQueryHandler(
             paid_course,
@@ -501,7 +607,13 @@ def main():
         )
     )
 
-    # Study options
+    app.add_handler(
+        CallbackQueryHandler(
+            buy_lecture,
+            pattern=r"^buy_[6-9][0-9]*$"
+        )
+    )
+
     app.add_handler(
         CallbackQueryHandler(
             study_option,
@@ -509,7 +621,6 @@ def main():
         )
     )
 
-    # Accept / Reject
     app.add_handler(
         CallbackQueryHandler(
             payment_decision,
@@ -517,7 +628,6 @@ def main():
         )
     )
 
-    # Back
     app.add_handler(
         CallbackQueryHandler(
             back_home,
@@ -525,7 +635,6 @@ def main():
         )
     )
 
-    # UTR + Screenshot
     app.add_handler(
         MessageHandler(
             filters.TEXT | filters.PHOTO,
@@ -533,15 +642,10 @@ def main():
         )
     )
 
-    # Start polling
     app.run_polling(
         drop_pending_updates=True
     )
 
-
-# =========================================================
-# RUN
-# =========================================================
 
 if __name__ == "__main__":
     main()
