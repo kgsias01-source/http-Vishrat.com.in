@@ -231,7 +231,7 @@ async def paid_course(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     text = (
         "🎓 Paid Course\n\n"
-        "5 free lectures के बाद हर lecture की कीमत ₹5 है।\n\n"
+        "5 free lectures के बाद हर lecture की कीमत ₹2 है।\n\n"
         "💳 Payment के लिए UPI ID:\n"
         "respect-girls@ybl\n\n"
         "Payment के बाद UTR / Transaction ID भेजें।\n"
