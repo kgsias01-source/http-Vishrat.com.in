@@ -106,6 +106,12 @@ async def courses_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 callback_data="test"
             )
         ],
+            [
+        InlineKeyboardButton(
+            "🎓 Paid Course",
+            callback_data="paid_course"
+        )
+    ],
         [
             InlineKeyboardButton(
                 "🔙 Back",
@@ -187,7 +193,40 @@ async def study_option(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
 
+# ---------------- PAID COURSE ----------------
+async def paid_course(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
+    query = update.callback_query
+    await query.answer()
+
+    text = (
+        "🎓 Paid Course\n\n"
+        "5 free lectures के बाद हर lecture की कीमत ₹5 है।\n\n"
+        "💳 Payment के लिए UPI ID:\n"
+        "respect-girls@ybl\n\n"
+        "Payment के बाद UTR / Transaction ID और "
+        "screenshot verification के लिए भेजें।"
+    )
+
+    keyboard = [
+        [
+            InlineKeyboardButton(
+                "🌐 Open Website",
+                url="https://vishrat.com.in"
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                "⬅️ Back to Courses",
+                callback_data="courses"
+            )
+        ]
+    ]
+
+    await query.edit_message_text(
+        text,
+        reply_markup=InlineKeyboardMarkup(keyboard)
+    )
 # ---------------- BACK TO HOME ----------------
 
 async def back_home(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -257,7 +296,13 @@ def main():
             pattern="^courses$"
         )
     )
-
+# Paid Course button
+app.add_handler(
+    CallbackQueryHandler(
+        paid_course,
+        pattern="^paid_course$"
+    )
+)
     # Study options
     app.add_handler(
         CallbackQueryHandler(
