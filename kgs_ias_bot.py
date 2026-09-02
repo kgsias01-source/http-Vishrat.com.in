@@ -376,7 +376,7 @@ app.add_handler(
         pattern="^paid_course$"
     )
 )
-    # Study options
+    # Study options 
 app.add_handler(
         CallbackQueryHandler(
             study_option,
@@ -385,7 +385,7 @@ app.add_handler(
     )
 
     # Back button
-    app.add_handler(
+app.add_handler(
         CallbackQueryHandler(
             back_home,
             pattern="^back$"
