@@ -8,10 +8,12 @@ from telegram.ext import (
     CommandHandler,
     CallbackQueryHandler,
     ContextTypes,
-)
+MessageHandler,
+filters,
+) 
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-
+ADMIN_ID = 8604692393
 if not BOT_TOKEN:
     raise RuntimeError("BOT_TOKEN environment variable is missing.")
 
@@ -226,7 +228,78 @@ async def paid_course(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.edit_message_text(
         text,
         reply_markup=InlineKeyboardMarkup(keyboard)
-    )
+    ) 
+    context.user_data["payment_waiting"] = True
+    # ---------------- PAYMENT VERIFICATION ----------------
+async def payment_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not context.user_data.get("payment_waiting"):
+        return
+
+    user = update.effective_user
+
+    # UTR / Transaction ID
+    if update.message.text:
+        utr = update.message.text.strip()
+
+        if len(utr) < 4:
+            await update.message.reply_text(
+                "❌ कृपया सही UTR / Transaction ID भेजें।"
+            )
+            return
+
+        context.user_data["utr"] = utr
+
+        await update.message.reply_text(
+            "✅ UTR प्राप्त हो गया।\n\n"
+            "अब कृपया payment का screenshot भेजें 📸"
+        )
+        return
+
+    # Payment screenshot
+    if update.message.photo:
+        utr = context.user_data.get("utr")
+
+        if not utr:
+            await update.message.reply_text(
+                "पहले अपना UTR / Transaction ID भेजें।"
+            )
+            return
+
+        caption = (
+            "💰 PAYMENT VERIFICATION REQUEST\n\n"
+            f"👤 Name: {user.full_name}\n"
+            f"🆔 User ID: {user.id}\n"
+            f"🔢 UTR: {utr}"
+        )
+
+        keyboard = [
+            [
+                InlineKeyboardButton(
+                    "✅ Accept",
+                    callback_data=f"accept_{user.id}"
+                ),
+                InlineKeyboardButton(
+                    "❌ Reject",
+                    callback_data=f"reject_{user.id}"
+                )
+            ]
+        ]
+
+        await update.message.forward(chat_id=ADMIN_ID)
+
+        await context.bot.send_message(
+            chat_id=ADMIN_ID,
+            text=caption,
+            reply_markup=InlineKeyboardMarkup(keyboard)
+        )
+
+        await update.message.reply_text(
+            "✅ आपका payment proof admin को भेज दिया गया है।\n\n"
+            "Verification के बाद आपको जानकारी दी जाएगी।"
+        )
+
+        context.user_data["payment_waiting"] = False
+        context.user_data.pop("utr", None)
 # ---------------- BACK TO HOME ----------------
 
 async def back_home(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -318,7 +391,12 @@ app.add_handler(
             pattern="^back$"
         )
     )
-
+app.add_handler(
+    MessageHandler(
+        filters.TEXT | filters.PHOTO,
+        payment_message
+    )
+)
     app.run_polling()
 
 
