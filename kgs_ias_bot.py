@@ -7,10 +7,15 @@ from telegram.ext import (
     Application,
     CommandHandler,
     CallbackQueryHandler,
-    ContextTypes,
     MessageHandler,
+    ContextTypes,
     filters,
 )
+
+
+# =========================================================
+# SETTINGS
+# =========================================================
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 ADMIN_ID = 8604692393
@@ -19,26 +24,36 @@ if not BOT_TOKEN:
     raise RuntimeError("BOT_TOKEN environment variable is missing.")
 
 
-# ---------------- HEALTH SERVER FOR RENDER ----------------
+# =========================================================
+# RENDER HEALTH SERVER
+# =========================================================
 
 class HealthHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         self.send_response(200)
+        self.send_header("Content-Type", "text/plain")
         self.end_headers()
         self.wfile.write(b"KGS IAS Bot is running!")
 
     def log_message(self, format, *args):
-        return
+        pass
 
 
 def run_health_server():
     port = int(os.getenv("PORT", "10000"))
-    server = ThreadingHTTPServer(("0.0.0.0", port), HealthHandler)
+
+    server = ThreadingHTTPServer(
+        ("0.0.0.0", port),
+        HealthHandler
+    )
+
     server.serve_forever()
 
 
-# ---------------- START COMMAND ----------------
+# =========================================================
+# START
+# =========================================================
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
@@ -72,7 +87,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-# ---------------- COURSES MENU ----------------
+# =========================================================
+# COURSES
+# =========================================================
 
 async def courses_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
@@ -131,7 +148,9 @@ async def courses_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-# ---------------- STUDY OPTIONS ----------------
+# =========================================================
+# STUDY OPTIONS
+# =========================================================
 
 async def study_option(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
@@ -198,20 +217,25 @@ async def study_option(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-# ---------------- PAID COURSE ----------------
+# =========================================================
+# PAID COURSE
+# =========================================================
 
 async def paid_course(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     query = update.callback_query
     await query.answer()
 
+    context.user_data["payment_waiting"] = True
+    context.user_data.pop("utr", None)
+
     text = (
         "🎓 Paid Course\n\n"
         "5 free lectures के बाद हर lecture की कीमत ₹5 है।\n\n"
         "💳 Payment के लिए UPI ID:\n"
         "respect-girls@ybl\n\n"
-        "Payment के बाद UTR / Transaction ID और "
-        "screenshot verification के लिए भेजें।"
+        "Payment के बाद UTR / Transaction ID भेजें।\n"
+        "उसके बाद payment screenshot भेजें 📸"
     )
 
     keyboard = [
@@ -234,19 +258,28 @@ async def paid_course(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
 
-    context.user_data["payment_waiting"] = True
 
+# =========================================================
+# PAYMENT MESSAGE
+# =========================================================
 
-# ---------------- PAYMENT VERIFICATION ----------------
-
-async def payment_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def payment_message(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE
+):
 
     if not context.user_data.get("payment_waiting"):
         return
 
     user = update.effective_user
 
-    # UTR / Transaction ID
+    if update.message is None:
+        return
+
+    # -------------------------
+    # UTR
+    # -------------------------
+
     if update.message.text:
 
         utr = update.message.text.strip()
@@ -261,18 +294,22 @@ async def payment_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         await update.message.reply_text(
             "✅ UTR प्राप्त हो गया।\n\n"
-            "अब कृपया payment का screenshot भेजें 📸"
+            "अब payment का screenshot भेजें 📸"
         )
+
         return
 
-    # Payment Screenshot
+    # -------------------------
+    # SCREENSHOT
+    # -------------------------
+
     if update.message.photo:
 
         utr = context.user_data.get("utr")
 
         if not utr:
             await update.message.reply_text(
-                "❌ पहले अपना UTR / Transaction ID भेजें।"
+                "❌ पहले UTR / Transaction ID भेजें।"
             )
             return
 
@@ -296,10 +333,10 @@ async def payment_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             ]
         ]
 
-        # Screenshot admin को forward
-        await update.message.forward(chat_id=ADMIN_ID)
+        await update.message.forward(
+            chat_id=ADMIN_ID
+        )
 
-        # Verification details admin को भेजें
         await context.bot.send_message(
             chat_id=ADMIN_ID,
             text=caption,
@@ -315,9 +352,14 @@ async def payment_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         context.user_data.pop("utr", None)
 
 
-# ---------------- ACCEPT / REJECT ----------------
+# =========================================================
+# ACCEPT / REJECT
+# =========================================================
 
-async def payment_decision(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def payment_decision(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE
+):
 
     query = update.callback_query
     await query.answer()
@@ -325,6 +367,7 @@ async def payment_decision(update: Update, context: ContextTypes.DEFAULT_TYPE):
     data = query.data
 
     if data.startswith("accept_"):
+
         user_id = int(data.split("_")[1])
 
         await context.bot.send_message(
@@ -335,13 +378,16 @@ async def payment_decision(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
         )
 
-        await query.edit_message_reply_markup(reply_markup=None)
+        await query.edit_message_reply_markup(
+            reply_markup=None
+        )
 
         await query.message.reply_text(
             "✅ Payment ACCEPTED"
         )
 
     elif data.startswith("reject_"):
+
         user_id = int(data.split("_")[1])
 
         await context.bot.send_message(
@@ -352,14 +398,18 @@ async def payment_decision(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
         )
 
-        await query.edit_message_reply_markup(reply_markup=None)
+        await query.edit_message_reply_markup(
+            reply_markup=None
+        )
 
         await query.message.reply_text(
             "❌ Payment REJECTED"
         )
 
 
-# ---------------- BACK TO HOME ----------------
+# =========================================================
+# BACK HOME
+# =========================================================
 
 async def back_home(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
@@ -395,9 +445,14 @@ async def back_home(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-# ---------------- HELP ----------------
+# =========================================================
+# HELP
+# =========================================================
 
-async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def help_command(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE
+):
 
     await update.message.reply_text(
         "ℹ️ Help\n\n"
@@ -406,7 +461,9 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-# ---------------- MAIN ----------------
+# =========================================================
+# MAIN
+# =========================================================
 
 def main():
 
@@ -416,25 +473,31 @@ def main():
         daemon=True
     ).start()
 
+    # Telegram application
     app = Application.builder().token(BOT_TOKEN).build()
 
-    # Start / Help
-    app.add_handler(CommandHandler("start", start))
-    app.add_handler(CommandHandler("help", help_command))
+    # Commands
+    app.add_handler(
+        CommandHandler("start", start)
+    )
 
-    # Courses button
+    app.add_handler(
+        CommandHandler("help", help_command)
+    )
+
+    # Courses
     app.add_handler(
         CallbackQueryHandler(
             courses_menu,
-            pattern="^courses$"
+            pattern=r"^courses$"
         )
     )
 
-    # Paid Course button
+    # Paid course
     app.add_handler(
         CallbackQueryHandler(
             paid_course,
-            pattern="^paid_course$"
+            pattern=r"^paid_course$"
         )
     )
 
@@ -442,7 +505,7 @@ def main():
     app.add_handler(
         CallbackQueryHandler(
             study_option,
-            pattern="^(upsc|ncert|material|current|test)$"
+            pattern=r"^(upsc|ncert|material|current|test)$"
         )
     )
 
@@ -450,19 +513,19 @@ def main():
     app.add_handler(
         CallbackQueryHandler(
             payment_decision,
-            pattern="^(accept|reject)_"
+            pattern=r"^(accept|reject)_"
         )
     )
 
-    # Back button
+    # Back
     app.add_handler(
         CallbackQueryHandler(
             back_home,
-            pattern="^back$"
+            pattern=r"^back$"
         )
     )
 
-    # Payment UTR + Screenshot
+    # UTR + Screenshot
     app.add_handler(
         MessageHandler(
             filters.TEXT | filters.PHOTO,
@@ -470,10 +533,15 @@ def main():
         )
     )
 
-    app.run_polling()
+    # Start polling
+    app.run_polling(
+        drop_pending_updates=True
+    )
 
 
-# ---------------- RUN BOT ----------------
+# =========================================================
+# RUN
+# =========================================================
 
 if __name__ == "__main__":
     main()
