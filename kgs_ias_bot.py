@@ -8,12 +8,13 @@ from telegram.ext import (
     CommandHandler,
     CallbackQueryHandler,
     ContextTypes,
-MessageHandler,
-filters,
-) 
+    MessageHandler,
+    filters,
+)
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 ADMIN_ID = 8604692393
+
 if not BOT_TOKEN:
     raise RuntimeError("BOT_TOKEN environment variable is missing.")
 
@@ -21,6 +22,7 @@ if not BOT_TOKEN:
 # ---------------- HEALTH SERVER FOR RENDER ----------------
 
 class HealthHandler(BaseHTTPRequestHandler):
+
     def do_GET(self):
         self.send_response(200)
         self.end_headers()
@@ -108,12 +110,12 @@ async def courses_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 callback_data="test"
             )
         ],
-            [
-        InlineKeyboardButton(
-            "🎓 Paid Course",
-            callback_data="paid_course"
-        )
-    ],
+        [
+            InlineKeyboardButton(
+                "🎓 Paid Course",
+                callback_data="paid_course"
+            )
+        ],
         [
             InlineKeyboardButton(
                 "🔙 Back",
@@ -195,7 +197,9 @@ async def study_option(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
 
+
 # ---------------- PAID COURSE ----------------
+
 async def paid_course(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     query = update.callback_query
@@ -228,10 +232,15 @@ async def paid_course(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.edit_message_text(
         text,
         reply_markup=InlineKeyboardMarkup(keyboard)
-    ) 
+    )
+
     context.user_data["payment_waiting"] = True
-    # ---------------- PAYMENT VERIFICATION ----------------
+
+
+# ---------------- PAYMENT VERIFICATION ----------------
+
 async def payment_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+
     if not context.user_data.get("payment_waiting"):
         return
 
@@ -239,6 +248,7 @@ async def payment_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # UTR / Transaction ID
     if update.message.text:
+
         utr = update.message.text.strip()
 
         if len(utr) < 4:
@@ -255,13 +265,14 @@ async def payment_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         return
 
-    # Payment screenshot
+    # Payment Screenshot
     if update.message.photo:
+
         utr = context.user_data.get("utr")
 
         if not utr:
             await update.message.reply_text(
-                "पहले अपना UTR / Transaction ID भेजें।"
+                "❌ पहले अपना UTR / Transaction ID भेजें।"
             )
             return
 
@@ -285,8 +296,10 @@ async def payment_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             ]
         ]
 
+        # Screenshot admin को forward
         await update.message.forward(chat_id=ADMIN_ID)
 
+        # Verification details admin को भेजें
         await context.bot.send_message(
             chat_id=ADMIN_ID,
             text=caption,
@@ -300,6 +313,52 @@ async def payment_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         context.user_data["payment_waiting"] = False
         context.user_data.pop("utr", None)
+
+
+# ---------------- ACCEPT / REJECT ----------------
+
+async def payment_decision(update: Update, context: ContextTypes.DEFAULT_TYPE):
+
+    query = update.callback_query
+    await query.answer()
+
+    data = query.data
+
+    if data.startswith("accept_"):
+        user_id = int(data.split("_")[1])
+
+        await context.bot.send_message(
+            chat_id=user_id,
+            text=(
+                "✅ आपका payment verify हो गया है।\n\n"
+                "🎓 आपका paid course access जल्द activate किया जाएगा।"
+            )
+        )
+
+        await query.edit_message_reply_markup(reply_markup=None)
+
+        await query.message.reply_text(
+            "✅ Payment ACCEPTED"
+        )
+
+    elif data.startswith("reject_"):
+        user_id = int(data.split("_")[1])
+
+        await context.bot.send_message(
+            chat_id=user_id,
+            text=(
+                "❌ आपका payment verification reject हो गया है।\n\n"
+                "कृपया सही payment proof / UTR के साथ दोबारा संपर्क करें।"
+            )
+        )
+
+        await query.edit_message_reply_markup(reply_markup=None)
+
+        await query.message.reply_text(
+            "❌ Payment REJECTED"
+        )
+
+
 # ---------------- BACK TO HOME ----------------
 
 async def back_home(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -359,6 +418,7 @@ def main():
 
     app = Application.builder().token(BOT_TOKEN).build()
 
+    # Start / Help
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("help", help_command))
 
@@ -369,36 +429,51 @@ def main():
             pattern="^courses$"
         )
     )
-# Paid Course button
-app.add_handler(
-    CallbackQueryHandler(
-        paid_course,
-        pattern="^paid_course$"
+
+    # Paid Course button
+    app.add_handler(
+        CallbackQueryHandler(
+            paid_course,
+            pattern="^paid_course$"
+        )
     )
-)
-    # Study options 
-app.add_handler(
+
+    # Study options
+    app.add_handler(
         CallbackQueryHandler(
             study_option,
             pattern="^(upsc|ncert|material|current|test)$"
         )
     )
 
+    # Accept / Reject
+    app.add_handler(
+        CallbackQueryHandler(
+            payment_decision,
+            pattern="^(accept|reject)_"
+        )
+    )
+
     # Back button
-app.add_handler(
+    app.add_handler(
         CallbackQueryHandler(
             back_home,
             pattern="^back$"
         )
     )
+
+    # Payment UTR + Screenshot
     app.add_handler(
         MessageHandler(
             filters.TEXT | filters.PHOTO,
             payment_message
         )
     )
+
     app.run_polling()
 
+
+# ---------------- RUN BOT ----------------
 
 if __name__ == "__main__":
     main()
