@@ -377,7 +377,7 @@ app.add_handler(
     )
 )
     # Study options
-    app.add_handler(
+app.add_handler(
         CallbackQueryHandler(
             study_option,
             pattern="^(upsc|ncert|material|current|test)$"
