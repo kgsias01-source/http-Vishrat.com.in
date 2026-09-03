@@ -6,6 +6,34 @@
 
   <title>Vishrat</title>
  <style>
+   .card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.5),
+    transparent
+  );
+  transform: skewX(-20deg);
+  animation: cardShine 4s infinite;
+}
+
+@keyframes cardShine {
+  0% {
+    left: -100%;
+  }
+  60% {
+    left: 120%;
+  }
+  100% {
+    left: 120%;
+  }
+}
    .loyal {
   animation: loyalGlow 2s ease-in-out infinite;
 }
