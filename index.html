@@ -114,6 +114,58 @@
   66% { filter: drop-shadow(0 0 14px #00ff88); }
   100% { filter: drop-shadow(0 0 8px #ffd000); }
 }
+.tagline {
+  font-size: 22px;
+  font-weight: bold;
+  text-align: center;
+  background: linear-gradient(
+    90deg,
+    red,
+    orange,
+    yellow,
+    green,
+    cyan,
+    blue,
+    violet,
+    red
+  );
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: rainbowText 4s linear infinite;
+}
+
+.loyal {
+  font-size: 36px;
+  font-weight: 900;
+  text-align: center;
+  background: linear-gradient(
+    90deg,
+    red,
+    orange,
+    yellow,
+    lime,
+    cyan,
+    blue,
+    violet,
+    red
+  );
+  background-size: 400% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: rainbowText 3s linear infinite;
+}
+
+@keyframes rainbowText {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 400% center;
+  }
+}
 </style>
 </head>
 
@@ -123,7 +175,13 @@
 
     <img src="logo.png" alt="Vishrat Logo" class="logo">
 
-    <h1>Vishrat</h1> 
+    <h2 class="tagline">
+  कंप्यूटर सिस्टम और इलेक्ट्रॉनिक डेटा को सुरक्षित रखना है
+</h2>
+
+<h1 class="loyal">
+  [ LOYAL JI ]
+</h1>
 
   </header>
 
