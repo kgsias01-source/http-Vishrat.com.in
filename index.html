@@ -6,6 +6,24 @@
 
   <title>Vishrat</title>
  <style>
+   .loyal {
+  animation: loyalGlow 2s ease-in-out infinite;
+}
+
+@keyframes loyalGlow {
+  0% {
+    text-shadow: 0 0 5px #00e5ff;
+  }
+  50% {
+    text-shadow:
+      0 0 10px #ff00ff,
+      0 0 25px #00e5ff,
+      0 0 40px #ff00aa;
+  }
+  100% {
+    text-shadow: 0 0 5px #00e5ff;
+  }
+}
    .button {
   animation: buttonGlow 2.5s ease-in-out infinite;
 }
