@@ -5,7 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Vishrat</title>
- <style> 
+ <style>
+   .card {
+  position: relative;
+  overflow: hidden;
+  animation: neonCard 4s ease-in-out infinite;
+}
+
+@keyframes neonCard {
+  0% {
+    box-shadow: 0 0 8px rgba(255,0,100,0.25);
+  }
+  25% {
+    box-shadow: 0 0 18px rgba(0,200,255,0.35);
+  }
+  50% {
+    box-shadow: 0 0 22px rgba(0,255,120,0.35);
+  }
+  75% {
+    box-shadow: 0 0 18px rgba(180,0,255,0.35);
+  }
+  100% {
+    box-shadow: 0 0 8px rgba(255,0,100,0.25);
+  }
+} 
    .card {
   background: rgba(255,255,255,0.82);
   backdrop-filter: blur(10px);
