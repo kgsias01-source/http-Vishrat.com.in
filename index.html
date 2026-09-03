@@ -19,6 +19,36 @@
   83.3% { background: #ede7f6; }
   100% { background: #f5f7fb; }
 }
+  .butterfly {
+  position: fixed;
+  font-size: 38px;
+  z-index: 9999;
+  pointer-events: none;
+  animation: flyButterfly 12s linear infinite;
+}
+
+@keyframes flyButterfly {
+  0% {
+    left: -50px;
+    top: 20%;
+  }
+  25% {
+    left: 25%;
+    top: 35%;
+  }
+  50% {
+    left: 55%;
+    top: 15%;
+  }
+  75% {
+    left: 80%;
+    top: 40%;
+  }
+  100% {
+    left: 105%;
+    top: 20%;
+  }
+}
   body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -170,7 +200,7 @@
 </head>
 
 <body>
-
+<div class="butterfly">🦋</div>
   <header>
 
     <img src="logo.png" alt="Vishrat Logo" class="logo">
