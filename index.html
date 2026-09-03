@@ -6,6 +6,29 @@
 
   <title>Vishrat</title>
  <style>
+   .button {
+  animation: buttonGlow 2.5s ease-in-out infinite;
+}
+
+.button:hover {
+  transform: scale(1.08);
+  box-shadow:
+    0 0 10px rgba(0,200,255,0.8),
+    0 0 25px rgba(180,0,255,0.6),
+    0 0 40px rgba(255,0,100,0.4);
+}
+
+@keyframes buttonGlow {
+  0% {
+    box-shadow: 0 0 8px rgba(0,200,255,0.4);
+  }
+  50% {
+    box-shadow: 0 0 22px rgba(180,0,255,0.7);
+  }
+  100% {
+    box-shadow: 0 0 8px rgba(0,200,255,0.4);
+  }
+}
    .card {
   position: relative;
   overflow: hidden;
