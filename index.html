@@ -6,6 +6,18 @@
 
   <title>Vishrat</title>
  <style>
+   .logo {
+  animation: logoFloat 3s ease-in-out infinite;
+}
+
+@keyframes logoFloat {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-8px) scale(1.03);
+  }
+}
    .card::after {
   content: "";
   position: absolute;
