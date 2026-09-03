@@ -279,7 +279,11 @@ async def buy_lecture(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
         ]
     ]
-
+await context.bot.send_photo(
+    chat_id=user.id,
+    photo="https://raw.githubusercontent.com/kgsias01-source/http-Vishrat.com.in/main/IMG_20260903_093348_965.jpg",
+    caption="📱 PhonePe QR Scan करके ₹2 Pay करें"
+    )
     await query.edit_message_text(
         f"🔒 Lecture {lecture}\n\n"
         f"💰 Amount: ₹{PRICE}\n\n"
