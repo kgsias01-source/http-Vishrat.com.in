@@ -608,6 +608,31 @@ allowfullscreen>
   © 2026 Vishrat
 
   </footer>
+<script>
+document.addEventListener("click", function(e) {
+  const item = e.target.closest("a, button");
 
+  if (!item || !/lecture/i.test(item.textContent)) return;
+
+  const msg = new SpeechSynthesisUtterance("Welcome to Loyal World");
+  msg.lang = "en-IN";
+  msg.rate = 0.9;
+  msg.pitch = 1.2;
+  msg.volume = 1;
+
+  const voices = speechSynthesis.getVoices();
+
+  const femaleVoice = voices.find(v =>
+    /female|woman|girl|zira|samantha|google.*english/i.test(v.name)
+  );
+
+  if (femaleVoice) {
+    msg.voice = femaleVoice;
+  }
+
+  speechSynthesis.cancel();
+  speechSynthesis.speak(msg);
+});
+  </script>
 </body>
 </html>
