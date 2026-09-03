@@ -104,7 +104,17 @@
       padding: 18px;
       margin-top: 30px;
     }
-  </style>
+ .logo {
+  animation: logoGlow 3s infinite linear;
+}
+
+@keyframes logoGlow {
+  0% { filter: drop-shadow(0 0 8px #00e5ff); }
+  33% { filter: drop-shadow(0 0 14px #ff00ff); }
+  66% { filter: drop-shadow(0 0 14px #00ff88); }
+  100% { filter: drop-shadow(0 0 8px #ffd000); }
+}
+</style>
 </head>
 
 <body>
