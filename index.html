@@ -608,17 +608,18 @@ allowfullscreen>
   © 2026 Vishrat
 
   </footer>
-  <script>
-document.addEventListener("click", function(e) {
-  const item = e.target.closest("a, button");
+<script>
+const welcomeVoice = new Audio("5_6109243026079489730.ogg");
 
-  if (!item || !/lecture|unlock/i.test(item.textContent)) return;
+document.querySelectorAll(".card").forEach(card => {
+  const heading = card.querySelector("h2");
 
-  const welcomeVoice = new Audio("5_6109243026079489730.ogg");
-
-  welcomeVoice.currentTime = 0;
-  welcomeVoice.play().catch(() => {});
-
+  if (heading && /Lecture/i.test(heading.textContent)) {
+    card.addEventListener("click", function() {
+      welcomeVoice.currentTime = 0;
+      welcomeVoice.play().catch(() => {});
+    });
+  }
 });
 </script>
 </body>
