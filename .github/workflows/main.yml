@@ -56,8 +56,8 @@ jobs:
                   applicationId 'com.vishrat.app'
                   minSdk 23
                   targetSdk 35
-                  versionCode 4
-                  versionName '4.0'
+                  versionCode 5
+                  versionName '5.0'
               }
           }
           EOF
@@ -114,5 +114,19 @@ jobs:
                   webView.setWebViewClient(new WebViewClient());
                   webView.getSettings().setJavaScriptEnabled(true);
                   webView.getSettings().setDomStorageEnabled(true);
+                  webView.getSettings().setSupportZoom(false);
 
-                  webView.loadUrl("https://kgsias
+                  webView.loadUrl("https://kgsias01-source.github.io/http-Vishrat.com.in/");
+
+                  setContentView(webView);
+              }
+          }
+          EOF
+
+          gradle assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Vishrat-APK
+          path: app/build/outputs/apk/debug/app-debug.apk
