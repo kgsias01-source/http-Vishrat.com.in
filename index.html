@@ -3,419 +3,695 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vishrat.com.in | LOYAL</title>
+
+<title>Vishrat - Online Learning</title>
 
 <style>
 *{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
 body{
-  font-family:Arial, sans-serif;
-  background:#f4f7fb;
-  color:#172033;
+    font-family:Arial, sans-serif;
+    background:#f4f7fb;
+    color:#172033;
+    line-height:1.6;
 }
 
+/* HEADER */
 header{
-  position:sticky;
-  top:0;
-  z-index:100;
-  background:rgba(255,255,255,.96);
-  backdrop-filter:blur(12px);
-  padding:13px 18px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  box-shadow:0 3px 18px rgba(0,0,0,.08);
+    background:#ffffff;
+    padding:14px 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    position:sticky;
+    top:0;
+    z-index:1000;
+    box-shadow:0 2px 15px rgba(0,0,0,0.08);
 }
 
 .logo-box{
-  display:flex;
-  align-items:center;
-  gap:10px;
+    display:flex;
+    align-items:center;
+    gap:10px;
 }
 
 .logo{
-  width:44px;
-  height:44px;
-  border-radius:12px;
-  object-fit:cover;
+    width:48px;
+    height:48px;
+    border-radius:12px;
+    object-fit:cover;
 }
 
 .logo-text{
-  font-size:21px;
-  font-weight:800;
+    font-size:23px;
+    font-weight:800;
+    color:#172033;
 }
 
 .logo-text span{
-  color:#2563eb;
+    color:#2563eb;
 }
 
 .menu{
-  background:#2563eb;
-  color:white;
-  border:0;
-  padding:10px 15px;
-  border-radius:10px;
-  font-weight:bold;
+    background:#2563eb;
+    color:white;
+    border:0;
+    padding:11px 17px;
+    border-radius:10px;
+    font-size:15px;
+    font-weight:700;
 }
 
+/* HERO */
 .hero{
-  padding:48px 20px;
-  color:white;
-  background:linear-gradient(135deg,#172554,#2563eb,#7c3aed);
+    background:linear-gradient(135deg,#172554,#2563eb,#7c3aed);
+    color:white;
+    padding:42px 20px;
+    text-align:center;
 }
 
 .hero h1{
-  font-size:32px;
-  line-height:1.2;
-  margin-bottom:12px;
+    font-size:31px;
+    margin-bottom:10px;
 }
 
 .hero p{
-  font-size:16px;
-  opacity:.92;
+    font-size:16px;
+    opacity:.95;
 }
 
-.search{
-  margin-top:22px;
-  width:100%;
-  padding:14px 16px;
-  border:0;
-  border-radius:12px;
-  font-size:15px;
-  outline:none;
+/* SEARCH */
+.search-box{
+    padding:20px;
+    background:white;
 }
 
-.container{
-  max-width:1000px;
-  margin:auto;
-  padding:28px 18px;
+.search-box input{
+    width:100%;
+    padding:15px 18px;
+    border:1px solid #dbe3ef;
+    border-radius:12px;
+    font-size:16px;
+    outline:none;
+    box-shadow:0 3px 12px rgba(0,0,0,.05);
+}
+
+.search-box input:focus{
+    border-color:#2563eb;
+}
+
+/* CATEGORY */
+.categories{
+    display:flex;
+    gap:9px;
+    overflow-x:auto;
+    padding:0 20px 20px;
+}
+
+.category{
+    background:#e8efff;
+    color:#2454b8;
+    padding:8px 15px;
+    border-radius:30px;
+    white-space:nowrap;
+    font-weight:700;
+    font-size:14px;
+}
+
+/* SECTION */
+section{
+    padding:20px;
 }
 
 .section-title{
-  font-size:24px;
-  margin-bottom:18px;
+    font-size:25px;
+    margin-bottom:16px;
 }
 
-.courses{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:16px;
+/* COURSE GRID */
+.course-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:16px;
 }
 
 .course{
-  background:white;
-  padding:22px;
-  border-radius:18px;
-  box-shadow:0 6px 22px rgba(0,0,0,.08);
-  transition:.25s;
+    background:white;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
+    transition:.2s;
 }
 
 .course:hover{
-  transform:translateY(-4px);
+    transform:translateY(-3px);
+}
+
+.course-top{
+    padding:24px;
+    color:white;
+    background:linear-gradient(135deg,#2563eb,#4f46e5);
+}
+
+.course:nth-child(2) .course-top{
+    background:linear-gradient(135deg,#7c3aed,#9333ea);
+}
+
+.course:nth-child(3) .course-top{
+    background:linear-gradient(135deg,#059669,#0d9488);
+}
+
+.course:nth-child(4) .course-top{
+    background:linear-gradient(135deg,#ea580c,#dc2626);
 }
 
 .course-icon{
-  font-size:35px;
-  margin-bottom:12px;
+    font-size:38px;
+    margin-bottom:7px;
 }
 
 .course h3{
-  margin-bottom:8px;
+    font-size:22px;
 }
 
-.course p{
-  color:#64748b;
-  font-size:14px;
-  margin-bottom:16px;
+.course-body{
+    padding:18px;
+}
+
+.course-body p{
+    color:#667085;
+    margin-bottom:15px;
 }
 
 .btn{
-  display:inline-block;
-  text-decoration:none;
-  background:#2563eb;
-  color:white;
-  padding:10px 15px;
-  border-radius:10px;
-  font-weight:bold;
-  font-size:14px;
+    display:inline-block;
+    text-decoration:none;
+    background:#2563eb;
+    color:white;
+    padding:10px 17px;
+    border-radius:9px;
+    font-weight:700;
 }
 
+/* ABOUT */
 .about{
-  margin-top:35px;
-  background:linear-gradient(145deg,#ffffff,#eef4ff);
-  border-radius:22px;
-  padding:25px 20px;
-  box-shadow:0 8px 28px rgba(0,0,0,.08);
+    background:linear-gradient(180deg,#eef4ff,#f8fbff);
+    border-radius:24px;
+    padding:25px 20px;
+    margin-top:10px;
 }
 
 .about-title{
-  text-align:center;
-  font-size:28px;
-  font-weight:900;
-  color:#2563eb;
-  margin-bottom:22px;
+    font-size:27px;
+    font-weight:800;
+    margin-bottom:20px;
 }
 
 .profile{
-  text-align:center;
-  margin-bottom:22px;
+    background:white;
+    padding:20px;
+    border-radius:18px;
+    box-shadow:0 5px 18px rgba(0,0,0,.06);
+    margin-bottom:18px;
 }
 
 .profile h3{
-  font-size:26px;
-  margin-bottom:8px;
+    font-size:25px;
+    color:#2563eb;
 }
 
 .profile p{
-  color:#64748b;
+    color:#667085;
+    font-size:16px;
 }
 
 .info-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
+    display:grid;
+    grid-template-columns:1fr;
+    gap:13px;
 }
 
 .info{
-  background:white;
-  padding:16px;
-  border-radius:14px;
-  box-shadow:0 3px 12px rgba(0,0,0,.05);
+    background:white;
+    padding:17px;
+    border-radius:18px;
+    box-shadow:0 4px 15px rgba(0,0,0,.06);
 }
 
 .info strong{
-  display:block;
-  margin-bottom:5px;
-  color:#2563eb;
+    display:block;
+    color:#2563eb;
+    font-size:18px;
+    margin-bottom:4px;
 }
 
+/* SKILLS */
 .skills{
-  margin-top:22px;
+    margin-top:25px;
 }
 
 .skills h3{
-  margin-bottom:14px;
+    font-size:25px;
+    margin-bottom:15px;
 }
 
 .skill-list{
-  display:flex;
-  flex-wrap:wrap;
-  gap:9px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
 }
 
 .skill{
-  background:#e8f0ff;
-  color:#1d4ed8;
-  padding:9px 12px;
-  border-radius:20px;
-  font-size:13px;
-  font-weight:bold;
+    background:#e7efff;
+    color:#2454b8;
+    padding:9px 15px;
+    border-radius:30px;
+    font-size:16px;
+    font-weight:700;
 }
 
+/* QUOTE */
 .quote{
-  margin-top:22px;
-  padding:18px;
-  border-left:4px solid #2563eb;
-  background:white;
-  border-radius:10px;
-  color:#475569;
-  font-style:italic;
+    margin-top:25px;
+    background:white;
+    border-left:6px solid #2563eb;
+    padding:20px;
+    border-radius:15px;
+    font-size:20px;
+    font-style:italic;
+    color:#475467;
 }
 
+/* FOOTER */
 footer{
-  margin-top:40px;
-  padding:28px 18px;
-  text-align:center;
-  background:#111827;
-  color:#cbd5e1;
+    margin-top:35px;
+    background:#111827;
+    color:white;
+    text-align:center;
+    padding:35px 20px;
 }
 
 footer strong{
-  color:white;
-  font-size:20px;
+    font-size:27px;
 }
 
-@media(max-width:500px){
-  .hero h1{
-    font-size:28px;
-  }
+footer p{
+    margin-top:8px;
+    color:#cbd5e1;
+}
 
-  .info-grid{
-    grid-template-columns:1fr;
-  }
+/* DESKTOP */
+@media(min-width:700px){
+
+    .course-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .info-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    section{
+        max-width:1100px;
+        margin:auto;
+    }
+
+    .about{
+        max-width:1100px;
+        margin:20px auto;
+    }
+
+    .hero h1{
+        font-size:42px;
+    }
 }
 </style>
 </head>
 
 <body>
 
+<!-- HEADER -->
 <header>
-  <div class="logo-box">
-    <img src="logo.png" class="logo" alt="Vishrat Logo">
-    <div class="logo-text">Vishrat<span>.com.in</span></div>
-  </div>
 
-  <button class="menu" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-    ☰ Menu
-  </button>
+    <div class="logo-box">
+        <img src="logo.png" class="logo" alt="Vishrat Logo">
+
+        <div class="logo-text">
+            Vishrat<span></span>
+        </div>
+    </div>
+
+    <button class="menu" onclick="alert('Menu coming soon 🚀')">
+        ☰ Menu
+    </button>
+
 </header>
 
-<section class="hero">
-  <h1>आपकी तैयारी,<br>हमारी जिम्मेदारी 🎓</h1>
-  <p>Quality Learning • Smart Preparation • Better Future</p>
 
-  <input
-    class="search"
-    id="search"
-    type="text"
-    placeholder="🔎 Course search करें..."
-    onkeyup="searchCourse()"
-  >
+<!-- HERO -->
+<div class="hero">
+
+    <h1>आपकी तैयारी, हमारी जिम्मेदारी 🎓</h1>
+
+    <p>
+        Learn • Practice • Grow • Succeed
+    </p>
+
+</div>
+
+
+<!-- SEARCH -->
+<div class="search-box">
+
+    <input
+        type="text"
+        id="search"
+        placeholder="🔍 Search courses..."
+        onkeyup="searchCourse()"
+    >
+
+</div>
+
+
+<!-- CATEGORIES -->
+<div class="categories">
+
+    <div class="category">📚 All Courses</div>
+    <div class="category">🌎 Geography</div>
+    <div class="category">🏛️ History</div>
+    <div class="category">⚖️ Polity</div>
+    <div class="category">💰 Economy</div>
+
+</div>
+
+
+<!-- COURSES -->
+<section>
+
+    <h2 class="section-title">
+        📚 Popular Courses
+    </h2>
+
+
+    <div class="course-grid">
+
+
+        <!-- GEOGRAPHY -->
+        <div class="course" data-name="ncert geography geography">
+
+            <div class="course-top">
+
+                <div class="course-icon">🌎</div>
+
+                <h3>NCERT Geography</h3>
+
+            </div>
+
+            <div class="course-body">
+
+                <p>
+                    NCERT Geography के important lectures और study material.
+                </p>
+
+                <a
+                    class="btn"
+                    href="NCERT%20Geography/index.html"
+                >
+                    Start Learning →
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- HISTORY -->
+        <div class="course" data-name="history indian history">
+
+            <div class="course-top">
+
+                <div class="course-icon">🏛️</div>
+
+                <h3>Indian History</h3>
+
+            </div>
+
+            <div class="course-body">
+
+                <p>
+                    Ancient, Medieval और Modern History lectures.
+                </p>
+
+                <a
+                    class="btn"
+                    href="History/index.html"
+                >
+                    Start Learning →
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- POLITY -->
+        <div class="course" data-name="polity indian polity">
+
+            <div class="course-top">
+
+                <div class="course-icon">⚖️</div>
+
+                <h3>Indian Polity</h3>
+
+            </div>
+
+            <div class="course-body">
+
+                <p>
+                    Constitution और Indian Polity की preparation.
+                </p>
+
+                <a
+                    class="btn"
+                    href="#"
+                    onclick="comingSoon(event)"
+                >
+                    Coming Soon
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- ECONOMY -->
+        <div class="course" data-name="economy indian economy">
+
+            <div class="course-top">
+
+                <div class="course-icon">💰</div>
+
+                <h3>Indian Economy</h3>
+
+            </div>
+
+            <div class="course-body">
+
+                <p>
+                    Economy concepts और competitive exam preparation.
+                </p>
+
+                <a
+                    class="btn"
+                    href="#"
+                    onclick="comingSoon(event)"
+                >
+                    Coming Soon
+                </a>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
 </section>
 
-<main class="container">
 
-  <h2 class="section-title">🔥 Popular Courses</h2>
+<!-- ABOUT -->
+<section>
 
-  <div class="courses" id="courses">
-
-    <div class="course" data-name="ncert geography geography">
-      <div class="course-icon">🌎</div>
-      <h3>NCERT Geography</h3>
-      <p>NCERT Geography के lectures और study material.</p>
-      <a class="btn" href="NCERT%20Geography/index.html">
-        Start Learning →
-      </a>
-    </div>
-
-    <div class="course" data-name="history indian history">
-      <div class="course-icon">🏛️</div>
-      <h3>Indian History</h3>
-      <p>Indian History के important lectures और topics.</p>
-      <a class="btn" href="History/index.html">
-        Start Learning →
-      </a>
-    </div>
-
-    <div class="course" data-name="polity indian polity">
-      <div class="course-icon">⚖️</div>
-      <h3>Indian Polity</h3>
-      <p>Indian Polity की structured preparation.</p>
-      <a class="btn" href="#">
-        Coming Soon
-      </a>
-    </div>
-
-    <div class="course" data-name="economy indian economy">
-      <div class="course-icon">📈</div>
-      <h3>Indian Economy</h3>
-      <p>Economy concepts को आसान तरीके से समझें.</p>
-      <a class="btn" href="#">
-        Coming Soon
-      </a>
-    </div>
-
-  </div>
-
-  <!-- MY SELF LOYAL -->
-
-  <section class="about">
+<div class="about">
 
     <div class="about-title">
-      👑 My Self — LOYAL
+        👨‍💻 My Self — LOYAL
     </div>
 
+
     <div class="profile">
-      <h3>✨ LOYAL</h3>
-      <p>Creator • Developer • Learner</p>
+
+        <h3>LOYAL</h3>
+
+        <p>
+            Creator • Developer • Learner
+        </p>
+
     </div>
+
 
     <div class="info-grid">
 
-      <div class="info">
-        <strong>👤 Name</strong>
-        LOYAL
-      </div>
 
-      <div class="info">
-        <strong>🎂 Age</strong>
-        23 Years
-      </div>
+        <div class="info">
 
-      <div class="info">
-        <strong>🎉 Birthday</strong>
-        8 February
-      </div>
+            <strong>👤 Name</strong>
 
-      <div class="info">
-        <strong>🎓 Qualification</strong>
-        B.Com
-      </div>
+            LOYAL
+
+        </div>
+
+
+        <div class="info">
+
+            <strong>🎂 Age</strong>
+
+            23 Years
+
+        </div>
+
+
+        <div class="info">
+
+            <strong>🎉 Birthday</strong>
+
+            8 February
+
+        </div>
+
+
+        <div class="info">
+
+            <strong>🎓 Qualification</strong>
+
+            B.Com
+
+        </div>
+
 
     </div>
 
+
+    <!-- SKILLS -->
     <div class="skills">
-      <h3>💻 My Skills</h3>
 
-      <div class="skill-list">
-        <span class="skill">🐍 Python</span>
-        <span class="skill">☕ Java</span>
-        <span class="skill">🌐 HTML</span>
-        <span class="skill">🎨 CSS</span>
-        <span class="skill">⚡ JavaScript</span>
-        <span class="skill">🗄️ SQL</span>
-        <span class="skill">🔧 Git</span>
-        <span class="skill">🐙 GitHub</span>
-        <span class="skill">📱 Android</span>
-        <span class="skill">💻 Web Development</span>
-        <span class="skill">🤖 Programming</span>
-        <span class="skill">🧩 Software Development</span>
-      </div>
+        <h3>💻 My Skills</h3>
+
+
+        <div class="skill-list">
+
+            <span class="skill">🐍 Python</span>
+
+            <span class="skill">☕ Java</span>
+
+            <span class="skill">🌐 HTML</span>
+
+            <span class="skill">🎨 CSS</span>
+
+            <span class="skill">⚡ JavaScript</span>
+
+            <span class="skill">🗄️ SQL</span>
+
+            <span class="skill">🔧 Git</span>
+
+            <span class="skill">🐙 GitHub</span>
+
+            <span class="skill">📱 Android</span>
+
+            <span class="skill">💻 Web Development</span>
+
+            <span class="skill">🤖 Programming</span>
+
+            <span class="skill">🧩 Software Development</span>
+
+        </div>
+
     </div>
 
+
+    <!-- QUOTE -->
     <div class="quote">
-      “Dream big, learn every day and keep moving forward. 🚀”
+
+        “Dream big, learn every day and keep moving forward. 🚀”
+
     </div>
 
-  </section>
+</div>
 
-</main>
+</section>
 
+
+<!-- FOOTER -->
 <footer>
-  <strong>Vishrat.com.in</strong>
-  <p style="margin-top:8px;">Made with ❤️ by LOYAL</p>
-  <p style="margin-top:8px;font-size:13px;">
-    © 2026 Vishrat • All Rights Reserved
-  </p>
+
+    <strong>Vishrat</strong>
+
+    <p>
+        Made with ❤️ by LOYAL
+    </p>
+
+    <p>
+        © 2026 Vishrat • All Rights Reserved
+    </p>
+
 </footer>
 
+
 <script>
+
 function searchCourse(){
 
-  const value =
-    document.getElementById("search")
-    .value.toLowerCase();
+    const value =
+        document
+        .getElementById("search")
+        .value
+        .toLowerCase();
 
-  const courses =
-    document.querySelectorAll(".course");
+    const courses =
+        document.querySelectorAll(".course");
 
-  courses.forEach(course => {
+    courses.forEach(course => {
 
-    const name =
-      course.getAttribute("data-name");
+        const name =
+            course.getAttribute("data-name");
 
-    if(name.includes(value)){
-      course.style.display = "";
-    }else{
-      course.style.display = "none";
-    }
+        if(name.includes(value)){
 
-  });
+            course.style.display = "";
+
+        }else{
+
+            course.style.display = "none";
+
+        }
+
+    });
+
 }
+
+
+function comingSoon(event){
+
+    event.preventDefault();
+
+    alert("🚀 This course is coming soon!");
+
+}
+
 </script>
 
 </body>
