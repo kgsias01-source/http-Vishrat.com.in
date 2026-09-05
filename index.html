@@ -1,632 +1,507 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vishrat - Online Learning Platform</title>
 
-  <title>Vishrat</title>
- <style>
-   .logo {
-  animation: logoFloat 3s ease-in-out infinite;
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
 }
 
-@keyframes logoFloat {
-  0%, 100% {
-    transform: translateY(0) scale(1);
-  }
-  50% {
-    transform: translateY(-8px) scale(1.03);
-  }
-}
-   .card::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(
-    120deg,
-    transparent,
-    rgba(255,255,255,0.5),
-    transparent
-  );
-  transform: skewX(-20deg);
-  animation: cardShine 4s infinite;
+body{
+  font-family:Arial, sans-serif;
+  background:#f5f7fb;
+  color:#172033;
 }
 
-@keyframes cardShine {
-  0% {
-    left: -100%;
-  }
-  60% {
-    left: 120%;
-  }
-  100% {
-    left: 120%;
-  }
-}
-   .loyal {
-  animation: loyalGlow 2s ease-in-out infinite;
+header{
+  background:white;
+  padding:14px 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  box-shadow:0 2px 12px rgba(0,0,0,.08);
+  position:sticky;
+  top:0;
+  z-index:100;
 }
 
-@keyframes loyalGlow {
-  0% {
-    text-shadow: 0 0 5px #00e5ff;
-  }
-  50% {
-    text-shadow:
-      0 0 10px #ff00ff,
-      0 0 25px #00e5ff,
-      0 0 40px #ff00aa;
-  }
-  100% {
-    text-shadow: 0 0 5px #00e5ff;
-  }
-}
-   .button {
-  animation: buttonGlow 2.5s ease-in-out infinite;
+.logo-box{
+  display:flex;
+  align-items:center;
+  gap:10px;
 }
 
-.button:hover {
-  transform: scale(1.08);
-  box-shadow:
-    0 0 10px rgba(0,200,255,0.8),
-    0 0 25px rgba(180,0,255,0.6),
-    0 0 40px rgba(255,0,100,0.4);
+.logo{
+  width:45px;
+  height:45px;
+  border-radius:12px;
+  object-fit:cover;
 }
 
-@keyframes buttonGlow {
-  0% {
-    box-shadow: 0 0 8px rgba(0,200,255,0.4);
-  }
-  50% {
-    box-shadow: 0 0 22px rgba(180,0,255,0.7);
-  }
-  100% {
-    box-shadow: 0 0 8px rgba(0,200,255,0.4);
-  }
-}
-   .card {
-  position: relative;
-  overflow: hidden;
-  animation: neonCard 4s ease-in-out infinite;
+.logo-text{
+  font-size:22px;
+  font-weight:800;
 }
 
-@keyframes neonCard {
-  0% {
-    box-shadow: 0 0 8px rgba(255,0,100,0.25);
-  }
-  25% {
-    box-shadow: 0 0 18px rgba(0,200,255,0.35);
-  }
-  50% {
-    box-shadow: 0 0 22px rgba(0,255,120,0.35);
-  }
-  75% {
-    box-shadow: 0 0 18px rgba(180,0,255,0.35);
-  }
-  100% {
-    box-shadow: 0 0 8px rgba(255,0,100,0.25);
-  }
-} 
-   .card {
-  background: rgba(255,255,255,0.82);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.6);
-  border-radius: 18px;
-}
-  .card {
-  transition: all 0.4s ease;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+.logo-text span{
+  color:#2563eb;
 }
 
-.card:hover {
-  transform: translateY(-6px) scale(1.02);
-  box-shadow: 0 15px 35px rgba(0,180,255,0.35);
-}
-   body {
-  animation: colorChange 6s infinite;
-}
-
-@keyframes colorChange {
-  0% { background: #f5f7fb; }
-  16.6% { background: #e3f2fd; }
-  33.3% { background: #fce4ec; }
-  50% { background: #e8f5e9; }
-  66.6% { background: #fff3e0; }
-  83.3% { background: #ede7f6; }
-  100% { background: #f5f7fb; }
-}
-  .butterfly {
-  position: fixed;
-  font-size: 38px;
-  z-index: 9999;
-  pointer-events: none;
-  animation: flyButterfly 12s linear infinite;
+.menu{
+  background:#2563eb;
+  color:white;
+  border:0;
+  padding:10px 15px;
+  border-radius:9px;
+  font-size:15px;
 }
 
-@keyframes flyButterfly {
-  0% {
-    left: -50px;
-    top: 20%;
+.hero{
+  background:linear-gradient(135deg,#172554,#2563eb);
+  color:white;
+  padding:38px 20px;
+}
+
+.hero h1{
+  font-size:30px;
+  line-height:1.2;
+  margin-bottom:12px;
+}
+
+.hero p{
+  font-size:16px;
+  line-height:1.6;
+  opacity:.95;
+}
+
+.search{
+  margin-top:22px;
+  background:white;
+  border-radius:12px;
+  padding:6px;
+  display:flex;
+}
+
+.search input{
+  width:100%;
+  border:0;
+  outline:none;
+  padding:13px;
+  font-size:15px;
+}
+
+.search button{
+  background:#2563eb;
+  color:white;
+  border:0;
+  border-radius:9px;
+  padding:0 18px;
+}
+
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:25px 16px;
+}
+
+.section-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:15px;
+}
+
+.section-title h2{
+  font-size:22px;
+}
+
+.section-title a{
+  color:#2563eb;
+  text-decoration:none;
+  font-size:14px;
+  font-weight:bold;
+}
+
+.categories{
+  display:flex;
+  gap:10px;
+  overflow-x:auto;
+  padding-bottom:8px;
+}
+
+.category{
+  background:white;
+  padding:11px 17px;
+  border-radius:30px;
+  white-space:nowrap;
+  border:1px solid #e5e7eb;
+  font-size:14px;
+}
+
+.courses{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:16px;
+}
+
+.card{
+  background:white;
+  border-radius:15px;
+  overflow:hidden;
+  box-shadow:0 4px 15px rgba(0,0,0,.07);
+  transition:.2s;
+}
+
+.card:hover{
+  transform:translateY(-3px);
+}
+
+.card-top{
+  height:125px;
+  background:linear-gradient(135deg,#dbeafe,#eff6ff);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:48px;
+}
+
+.card-body{
+  padding:16px;
+}
+
+.card h3{
+  font-size:17px;
+  margin-bottom:9px;
+}
+
+.card p{
+  color:#64748b;
+  font-size:13px;
+  line-height:1.5;
+}
+
+.rating{
+  margin:12px 0;
+  font-size:13px;
+}
+
+.price{
+  font-size:20px;
+  font-weight:bold;
+  margin-bottom:12px;
+}
+
+.btn{
+  display:block;
+  text-align:center;
+  background:#2563eb;
+  color:white;
+  padding:11px;
+  border-radius:9px;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+.free{
+  background:#ecfdf5;
+  color:#047857;
+  padding:4px 8px;
+  border-radius:5px;
+  font-size:12px;
+}
+
+.about{
+  background:white;
+  padding:22px;
+  border-radius:15px;
+  line-height:1.7;
+  margin-top:10px;
+}
+
+.about h2{
+  margin-bottom:10px;
+}
+
+footer{
+  background:#111827;
+  color:white;
+  text-align:center;
+  padding:28px 15px;
+  margin-top:20px;
+}
+
+footer p{
+  color:#cbd5e1;
+  font-size:13px;
+  margin-top:8px;
+}
+
+@media(max-width:500px){
+  .hero h1{
+    font-size:26px;
   }
-  25% {
-    left: 25%;
-    top: 35%;
+
+  .courses{
+    grid-template-columns:1fr;
   }
-  50% {
-    left: 55%;
-    top: 15%;
-  }
-  75% {
-    left: 80%;
-    top: 40%;
-  }
-  100% {
-    left: 105%;
-    top: 20%;
-  }
-}
-  body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f5f7fb;
-      color: #222;
-    }
 
-    header {
-      background: #123c69;
-      color: white;
-      padding: 20px 15px;
-      text-align: center;
-    }
-
-    .logo {
-      width: 280px;
-      max-width: 90%;
-      height: auto;
-      display: block;
-      margin: 0 auto 15px;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 32px;
-    }
-
-    header p {
-      margin: 8px 0 0;
-      font-size: 17px;
-    }
-
-    .container {
-      max-width: 900px;
-      margin: auto;
-      padding: 25px 15px;
-    }
-
-    .card {
-      background: white;
-      padding: 20px;
-      margin-bottom: 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-    }
-
-    .card h2 {
-      color: #123c69;
-    }
-
-    .video {
-      position: relative;
-      width: 100%;
-      padding-bottom: 56.25%;
-      height: 0;
-      overflow: hidden;
-      border-radius: 10px;
-    }
-
-    .video iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: 0;
-    }
-
-    .button {
-      display: inline-block;
-      background: #123c69;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 8px;
-      text-decoration: none;
-      margin-top: 10px;
-    }
-
-    footer {
-      background: #123c69;
-      color: white;
-      text-align: center;
-      padding: 18px;
-      margin-top: 30px;
-    }
- .logo {
-  animation: logoGlow 3s infinite linear;
-}
-
-@keyframes logoGlow {
-  0% { filter: drop-shadow(0 0 8px #00e5ff); }
-  33% { filter: drop-shadow(0 0 14px #ff00ff); }
-  66% { filter: drop-shadow(0 0 14px #00ff88); }
-  100% { filter: drop-shadow(0 0 8px #ffd000); }
-}
-.tagline {
-  font-size: 22px;
-  font-weight: bold;
-  text-align: center;
-  background: linear-gradient(
-    90deg,
-    red,
-    orange,
-    yellow,
-    green,
-    cyan,
-    blue,
-    violet,
-    red
-  );
-  background-size: 300% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: rainbowText 4s linear infinite;
-}
-
-.loyal {
-  font-size: 36px;
-  font-weight: 900;
-  text-align: center;
-  background: linear-gradient(
-    90deg,
-    red,
-    orange,
-    yellow,
-    lime,
-    cyan,
-    blue,
-    violet,
-    red
-  );
-  background-size: 400% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: rainbowText 3s linear infinite;
-}
-
-@keyframes rainbowText {
-  0% {
-    background-position: 0% center;
-  }
-  100% {
-    background-position: 400% center;
+  .card-top{
+    height:145px;
   }
 }
-  .button {
-  transition: all 0.3s ease;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-
-.button:hover {
-  transform: scale(1.06);
-  box-shadow: 0 0 20px rgba(0,200,255,0.7);
-      }
 </style>
 </head>
 
 <body>
-<div class="butterfly">🦋</div>
-  <header>
 
-    <img src="logo.png" alt="Vishrat Logo" class="logo">
-
-    <h2 class="tagline">
-  कंप्यूटर सिस्टम और इलेक्ट्रॉनिक डेटा को सुरक्षित रखना है
-</h2>
-
-<h1 class="loyal">
-  [ LOYAL JI ]
-</h1>
-
-  </header>
-
-
-  <div class="container">
-
-    <div class="card">
-
-      <h2>Welcome to Vishrat</h2>
-
-      <p>
-        UPSC Civil Services preparation ke liye
-        study material, courses aur useful videos.
-      </p>
-
-    </div>
-
-
-    <div class="card">
-
-      <h2>NCERT Geography - Lecture 1</h2>
-
-      <div class="video">
-
-        <iframe
-          src="https://www.youtube.com/embed/Ww8CFGeHaqE"
-          title="NCERT Geography - Lecture 1"
-          allowfullscreen>
-        </iframe>
-
-      </div>
-
-</div>
-
-<div class="card">
-
-<h2>NCERT Geography - Lecture 2</h2>
-
-<div class="video">
-
-<iframe
-src="https://www.youtube.com/embed/GKQw8vFCM7w"
-title="NCERT Geography - Lecture 2"
-allowfullscreen>
-</iframe>
-
-</div>
-<div class="card">
-
-<h2>NCERT Geography - Lecture 3</h2>
-
-<div class="video">
-<iframe
-src="https://www.youtube.com/embed/VRKvJYlQN-0"
-title="NCERT Geography - Lecture 3"
-allowfullscreen>
-</iframe>
-</div>
-
-</div>
-
-<div class="card">
-
-<h2>NCERT Geography - Lecture 4</h2>
-
-<div class="video">
-<iframe
-src="https://www.youtube.com/embed/T7JrQ9vv-DY"
-title="NCERT Geography - Lecture 4"
-allowfullscreen>
-</iframe>
-</div>
-
-</div>
-
-<div class="card">
-
-<h2>NCERT Geography - Lecture 5</h2>
-
-<div class="video">
-<iframe
-src="https://www.youtube.com/embed/UcMjneaHW1c"
-title="NCERT Geography - Lecture 5"
-allowfullscreen>
-</iframe>
-</div>
-
-</div>
-  <div class="card">
-  <h2>NCERT Geography - Lecture 6</h2>
-  <p><b>Price: ₹2</b></p>
-
-  <div style="background:#f1f1f1; padding:35px; text-align:center; border-radius:12px; margin-top:15px;">
-  <div style="font-size:50px;">🔒</div>
-  <h3>Lecture Locked</h3>
-  <p>Is lecture ko dekhne ke liye ₹2 payment karein.</p>
-  <a class="button" href="#payment">🔓 Unlock for ₹2</a>
+<header>
+  <div class="logo-box">
+    <img src="logo.png" class="logo" alt="Vishrat Logo">
+    <div class="logo-text">Vish<span>rat</span></div>
   </div>
-</div>
 
-<div class="card">
-  <h2>NCERT Geography - Lecture 7</h2>
-  <p><b>Price: ₹2</b></p>
-
-  <div style="background:#f1f1f1; padding:35px; text-align:center; border-radius:12px; margin-top:15px;">
-  <div style="font-size:50px;">🔒</div>
-  <h3>Lecture Locked</h3>
-  <p>Is lecture ko dekhne ke liye ₹2 payment karein.</p>
-  <a class="button" href="#payment">🔓 Unlock for ₹2</a>
-  </div>
-</div>
-
-<div class="card">
-  <h2>NCERT Geography - Lecture 8</h2>
-  <p><b>Price: ₹2</b></p>
-
-  <div style="background:#f1f1f1; padding:35px; text-align:center; border-radius:12px; margin-top:15px;">
-  <div style="font-size:50px;">🔒</div>
-  <h3>Lecture Locked</h3>
-  <p>Is lecture ko dekhne ke liye ₹2 payment karein.</p>
-  <a class="button" href="#payment">🔓 Unlock for ₹2</a>
-  </div>
-</div>
-     <div class="card" id="payment">
-  <h2>🎓 Full Course - Paid Lectures</h2>
-
-  <p>
-    5 free lectures के बाद पूरा course देखने के लिए payment करें।
-  </p>
-
-  <img src="IMG_20260903_093348_965.jpg"
-     alt="PhonePe QR Code"
-     style="width:220px; max-width:80%; display:block; margin:15px auto;">
-<p><b>📱 QR Scan करके ₹2 Pay करें</b></p>
-
-  <br><br>
-
-  <input
-    type="file"
-    accept="image/*">
-
-  <br><br>
-
-  <button class="button" type="button">
-    📤 Submit for Verification
+  <button class="menu" onclick="alert('Menu जल्द ही उपलब्ध होगा')">
+    ☰ Menu
   </button>
+</header>
+
+<section class="hero">
+  <h1>आपकी तैयारी,<br>हमारी जिम्मेदारी 🎓</h1>
 
   <p>
-    Verification के बाद paid lectures आपके account में unlock होंगे।
+    Competitive Exams की तैयारी के लिए
+    Classes, Lectures, Notes और Test Series
+    एक ही जगह।
   </p>
-     </div> 
-  <div class="card">
-       <h2>Our Telegram Bot</h2>
 
-      <p>
-        Latest updates aur study resources ke liye
-        Telegram bot use karein.
-      </p>
+  <div class="search">
+    <input id="searchBox" type="text"
+    placeholder="Search Course, Subject या Lecture...">
 
-      <a
-        class="button"
-        href="https://t.me/KGS_IAS_OFFICIAL_BOT"
-        target="_blank">
-        Open Telegram
-      </a>
+    <button onclick="searchCourse()">🔍</button>
+  </div>
+</section>
 
+<div class="container">
+
+  <div class="section-title">
+    <h2>Explore Courses</h2>
+  </div>
+
+  <div class="categories">
+    <div class="category">📚 All Courses</div>
+    <div class="category">🌍 Geography</div>
+    <div class="category">🏛️ History</div>
+    <div class="category">⚖️ Polity</div>
+    <div class="category">💰 Economy</div>
+    <div class="category">📝 Test Series</div>
+  </div>
+
+</div>
+
+<div class="container">
+
+  <div class="section-title">
+    <h2>Popular Courses 🔥</h2>
+    <a href="#">View All</a>
+  </div>
+
+  <div class="courses">
+
+    <div class="card">
+      <div class="card-top">🌍</div>
+
+      <div class="card-body">
+        <h3>NCERT Geography</h3>
+
+        <p>
+          NCERT Geography के महत्वपूर्ण
+          Lectures और Concepts.
+        </p>
+
+        <div class="rating">
+          ⭐⭐⭐⭐⭐ 4.9
+        </div>
+
+        <div class="price">
+          <span class="free">FREE</span>
+        </div>
+
+        <a class="btn" href="NCERT%20Geography/index.html">
+          View Course →
+        </a>
+      </div>
     </div>
 
-  <div class="video" style="text-align:center; padding:40px 10px;">
-  <h2>🔒 Lecture Locked</h2>
-  <p>इस Lecture को देखने के लिए ₹2 payment करें।</p>
-  <p><b>🔒 Locked</b></p>
-  </div>
 
-<div class="card">
-  <h2>NCERT Geography - Lecture 10</h2>
-  <p><b>Price: ₹2</b></p>
-  <div style="background:#f1f1f1; padding:35px; text-align:center; border-radius:12px; margin-top:15px;">
-  <div style="font-size:50px;">🔒</div>
-  <h3>Lecture Locked</h3>
-  <p>Is lecture ko dekhne ke liye ₹2 payment karein.</p>
-  <a class="button" href="#payment">🔓 Unlock for ₹2</a>
-  </div>
-</div>
+    <div class="card">
+      <div class="card-top">🏛️</div>
 
-<div class="card">
-  <h2>NCERT Geography - Lecture 11</h2>
-  <p><b>Price: ₹2</b></p>
-  <div style="background:#f1f1f1; padding:35px; text-align:center; border-radius:12px; margin-top:15px;">
-  <div style="font-size:50px;">🔒</div>
-  <h3>Lecture Locked</h3>
-  <p>Is lecture ko dekhne ke liye ₹2 payment karein.</p>
-  <a class="button" href="#payment">🔓 Unlock for ₹2</a>
-  </div>
-</div>
+      <div class="card-body">
+        <h3>Indian History</h3>
 
-<div class="card">
-  <h2>NCERT Geography - Lecture 12</h2>
-  <p><b>Price: ₹2</b></p>
-  <div style="background:#f1f1f1; padding:35px; text-align:center; border-radius:12px; margin-top:15px;">
-  <div style="font-size:50px;">🔒</div>
-  <h3>Lecture Locked</h3>
-  <p>Is lecture ko dekhne ke liye ₹2 payment karein.</p>
-  <a class="button" href="#payment">🔓 Unlock for ₹2</a>
-  </div>
-</div>
+        <p>
+          Ancient, Medieval और Modern
+          History की तैयारी.
+        </p>
 
-<div class="card">
-  <h2>NCERT Geography - Lecture 13</h2>
-  <p><b>Price: ₹2</b></p>
-  <div style="background:#f1f1f1; padding:35px; text-align:center; border-radius:12px; margin-top:15px;">
-  <div style="font-size:50px;">🔒</div>
-  <h3>Lecture Locked</h3>
-  <p>Is lecture ko dekhne ke liye ₹2 payment karein.</p>
-  <a class="button" href="#payment">🔓 Unlock for ₹2</a>
-  </div>
-</div>
+        <div class="rating">
+          ⭐⭐⭐⭐⭐ 4.8
+        </div>
 
-<div class="card">
-  <h2>NCERT Geography - Lecture 14</h2>
-  <p><b>Price: ₹2</b></p>
-  <div style="background:#f1f1f1; padding:35px; text-align:center; border-radius:12px; margin-top:15px;">
-  <div style="font-size:50px;">🔒</div>
-  <h3>Lecture Locked</h3>
-  <p>Is lecture ko dekhne ke liye ₹2 payment karein.</p>
-  <a class="button" href="#payment">🔓 Unlock for ₹2</a>
-  </div>
-</div>
+        <div class="price">
+          <span class="free">FREE</span>
+        </div>
 
-<div class="card">
-  <h2>NCERT Geography - Lecture 15</h2>
-  <p><b>Price: ₹2</b></p>
-  <div style="background:#f1f1f1; padding:35px; text-align:center; border-radius:12px; margin-top:15px;">
-  <div style="font-size:50px;">🔒</div>
-  <h3>Lecture Locked</h3>
-  <p>Is lecture ko dekhne ke liye ₹2 payment karein.</p>
-  <a class="button" href="#payment">🔓 Unlock for ₹2</a>
-  </div>
-</div>
+        <a class="btn" href="History/index.html">
+          View Course →
+        </a>
+      </div>
+    </div>
 
-<div class="card">
-  <h2>NCERT Geography - Lecture 16</h2>
-  <p><b>Price: ₹2</b></p>
-  <div style="background:#f1f1f1; padding:35px; text-align:center; border-radius:12px; margin-top:15px;">
-  <div style="font-size:50px;">🔒</div>
-  <h3>Lecture Locked</h3>
-  <p>Is lecture ko dekhne ke liye ₹2 payment karein.</p>
-  <a class="button" href="#payment">🔓 Unlock for ₹2</a>
+
+    <div class="card">
+      <div class="card-top">⚖️</div>
+
+      <div class="card-body">
+        <h3>Indian Polity</h3>
+
+        <p>
+          Constitution और Polity के
+          महत्वपूर्ण Topics.
+        </p>
+
+        <div class="rating">
+          ⭐⭐⭐⭐⭐ 4.8
+        </div>
+
+        <div class="price">
+          <span class="free">FREE</span>
+        </div>
+
+        <a class="btn" href="#">
+          Coming Soon
+        </a>
+      </div>
+    </div>
+
+
+    <div class="card">
+      <div class="card-top">💰</div>
+
+      <div class="card-body">
+        <h3>Indian Economy</h3>
+
+        <p>
+          Economy के Basic से Advanced
+          Concepts.
+        </p>
+
+        <div class="rating">
+          ⭐⭐⭐⭐⭐ 4.7
+        </div>
+
+        <div class="price">
+          <span class="free">FREE</span>
+        </div>
+
+        <a class="btn" href="#">
+          Coming Soon
+        </a>
+      </div>
+    </div>
+
   </div>
 </div>
 
-<div class="card">
-  <h2>NCERT Geography - Lecture 17</h2>
-  <p><b>Price: ₹2</b></p>
-  <div style="background:#f1f1f1; padding:35px; text-align:center; border-radius:12px; margin-top:15px;">
-  <div style="font-size:50px;">🔒</div>
-  <h3>Lecture Locked</h3>
-  <p>Is lecture ko dekhne ke liye ₹2 payment karein.</p>
-  <a class="button" href="#payment">🔓 Unlock for ₹2</a>
+
+<div class="container">
+
+  <div class="section-title">
+    <h2>Why Choose Vishrat? 🚀</h2>
   </div>
+
+  <div class="about">
+
+    <h2>Vishrat Learning Platform</h2>
+
+    <p>
+      Vishrat का उद्देश्य विद्यार्थियों को
+      बेहतर और सरल तरीके से Competitive Exams
+      की तैयारी करवाना है।
+    </p>
+
+    <br>
+
+    <p>
+      यहाँ आपको Subject-wise Classes,
+      Lectures, Study Material और आगे चलकर
+      Test Series जैसी सुविधाएँ मिलेंगी।
+    </p>
+
+  </div>
+
 </div>
 
-  <footer>
 
-  © 2026 Vishrat
+<footer>
 
-  </footer>
-  <script>
-document.querySelectorAll(".card").forEach(function(card) {
-  card.addEventListener("click", function(e) {
+  <h2>Vishrat</h2>
 
-    // YouTube video के अंदर click होने पर रोकें
-    if (e.target.closest("iframe")) return;
+  <p>
+    Learn • Prepare • Succeed
+  </p>
 
-    const heading = card.querySelector("h2");
+  <p>
+    © 2026 Vishrat. All Rights Reserved.
+  </p>
 
-    if (heading && /Lecture/i.test(heading.textContent)) {
-      const voice = new Audio("5_6109243026079489730.ogg");
+</footer>
 
-      voice.currentTime = 0;
-      voice.play().catch(function(error) {
-        console.log("Voice play blocked:", error);
-      });
-    }
-  });
-});
-  </script>
+
+<script>
+
+function searchCourse(){
+
+  let text =
+    document.getElementById("searchBox")
+    .value
+    .toLowerCase()
+    .trim();
+
+  if(text === ""){
+    alert("Course या Subject का नाम लिखें");
+    return;
+  }
+
+  if(text.includes("geography") ||
+     text.includes("भूगोल")){
+
+    window.location.href =
+    "NCERT%20Geography/index.html";
+
+  }
+
+  else if(text.includes("history") ||
+          text.includes("इतिहास")){
+
+    window.location.href =
+    "History/index.html";
+
+  }
+
+  else{
+    alert("यह Course अभी उपलब्ध नहीं है।");
+  }
+
+}
+
+</script>
+
 </body>
 </html>
