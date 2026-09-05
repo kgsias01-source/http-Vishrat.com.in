@@ -11,7 +11,7 @@
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Arial, sans-serif;
+    font-family:Arial,sans-serif;
 }
 
 body{
@@ -46,6 +46,26 @@ header{
     height:42px;
     border-radius:50%;
     object-fit:cover;
+}
+
+.header-right{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.login-btn{
+    padding:9px 14px;
+    border:1px solid #00eaff;
+    border-radius:10px;
+    background:#101936;
+    color:#00eaff;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.login-btn:hover{
+    background:#17285a;
 }
 
 .menu-btn{
@@ -104,6 +124,92 @@ header{
     float:right;
     color:#ffcc00;
     font-size:12px;
+}
+
+.loyal-menu{
+    display:none;
+    padding:14px;
+    margin:8px 0;
+    border-radius:12px;
+    background:#102d2b;
+    border:1px solid #00ffb3;
+    color:#00ffb3;
+    font-weight:bold;
+    text-align:center;
+}
+
+/* LOGIN MODAL */
+#loginBox{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.88);
+    z-index:5000;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.login-card{
+    width:100%;
+    max-width:400px;
+    background:#0b1230;
+    border:1px solid #26345f;
+    border-radius:22px;
+    padding:25px;
+    box-shadow:0 0 35px rgba(0,234,255,.20);
+}
+
+.login-card h2{
+    color:#00eaff;
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.login-input{
+    width:100%;
+    padding:14px;
+    margin-bottom:12px;
+    border-radius:10px;
+    border:1px solid #334577;
+    background:#101936;
+    color:white;
+    font-size:15px;
+    outline:none;
+}
+
+.login-input:focus{
+    border-color:#00eaff;
+}
+
+.login-submit{
+    width:100%;
+    padding:14px;
+    border:0;
+    border-radius:12px;
+    background:linear-gradient(90deg,#00bcd4,#7c4dff);
+    color:white;
+    font-weight:bold;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.login-close{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    border:1px solid #334577;
+    border-radius:12px;
+    background:#101936;
+    color:white;
+    cursor:pointer;
+}
+
+#loginMessage{
+    text-align:center;
+    margin-top:15px;
+    color:#ffcc00;
+    min-height:20px;
 }
 
 /* HERO */
@@ -228,6 +334,21 @@ header{
     transform:scale(1.03);
 }
 
+/* LOYAL MODE */
+body.loyal-free .lock{
+    background:#102d2b;
+    color:#00ffb3;
+    border-color:#00ffb3;
+}
+
+body.loyal-free .price{
+    color:#00ffb3;
+}
+
+body.loyal-free .unlock{
+    background:linear-gradient(90deg,#00b37a,#00eaff);
+}
+
 /* ABOUT */
 .about{
     margin-top:60px;
@@ -287,6 +408,7 @@ footer strong{
 
 /* MOBILE */
 @media(max-width:600px){
+
     .hero h1{
         font-size:32px;
     }
@@ -294,29 +416,108 @@ footer strong{
     .container{
         padding:25px 15px;
     }
+
+    .login-btn{
+        padding:8px 10px;
+        font-size:13px;
+    }
+
+    .logo-box{
+        font-size:19px;
+    }
+
 }
 </style>
 </head>
 
 <body>
 
+<!-- HEADER -->
 <header>
+
     <div class="logo-box">
         <img src="logo.png" alt="Vishrat Logo">
         <span>Vishrat</span>
     </div>
 
-    <div class="menu-btn" onclick="openMenu()">☰</div>
+    <div class="header-right">
+
+        <button
+            id="loginButton"
+            class="login-btn"
+            onclick="openLogin()">
+            🔐 Login
+        </button>
+
+        <div
+            class="menu-btn"
+            onclick="openMenu()">
+            ☰
+        </div>
+
+    </div>
+
 </header>
+
+
+<!-- LOGIN BOX -->
+<div id="loginBox">
+
+    <div class="login-card">
+
+        <h2>🔐 Vishrat Login</h2>
+
+        <input
+            id="loginEmail"
+            class="login-input"
+            type="email"
+            placeholder="📧 Email">
+
+        <input
+            id="loginPassword"
+            class="login-input"
+            type="password"
+            placeholder="🔑 Password">
+
+        <button
+            class="login-submit"
+            onclick="loginUser()">
+            🔐 Login
+        </button>
+
+        <button
+            class="login-close"
+            onclick="closeLogin()">
+            ✕ Close
+        </button>
+
+        <p id="loginMessage"></p>
+
+    </div>
+
+</div>
+
 
 <!-- SIDE MENU -->
 <div class="side-menu" id="sideMenu">
 
-    <div class="close-btn" onclick="closeMenu()">✕</div>
+    <div
+        class="close-btn"
+        onclick="closeMenu()">
+        ✕
+    </div>
 
     <h2>☰ Menu</h2>
 
-    <a href="index.html">🏠 Home</a>
+    <div
+        id="loyalStatus"
+        class="loyal-menu">
+        👑 LOYAL FREE ACCESS ACTIVE
+    </div>
+
+    <a href="index.html">
+        🏠 Home
+    </a>
 
     <a href="NCERT%20Geography/index.html">
         🌎 NCERT Geography
@@ -363,42 +564,65 @@ footer strong{
         <span class="paid">PAID</span>
     </a>
 
-    <a href="#about">👨‍💻 My Self</a>
+    <a href="#about">
+        👨‍💻 My Self
+    </a>
+
+    <a
+        href="#"
+        id="logoutMenu"
+        onclick="logoutUser();return false;"
+        style="display:none;color:#ff416c;">
+        🚪 Logout
+    </a>
 
 </div>
+
 
 <!-- HERO -->
 <section class="hero">
 
-    <h1>आपकी तैयारी, हमारी जिम्मेदारी 🎓</h1>
+    <h1>
+        आपकी तैयारी, हमारी जिम्मेदारी 🎓
+    </h1>
 
     <p>
         Vishrat — Learn • Practice • Grow 🚀
     </p>
 
     <div class="search">
+
         <input
             type="text"
             id="searchInput"
             placeholder="🔍 Search Batch..."
             onkeyup="searchCourse()">
+
     </div>
 
 </section>
 
+
 <!-- COURSES -->
 <div class="container">
 
-    <h2 class="section-title">🔥 Premium Batches</h2>
+    <h2 class="section-title">
+        🔥 Premium Batches
+    </h2>
 
-    <div class="courses" id="courseList">
+    <div
+        class="courses"
+        id="courseList">
+
 
         <!-- GEOGRAPHY -->
         <div class="card course">
 
             <div class="icon">🌎</div>
 
-            <h3>NCERT Geography</h3>
+            <h3>
+                NCERT Geography
+            </h3>
 
             <p>
                 NCERT Geography का complete lecture batch.
@@ -408,11 +632,20 @@ footer strong{
                 🔒 LOCKED • PAID
             </span>
 
-            <div class="price">₹49</div>
+            <div class="price">
+                ₹49
+            </div>
 
-            <button class="unlock"
-                onclick="showPayment('NCERT Geography','₹49')">
+            <button
+                class="unlock"
+                onclick="showPayment(
+                    'NCERT Geography',
+                    '₹49',
+                    'NCERT%20Geography/index.html'
+                )">
+
                 🔐 Unlock Batch
+
             </button>
 
         </div>
@@ -423,7 +656,9 @@ footer strong{
 
             <div class="icon">🏛️</div>
 
-            <h3>Indian History</h3>
+            <h3>
+                Indian History
+            </h3>
 
             <p>
                 Indian History का complete preparation batch.
@@ -433,11 +668,20 @@ footer strong{
                 🔒 LOCKED • PAID
             </span>
 
-            <div class="price">₹49</div>
+            <div class="price">
+                ₹49
+            </div>
 
-            <button class="unlock"
-                onclick="showPayment('Indian History','₹49')">
+            <button
+                class="unlock"
+                onclick="showPayment(
+                    'Indian History',
+                    '₹49',
+                    'History/index.html'
+                )">
+
                 🔐 Unlock Batch
+
             </button>
 
         </div>
@@ -448,7 +692,9 @@ footer strong{
 
             <div class="icon">⚖️</div>
 
-            <h3>Indian Polity</h3>
+            <h3>
+                Indian Polity
+            </h3>
 
             <p>
                 Indian Polity complete premium batch.
@@ -458,11 +704,19 @@ footer strong{
                 🔒 LOCKED • PAID
             </span>
 
-            <div class="price">₹49</div>
+            <div class="price">
+                ₹49
+            </div>
 
-            <button class="unlock"
-                onclick="showPayment('Indian Polity','₹49')">
+            <button
+                class="unlock"
+                onclick="showPayment(
+                    'Indian Polity',
+                    '₹49'
+                )">
+
                 🔐 Unlock Batch
+
             </button>
 
         </div>
@@ -473,7 +727,9 @@ footer strong{
 
             <div class="icon">💰</div>
 
-            <h3>Indian Economy</h3>
+            <h3>
+                Indian Economy
+            </h3>
 
             <p>
                 Indian Economy complete premium batch.
@@ -483,11 +739,19 @@ footer strong{
                 🔒 LOCKED • PAID
             </span>
 
-            <div class="price">₹49</div>
+            <div class="price">
+                ₹49
+            </div>
 
-            <button class="unlock"
-                onclick="showPayment('Indian Economy','₹49')">
+            <button
+                class="unlock"
+                onclick="showPayment(
+                    'Indian Economy',
+                    '₹49'
+                )">
+
                 🔐 Unlock Batch
+
             </button>
 
         </div>
@@ -498,7 +762,9 @@ footer strong{
 
             <div class="icon">🐍</div>
 
-            <h3>Python Programming</h3>
+            <h3>
+                Python Programming
+            </h3>
 
             <p>
                 Python programming from beginner to advanced.
@@ -508,11 +774,19 @@ footer strong{
                 🔒 LOCKED • PAID
             </span>
 
-            <div class="price">₹399</div>
+            <div class="price">
+                ₹399
+            </div>
 
-            <button class="unlock"
-                onclick="showPayment('Python Programming','₹399')">
+            <button
+                class="unlock"
+                onclick="showPayment(
+                    'Python Programming',
+                    '₹399'
+                )">
+
                 🔐 Unlock Batch
+
             </button>
 
         </div>
@@ -523,7 +797,9 @@ footer strong{
 
             <div class="icon">☕</div>
 
-            <h3>Java Programming</h3>
+            <h3>
+                Java Programming
+            </h3>
 
             <p>
                 Java programming complete premium course.
@@ -533,11 +809,19 @@ footer strong{
                 🔒 LOCKED • PAID
             </span>
 
-            <div class="price">₹499</div>
+            <div class="price">
+                ₹499
+            </div>
 
-            <button class="unlock"
-                onclick="showPayment('Java Programming','₹499')">
+            <button
+                class="unlock"
+                onclick="showPayment(
+                    'Java Programming',
+                    '₹499'
+                )">
+
                 🔐 Unlock Batch
+
             </button>
 
         </div>
@@ -548,7 +832,9 @@ footer strong{
 
             <div class="icon">🌐</div>
 
-            <h3>Web Development</h3>
+            <h3>
+                Web Development
+            </h3>
 
             <p>
                 HTML, CSS, JavaScript और Web Development.
@@ -558,11 +844,19 @@ footer strong{
                 🔒 LOCKED • PAID
             </span>
 
-            <div class="price">₹399</div>
+            <div class="price">
+                ₹399
+            </div>
 
-            <button class="unlock"
-                onclick="showPayment('Web Development','₹399')">
+            <button
+                class="unlock"
+                onclick="showPayment(
+                    'Web Development',
+                    '₹399'
+                )">
+
                 🔐 Unlock Batch
+
             </button>
 
         </div>
@@ -573,7 +867,9 @@ footer strong{
 
             <div class="icon">📱</div>
 
-            <h3>Android Development</h3>
+            <h3>
+                Android Development
+            </h3>
 
             <p>
                 Android app development complete batch.
@@ -583,11 +879,19 @@ footer strong{
                 🔒 LOCKED • PAID
             </span>
 
-            <div class="price">₹499</div>
+            <div class="price">
+                ₹499
+            </div>
 
-            <button class="unlock"
-                onclick="showPayment('Android Development','₹499')">
+            <button
+                class="unlock"
+                onclick="showPayment(
+                    'Android Development',
+                    '₹499'
+                )">
+
                 🔐 Unlock Batch
+
             </button>
 
         </div>
@@ -598,7 +902,9 @@ footer strong{
 
             <div class="icon">💻</div>
 
-            <h3>Full Programming</h3>
+            <h3>
+                Full Programming
+            </h3>
 
             <p>
                 Programming का complete premium package.
@@ -608,11 +914,19 @@ footer strong{
                 🔒 LOCKED • PAID
             </span>
 
-            <div class="price">₹599</div>
+            <div class="price">
+                ₹599
+            </div>
 
-            <button class="unlock"
-                onclick="showPayment('Full Programming','₹599')">
+            <button
+                class="unlock"
+                onclick="showPayment(
+                    'Full Programming',
+                    '₹599'
+                )">
+
                 🔐 Unlock Batch
+
             </button>
 
         </div>
@@ -621,20 +935,41 @@ footer strong{
 
 
     <!-- ABOUT -->
-    <section class="about" id="about">
+    <section
+        class="about"
+        id="about">
 
-        <h2>👨‍💻 My Self — LOYAL</h2>
+        <h2>
+            👨‍💻 My Self — LOYAL
+        </h2>
 
-        <img src="loyal.png" alt="LOYAL Hacker Profile">
+        <img
+            src="loyal.png"
+            alt="LOYAL Profile">
 
-        <h3>LOYAL</h3>
+        <h3>
+            LOYAL
+        </h3>
 
-        <p>Creator • Developer • Learner 🚀</p>
+        <p>
+            Creator • Developer • Learner 🚀
+        </p>
 
-        <p><strong>Name:</strong> LOYAL</p>
-        <p><strong>Age:</strong> 23 Years</p>
-        <p><strong>Birthday:</strong> 8 February 🎂</p>
-        <p><strong>Qualification:</strong> B.Com</p>
+        <p>
+            <strong>Name:</strong> LOYAL
+        </p>
+
+        <p>
+            <strong>Age:</strong> 23 Years
+        </p>
+
+        <p>
+            <strong>Birthday:</strong> 8 February 🎂
+        </p>
+
+        <p>
+            <strong>Qualification:</strong> B.Com
+        </p>
 
         <div class="skills">
 
@@ -662,45 +997,63 @@ footer strong{
 </div>
 
 
+<!-- FOOTER -->
 <footer>
 
-    <strong>Vishrat</strong>
+    <strong>
+        Vishrat
+    </strong>
 
-    <p>Made with ❤️ by LOYAL</p>
+    <p>
+        Made with ❤️ by LOYAL
+    </p>
 
-    <p>© 2026 Vishrat • All Rights Reserved</p>
+    <p>
+        © 2026 Vishrat • All Rights Reserved
+    </p>
 
 </footer>
 
 
+<!-- BASIC FUNCTIONS -->
 <script>
 
 function openMenu(){
 
     document
-    .getElementById("sideMenu")
-    .classList.add("active");
+        .getElementById("sideMenu")
+        .classList.add("active");
 
 }
+
 
 function closeMenu(){
 
     document
-    .getElementById("sideMenu")
-    .classList.remove("active");
+        .getElementById("sideMenu")
+        .classList.remove("active");
 
 }
 
 
-function showPayment(batch,price){
+function openLogin(){
 
-    alert(
-        "🔒 " + batch +
-        "\\n\\n💰 Price: " + price +
-        "\\n\\n🔐 यह Batch अभी Locked है." +
-        "\\n\\n💳 Payment करके Batch Unlock करें." +
-        "\\n\\nRazorpay payment system जल्द जोड़ा जाएगा."
-    );
+    document
+        .getElementById("loginBox")
+        .style.display="flex";
+
+    document
+        .getElementById("loginMessage")
+        .innerText="";
+
+}
+
+
+function closeLogin(){
+
+    document
+        .getElementById("loginBox")
+        .style.display="none";
 
 }
 
@@ -737,5 +1090,107 @@ function searchCourse(){
 
 </script>
 
-</body>
-</html>
+
+<!-- FIREBASE LOGIN -->
+<script type="module">
+
+import {
+    initializeApp
+}
+from
+"https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+
+import {
+    getAuth,
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged
+}
+from
+"https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+
+const firebaseConfig = {
+
+    apiKey:
+    "AIzaSyCrZcJhGbghhRia-CA5AwjnnEpq0A6Asr0",
+
+    authDomain:
+    "vishrat-36bc6.firebaseapp.com",
+
+    projectId:
+    "vishrat-36bc6",
+
+    storageBucket:
+    "vishrat-36bc6.firebasestorage.app",
+
+    messagingSenderId:
+    "713177652515",
+
+    appId:
+    "1:713177652515:web:9a6c545278563e77640096",
+
+    measurementId:
+    "G-LN2N5Z0BBF"
+
+};
+
+
+const app =
+    initializeApp(firebaseConfig);
+
+
+const auth =
+    getAuth(app);
+
+
+const LOYAL_EMAIL =
+    "kgsias01@gmail.com";
+
+
+let currentUser = null;
+
+let isLoyal = false;
+
+
+/* LOGIN */
+
+window.loginUser = async function(){
+
+    const email =
+        document
+        .getElementById("loginEmail")
+        .value
+        .trim();
+
+    const password =
+        document
+        .getElementById("loginPassword")
+        .value;
+
+    const message =
+        document
+        .getElementById("loginMessage");
+
+
+    if(!email || !password){
+
+        message.innerText =
+            "⚠️ Email और Password डालो";
+
+        return;
+
+    }
+
+
+    message.innerText =
+        "⏳ Login हो रहा है...";
+
+
+    try{
+
+        await signInWithEmailAndPassword(
+            auth,
+            email,
+      
