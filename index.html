@@ -128,7 +128,6 @@ header{
     text-align:center;
 }
 
-/* LOGIN */
 #loginBox{
     display:none;
     position:fixed;
@@ -435,13 +434,13 @@ onclick="openLogin()">
 
 
 <!-- LOGIN -->
+
 <div id="loginBox">
 
 <div class="login-card">
 
 <h2>🔐 Vishrat Login</h2>
 
-<!-- EMAIL -->
 <div id="emailLoginSection" class="active">
 
 <input
@@ -471,7 +470,6 @@ onclick="showPhoneLogin()">
 </div>
 
 
-<!-- PHONE -->
 <div id="phoneLoginSection">
 
 <input
@@ -515,7 +513,6 @@ onclick="showEmailLogin()">
 
 </div>
 
-
 <button
 class="login-close"
 onclick="closeLogin()">
@@ -529,6 +526,7 @@ onclick="closeLogin()">
 
 
 <!-- SIDE MENU -->
+
 <div class="side-menu" id="sideMenu">
 
 <div class="close-btn" onclick="closeMenu()">✕</div>
@@ -536,54 +534,54 @@ onclick="closeLogin()">
 <h2>☰ Menu</h2>
 
 <div id="loyalStatus" class="loyal-menu">
-👑 LOYAL FREE ACCESS ACTIVE
+👑 LOYAL — ALL BATCH FREE
 </div>
 
 <a href="index.html">🏠 Home</a>
 
 <a href="NCERT%20Geography/index.html">
 🌎 NCERT Geography
-<span class="paid">PAID</span>
+<span class="paid">FREE FOR LOYAL</span>
 </a>
 
 <a href="History/index.html">
 🏛️ Indian History
-<span class="paid">PAID</span>
+<span class="paid">FREE FOR LOYAL</span>
 </a>
 
 <a href="#">
 ⚖️ Indian Polity
-<span class="paid">PAID</span>
+<span class="paid">FREE FOR LOYAL</span>
 </a>
 
 <a href="#">
 💰 Indian Economy
-<span class="paid">PAID</span>
+<span class="paid">FREE FOR LOYAL</span>
 </a>
 
 <a href="#">
 🐍 Python Programming
-<span class="paid">PAID</span>
+<span class="paid">FREE FOR LOYAL</span>
 </a>
 
 <a href="#">
 ☕ Java Programming
-<span class="paid">PAID</span>
+<span class="paid">FREE FOR LOYAL</span>
 </a>
 
 <a href="#">
 🌐 Web Development
-<span class="paid">PAID</span>
+<span class="paid">FREE FOR LOYAL</span>
 </a>
 
 <a href="#">
 📱 Android Development
-<span class="paid">PAID</span>
+<span class="paid">FREE FOR LOYAL</span>
 </a>
 
 <a href="#">
 💻 Full Programming
-<span class="paid">PAID</span>
+<span class="paid">FREE FOR LOYAL</span>
 </a>
 
 <a href="#about">👨‍💻 My Self</a>
@@ -599,6 +597,7 @@ style="display:none;color:#ff416c;">
 
 
 <!-- HERO -->
+
 <section class="hero">
 
 <h1>आपकी तैयारी, हमारी जिम्मेदारी 🎓</h1>
@@ -619,6 +618,7 @@ onkeyup="searchCourse()">
 
 
 <!-- COURSES -->
+
 <div class="container">
 
 <h2 class="section-title">🔥 Premium Batches</h2>
@@ -627,6 +627,7 @@ onkeyup="searchCourse()">
 
 
 <!-- GEOGRAPHY -->
+
 <div class="card course">
 
 <div class="icon">🌎</div>
@@ -648,6 +649,7 @@ onclick="showPayment('NCERT Geography','₹49','NCERT%20Geography/index.html')">
 
 
 <!-- HISTORY -->
+
 <div class="card course">
 
 <div class="icon">🏛️</div>
@@ -669,6 +671,7 @@ onclick="showPayment('Indian History','₹49','History/index.html')">
 
 
 <!-- POLITY -->
+
 <div class="card course">
 
 <div class="icon">⚖️</div>
@@ -690,6 +693,7 @@ onclick="showPayment('Indian Polity','₹49')">
 
 
 <!-- ECONOMY -->
+
 <div class="card course">
 
 <div class="icon">💰</div>
@@ -711,6 +715,7 @@ onclick="showPayment('Indian Economy','₹49')">
 
 
 <!-- PYTHON -->
+
 <div class="card course">
 
 <div class="icon">🐍</div>
@@ -732,6 +737,7 @@ onclick="showPayment('Python Programming','₹399')">
 
 
 <!-- JAVA -->
+
 <div class="card course">
 
 <div class="icon">☕</div>
@@ -753,6 +759,7 @@ onclick="showPayment('Java Programming','₹499')">
 
 
 <!-- WEB -->
+
 <div class="card course">
 
 <div class="icon">🌐</div>
@@ -774,6 +781,7 @@ onclick="showPayment('Web Development','₹399')">
 
 
 <!-- ANDROID -->
+
 <div class="card course">
 
 <div class="icon">📱</div>
@@ -795,6 +803,7 @@ onclick="showPayment('Android Development','₹499')">
 
 
 <!-- FULL PROGRAMMING -->
+
 <div class="card course">
 
 <div class="icon">💻</div>
@@ -818,6 +827,7 @@ onclick="showPayment('Full Programming','₹599')">
 
 
 <!-- ABOUT -->
+
 <section class="about" id="about">
 
 <h2>👨‍💻 My Self — LOYAL</h2>
@@ -829,8 +839,11 @@ onclick="showPayment('Full Programming','₹599')">
 <p>Creator • Developer • Learner 🚀</p>
 
 <p><strong>Name:</strong> LOYAL</p>
+
 <p><strong>Age:</strong> 23 Years</p>
+
 <p><strong>Birthday:</strong> 8 February 🎂</p>
+
 <p><strong>Qualification:</strong> B.Com</p>
 
 <div class="skills">
@@ -871,88 +884,132 @@ onclick="showPayment('Full Programming','₹599')">
 
 
 <!-- BASIC FUNCTIONS -->
+
 <script>
 
 function openMenu(){
-document.getElementById("sideMenu").classList.add("active");
+
+    document
+    .getElementById("sideMenu")
+    .classList.add("active");
+
 }
 
 function closeMenu(){
-document.getElementById("sideMenu").classList.remove("active");
+
+    document
+    .getElementById("sideMenu")
+    .classList.remove("active");
+
 }
 
 function openLogin(){
 
-document.getElementById("loginBox").style.display="flex";
+    document
+    .getElementById("loginBox")
+    .style.display="flex";
 
-document.getElementById("loginMessage").innerText="";
+    document
+    .getElementById("loginMessage")
+    .innerText="";
 
 }
 
 function closeLogin(){
 
-document.getElementById("loginBox").style.display="none";
+    document
+    .getElementById("loginBox")
+    .style.display="none";
 
 }
 
 function showEmailLogin(){
 
-document.getElementById("emailLoginSection").classList.add("active");
-document.getElementById("phoneLoginSection").classList.remove("active");
+    document
+    .getElementById("emailLoginSection")
+    .classList.add("active");
+
+    document
+    .getElementById("phoneLoginSection")
+    .classList.remove("active");
 
 }
 
 function showPhoneLogin(){
 
-document.getElementById("emailLoginSection").classList.remove("active");
-document.getElementById("phoneLoginSection").classList.add("active");
+    document
+    .getElementById("emailLoginSection")
+    .classList.remove("active");
 
-setTimeout(setupRecaptcha,300);
+    document
+    .getElementById("phoneLoginSection")
+    .classList.add("active");
+
+    setTimeout(setupRecaptcha,300);
 
 }
 
 function searchCourse(){
 
-let input =
-document.getElementById("searchInput").value.toLowerCase();
+    let input =
+    document
+    .getElementById("searchInput")
+    .value
+    .toLowerCase();
 
-let courses =
-document.querySelectorAll(".course");
+    let courses =
+    document
+    .querySelectorAll(".course");
 
-courses.forEach(function(card){
+    courses.forEach(function(card){
 
-let text = card.innerText.toLowerCase();
+        let text =
+        card.innerText.toLowerCase();
 
-card.style.display =
-text.includes(input) ? "block" : "none";
+        card.style.display =
+        text.includes(input)
+        ? "block"
+        : "none";
 
-});
+    });
 
 }
+
+
+/* 👑 LOYAL PAYMENT / ACCESS */
 
 function showPayment(batch,price,url){
 
-if(window.isLoyal){
+    if(window.isLoyal === true){
 
-if(url){
+        if(url){
 
-window.location.href=url;
+            window.location.href=url;
 
-return;
+            return;
 
-}
+        }
 
-alert("👑 LOYAL FREE ACCESS\n\n"+batch+"\n\nFREE ACCESS ACTIVE ✅");
+        alert(
+            "👑 LOYAL ALL BATCH FREE\n\n" +
+            batch +
+            "\n\n" +
+            "✅ FREE ACCESS ACTIVE"
+        );
 
-return;
+        return;
 
-}
+    }
 
-alert(
-"🔒 "+batch+
-"\n\nPrice: "+price+
-"\n\nLogin करके payment के बाद batch unlock होगा."
-);
+
+    alert(
+        "🔒 " +
+        batch +
+        "\n\nPrice: " +
+        price +
+        "\n\n" +
+        "Login करके payment के बाद batch unlock होगा."
+    );
 
 }
 
@@ -960,65 +1017,59 @@ alert(
 
 
 <!-- FIREBASE -->
+
 <script type="module">
 
 import {
-initializeApp
+    initializeApp
 }
 from
 "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
+
 import {
-getAuth,
-signInWithEmailAndPassword,
-signOut,
-onAuthStateChanged,
-RecaptchaVerifier,
-signInWithPhoneNumber
+    getAuth,
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged,
+    RecaptchaVerifier,
+    signInWithPhoneNumber
 }
 from
 "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
-import {
-getFirestore,
-doc,
-getDoc
-}
-from
-"https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-
 
 const firebaseConfig={
 
-apiKey:
-"AIzaSyCrZcJhGbghhRia-CA5AwjnnEpq0A6Asr0",
+    apiKey:
+    "AIzaSyCrZcJhGbghhRia-CA5AwjnnEpq0A6Asr0",
 
-authDomain:
-"vishrat-36bc6.firebaseapp.com",
+    authDomain:
+    "vishrat-36bc6.firebaseapp.com",
 
-projectId:
-"vishrat-36bc6",
+    projectId:
+    "vishrat-36bc6",
 
-storageBucket:
-"vishrat-36bc6.firebasestorage.app",
+    storageBucket:
+    "vishrat-36bc6.firebasestorage.app",
 
-messagingSenderId:
-"713177652515",
+    messagingSenderId:
+    "713177652515",
 
-appId:
-"1:713177652515:web:9a6c545278563e77640096",
+    appId:
+    "1:713177652515:web:9a6c545278563e77640096",
 
-measurementId:
-"G-LN2N5Z0BBF"
+    measurementId:
+    "G-LN2N5Z0BBF"
 
 };
 
 
-const app=initializeApp(firebaseConfig);
+const app =
+initializeApp(firebaseConfig);
 
-const auth=getAuth(app);
-
-const db=getFirestore(app);
+const auth =
+getAuth(app);
 
 
 let confirmationResult=null;
@@ -1028,68 +1079,101 @@ let recaptchaVerifier=null;
 
 /* CAPTCHA */
 
-function setupRecaptcha(){
+window.setupRecaptcha=function(){
 
-if(recaptchaVerifier) return;
+    if(recaptchaVerifier) return;
 
-recaptchaVerifier =
-new RecaptchaVerifier(
-auth,
-"recaptcha-container",
-{
-size:"normal"
-}
-);
+    recaptchaVerifier =
+    new RecaptchaVerifier(
+        auth,
+        "recaptcha-container",
+        {
+            size:"normal"
+        }
+    );
 
-}
+};
 
 
 /* EMAIL LOGIN */
 
 window.loginUser=async function(){
 
-const email =
-document.getElementById("loginEmail").value.trim();
+    const email =
+    document
+    .getElementById("loginEmail")
+    .value
+    .trim();
 
-const password =
-document.getElementById("loginPassword").value;
+    const password =
+    document
+    .getElementById("loginPassword")
+    .value;
 
-const message =
-document.getElementById("loginMessage");
+    const message =
+    document
+    .getElementById("loginMessage");
 
 
-if(!email || !password){
+    if(!email || !password){
 
-message.innerText=
-"⚠️ Email और Password डालो";
+        message.innerText =
+        "⚠️ Email और Password डालो";
 
-return;
+        return;
 
-}
+    }
 
-message.innerText=
-"⏳ Login हो रहा है...";
 
-try{
+    message.innerText =
+    "⏳ Login हो रहा है...";
 
-await signInWithEmailAndPassword(
-auth,
-email,
-password
-);
 
-message.innerText=
-"✅ Login सफल हुआ 🎉";
+    try{
 
-}
-catch(error){
+        await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+        );
 
-console.error(error);
+        /*
+        👑 IMPORTANT:
+        केवल इसी email को LOYAL माना जाएगा.
+        */
 
-message.innerText=
-"❌ Login failed: "+error.message;
+        if(email === "kgsias01@gmail.com"){
 
-}
+            window.isLoyal=true;
+
+            updateBatchUI(true);
+
+            message.innerText =
+            "👑 LOYAL LOGIN सफल — ALL BATCH FREE ✅";
+
+        }
+        else{
+
+            window.isLoyal=false;
+
+            updateBatchUI(false);
+
+            message.innerText =
+            "✅ Login सफल हुआ 🎉";
+
+        }
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        window.isLoyal=false;
+
+        message.innerText =
+        "❌ Login failed";
+
+    }
 
 };
 
@@ -1098,63 +1182,73 @@ message.innerText=
 
 window.sendOTP=async function(){
 
-const phone =
-document.getElementById("phoneNumber")
-.value.trim();
+    const phone =
+    document
+    .getElementById("phoneNumber")
+    .value
+    .trim();
 
-const message =
-document.getElementById("loginMessage");
-
-
-if(!/^[0-9]{10}$/.test(phone)){
-
-message.innerText=
-"⚠️ 10 digit mobile number डालो";
-
-return;
-
-}
+    const message =
+    document
+    .getElementById("loginMessage");
 
 
-try{
+    if(!/^[0-9]{10}$/.test(phone)){
 
-setupRecaptcha();
+        message.innerText =
+        "⚠️ 10 digit mobile number डालो";
 
-message.innerText=
-"⏳ OTP भेजा जा रहा है...";
+        return;
 
-confirmationResult =
-await signInWithPhoneNumber(
-auth,
-"+91"+phone,
-recaptchaVerifier
-);
+    }
 
 
-document.getElementById("otpCode").style.display="block";
+    try{
 
-document.getElementById("verifyOtpButton").style.display="block";
+        setupRecaptcha();
 
-message.innerText=
-"✅ OTP भेज दिया गया";
+        message.innerText =
+        "⏳ OTP भेजा जा रहा है...";
 
-}
-catch(error){
 
-console.error(error);
+        confirmationResult =
+        await signInWithPhoneNumber(
+            auth,
+            "+91"+phone,
+            recaptchaVerifier
+        );
 
-message.innerText=
-"❌ OTP error: "+error.message;
 
-if(recaptchaVerifier){
+        document
+        .getElementById("otpCode")
+        .style.display="block";
 
-recaptchaVerifier.clear();
 
-recaptchaVerifier=null;
+        document
+        .getElementById("verifyOtpButton")
+        .style.display="block";
 
-}
 
-}
+        message.innerText =
+        "✅ OTP भेज दिया गया";
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        message.innerText =
+        "❌ OTP error";
+
+        if(recaptchaVerifier){
+
+            recaptchaVerifier.clear();
+
+            recaptchaVerifier=null;
+
+        }
+
+    }
 
 };
 
@@ -1163,151 +1257,225 @@ recaptchaVerifier=null;
 
 window.verifyOTP=async function(){
 
-const otp =
-document.getElementById("otpCode")
-.value.trim();
+    const otp =
+    document
+    .getElementById("otpCode")
+    .value
+    .trim();
 
-const message =
-document.getElementById("loginMessage");
+    const message =
+    document
+    .getElementById("loginMessage");
 
 
-if(!confirmationResult){
+    if(!confirmationResult){
 
-message.innerText=
-"⚠️ पहले OTP भेजो";
+        message.innerText =
+        "⚠️ पहले OTP भेजो";
 
-return;
+        return;
 
-}
+    }
 
-if(!/^[0-9]{6}$/.test(otp)){
 
-message.innerText=
-"⚠️ 6 digit OTP डालो";
+    if(!/^[0-9]{6}$/.test(otp)){
 
-return;
+        message.innerText =
+        "⚠️ 6 digit OTP डालो";
 
-}
+        return;
 
-try{
+    }
 
-await confirmationResult.confirm(otp);
 
-message.innerText=
-"✅ Mobile Login सफल 🎉";
+    try{
 
-}
-catch(error){
+        await confirmationResult.confirm(otp);
 
-console.error(error);
+        message.innerText =
+        "✅ Mobile Login सफल 🎉";
 
-message.innerText=
-"❌ गलत OTP";
+    }
+    catch(error){
 
-}
+        console.error(error);
+
+        message.innerText =
+        "❌ गलत OTP";
+
+    }
 
 };
 
 
-/* USER ACCESS */
+/* 👑 ALL BATCH FREE UI */
 
-onAuthStateChanged(auth,async(user)=>{
+window.updateBatchUI=function(isLoyal){
 
-const loginButton =
-document.getElementById("loginButton");
-
-const logoutMenu =
-document.getElementById("logoutMenu");
-
-const loyalStatus =
-document.getElementById("loyalStatus");
+    const cards =
+    document
+    .querySelectorAll(".course");
 
 
-window.isLoyal=false;
+    cards.forEach(function(card){
+
+        const lock =
+        card.querySelector(".lock");
+
+        const price =
+        card.querySelector(".price");
+
+        const button =
+        card.querySelector(".unlock");
 
 
-if(!user){
+        if(isLoyal){
 
-loginButton.innerText="🔐 Login";
+            if(lock){
 
-logoutMenu.style.display="none";
+                lock.innerText =
+                "👑 LOYAL • FREE";
 
-loyalStatus.style.display="none";
+            }
 
-return;
+            if(price){
 
-}
+                price.innerText =
+                "FREE";
+
+            }
+
+            if(button){
+
+                button.innerText =
+                "👑 Open Free Batch";
+
+            }
+
+        }
+        else{
+
+            if(lock){
+
+                lock.innerText =
+                "🔒 LOCKED • PAID";
+
+            }
+
+            if(button){
+
+                button.innerText =
+                "🔐 Unlock Batch";
+
+            }
+
+        }
+
+    });
+
+};
 
 
-loginButton.innerText="👑 Logged In";
+/* USER LOGIN STATE */
 
-logoutMenu.style.display="block";
+onAuthStateChanged(
+    auth,
+    async(user)=>{
+
+        const loginButton =
+        document
+        .getElementById("loginButton");
+
+        const logoutMenu =
+        document
+        .getElementById("logoutMenu");
+
+        const loyalStatus =
+        document
+        .getElementById("loyalStatus");
 
 
-/*
-IMPORTANT:
-LOYAL FREE ACCESS Firestore se check hoga.
-*/
+        window.isLoyal=false;
 
-try{
 
-const loyalDoc =
-await getDoc(
-doc(db,"users","Loyal")
+        if(!user){
+
+            loginButton.innerText =
+            "🔐 Login";
+
+            logoutMenu.style.display =
+            "none";
+
+            loyalStatus.style.display =
+            "none";
+
+            updateBatchUI(false);
+
+            return;
+
+        }
+
+
+        loginButton.innerText =
+        "👑 LOYAL";
+
+        logoutMenu.style.display =
+        "block";
+
+
+        /*
+        👑 LOYAL ACCOUNT
+        */
+
+        if(user.email === "kgsias01@gmail.com"){
+
+            window.isLoyal=true;
+
+            loyalStatus.style.display =
+            "block";
+
+            updateBatchUI(true);
+
+            console.log(
+                "👑 LOYAL ALL BATCH FREE"
+            );
+
+        }
+        else{
+
+            window.isLoyal=false;
+
+            loyalStatus.style.display =
+            "none";
+
+            updateBatchUI(false);
+
+        }
+
+    }
 );
-
-
-if(loyalDoc.exists()){
-
-const data=loyalDoc.data();
-
-
-if(
-data.freeAccess===true &&
-user.email==="kgsias01@gmail.com"
-){
-
-window.isLoyal=true;
-
-loyalStatus.style.display="block";
-
-}
-
-}
-
-}
-catch(error){
-
-console.error(
-"Access check failed:",
-error
-);
-
-}
-
-});
 
 
 /* LOGOUT */
 
 window.logoutUser=async function(){
 
-try{
+    try{
 
-await signOut(auth);
+        await signOut(auth);
 
-window.isLoyal=false;
+        window.isLoyal=false;
 
-alert("✅ Logout हो गया");
+        alert("✅ Logout हो गया");
 
-location.reload();
+        location.reload();
 
-}
-catch(error){
+    }
+    catch(error){
 
-console.error(error);
+        console.error(error);
 
-}
+    }
 
 };
 
