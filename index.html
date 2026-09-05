@@ -3,432 +3,297 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Vishrat - Online Learning</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
 
 body{
-font-family:Arial,sans-serif;
-background:
-radial-gradient(circle at 10% 10%,rgba(0,234,255,.13),transparent 30%),
-radial-gradient(circle at 90% 25%,rgba(150,0,255,.13),transparent 30%),
-linear-gradient(135deg,#030712,#08152d,#030814);
-color:#fff;
-min-height:100vh;
+    background:#050816;
+    color:white;
+    overflow-x:hidden;
 }
 
 header{
-position:sticky;
-top:0;
-z-index:100;
-height:70px;
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:10px 18px;
-background:rgba(3,8,22,.92);
-backdrop-filter:blur(18px);
-border-bottom:1px solid rgba(0,234,255,.25);
+    height:70px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 20px;
+    background:rgba(10,15,35,.95);
+    border-bottom:1px solid #26345f;
+    position:sticky;
+    top:0;
+    z-index:1000;
 }
 
-.logo{
-display:flex;
-align-items:center;
-gap:10px;
-font-size:25px;
-font-weight:bold;
+.logo-box{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:22px;
+    font-weight:bold;
 }
 
-.logo img{
-width:45px;
-height:45px;
-border-radius:50%;
-object-fit:cover;
-box-shadow:0 0 15px #00eaff,0 0 30px rgba(0,234,255,.35);
+.logo-box img{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    object-fit:cover;
 }
 
-.menuBtn{
-border:0;
-width:50px;
-height:45px;
-border-radius:14px;
-background:linear-gradient(135deg,#087cff,#00d9ff);
-color:#fff;
-font-size:25px;
-cursor:pointer;
-box-shadow:0 0 20px rgba(0,234,255,.35);
+.menu-btn{
+    font-size:28px;
+    cursor:pointer;
+    color:#00eaff;
 }
 
+/* SIDE MENU */
+.side-menu{
+    position:fixed;
+    top:0;
+    right:-300px;
+    width:290px;
+    height:100%;
+    background:#080d22;
+    border-left:1px solid #26345f;
+    z-index:2000;
+    padding:25px 20px;
+    transition:.4s;
+    overflow-y:auto;
+}
+
+.side-menu.active{
+    right:0;
+}
+
+.close-btn{
+    text-align:right;
+    font-size:30px;
+    color:#ff416c;
+    cursor:pointer;
+}
+
+.side-menu h2{
+    color:#00eaff;
+    margin:15px 0 20px;
+}
+
+.side-menu a{
+    display:block;
+    padding:14px;
+    margin:8px 0;
+    border-radius:12px;
+    background:#101936;
+    color:white;
+    text-decoration:none;
+}
+
+.side-menu a:hover{
+    background:#17285a;
+    transform:translateX(-5px);
+}
+
+.paid{
+    float:right;
+    color:#ffcc00;
+    font-size:12px;
+}
+
+/* HERO */
 .hero{
-text-align:center;
-padding:65px 18px 40px;
+    text-align:center;
+    padding:70px 20px 50px;
+    background:
+    radial-gradient(circle at top,#172c65,#050816 65%);
 }
 
 .hero h1{
-font-size:38px;
-line-height:1.25;
-background:linear-gradient(90deg,#00eaff,#8b5cff,#ff00c8,#00eaff);
-background-size:300%;
--webkit-background-clip:text;
-color:transparent;
-animation:gradient 5s linear infinite;
-}
-
-@keyframes gradient{
-0%{background-position:0}
-100%{background-position:300%}
+    font-size:42px;
+    margin-bottom:15px;
+    background:linear-gradient(90deg,#00eaff,#7c4dff,#ff4ecd);
+    -webkit-background-clip:text;
+    color:transparent;
 }
 
 .hero p{
-margin-top:15px;
-font-size:17px;
-color:#b8c7e5;
+    color:#b9c3df;
+    font-size:17px;
 }
 
 .search{
-max-width:580px;
-margin:28px auto 0;
+    margin:25px auto;
+    max-width:550px;
 }
 
 .search input{
-width:100%;
-padding:16px 20px;
-border-radius:30px;
-border:1px solid rgba(0,234,255,.55);
-background:rgba(5,15,38,.8);
-color:#fff;
-outline:none;
-font-size:15px;
+    width:100%;
+    padding:15px 20px;
+    border-radius:30px;
+    border:1px solid #334577;
+    outline:none;
+    background:#0b1230;
+    color:white;
+    font-size:16px;
 }
 
-.chips{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:8px;
-padding:0 15px 25px;
+/* COURSES */
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:30px 20px;
 }
 
-.chip{
-padding:9px 14px;
-border-radius:25px;
-background:rgba(255,255,255,.05);
-border:1px solid rgba(255,255,255,.08);
-color:#cceeff;
-font-size:12px;
+.section-title{
+    font-size:28px;
+    margin-bottom:25px;
+    color:#00eaff;
 }
 
-.section{
-max-width:1150px;
-margin:auto;
-padding:25px 18px;
-}
-
-.section h2{
-text-align:center;
-font-size:28px;
-margin-bottom:25px;
-}
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(245px,1fr));
-gap:20px;
+.courses{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
 }
 
 .card{
-position:relative;
-overflow:hidden;
-min-height:300px;
-padding:25px 20px;
-border-radius:22px;
-background:linear-gradient(145deg,rgba(18,31,65,.96),rgba(7,14,32,.96));
-border:1px solid rgba(0,234,255,.2);
-box-shadow:0 12px 35px rgba(0,0,0,.35);
-transition:.35s;
+    background:linear-gradient(145deg,#101936,#080d20);
+    border:1px solid #26345f;
+    border-radius:20px;
+    padding:25px;
+    transition:.3s;
+    position:relative;
+    overflow:hidden;
 }
 
 .card:hover{
-transform:translateY(-7px);
-border-color:#00eaff;
-box-shadow:0 0 28px rgba(0,234,255,.18);
+    transform:translateY(-7px);
+    border-color:#00eaff;
+    box-shadow:0 0 25px rgba(0,234,255,.15);
 }
 
 .card .icon{
-font-size:45px;
-margin-bottom:15px;
+    font-size:42px;
+    margin-bottom:15px;
 }
 
 .card h3{
-font-size:21px;
-margin-bottom:10px;
+    font-size:21px;
+    margin-bottom:10px;
 }
 
 .card p{
-color:#aebddd;
-font-size:14px;
-line-height:1.55;
+    color:#9da9c9;
+    font-size:14px;
+    min-height:40px;
 }
 
 .lock{
-display:inline-flex;
-align-items:center;
-gap:6px;
-margin-top:16px;
-padding:8px 13px;
-border-radius:20px;
-background:linear-gradient(90deg,#ff1744,#ff6d00);
-font-size:11px;
-font-weight:bold;
-box-shadow:0 0 15px rgba(255,23,68,.25);
+    display:inline-block;
+    margin-top:15px;
+    padding:7px 10px;
+    border-radius:8px;
+    background:#261c05;
+    color:#ffd000;
+    font-size:12px;
+    border:1px solid #765f00;
 }
 
-.card button{
-width:100%;
-margin-top:16px;
-padding:13px;
-border:0;
-border-radius:12px;
-background:linear-gradient(90deg,#30384d,#151c2d);
-color:#aeb8ce;
-font-weight:bold;
-cursor:pointer;
+.price{
+    font-size:27px;
+    font-weight:bold;
+    color:#00ffb3;
+    margin:15px 0;
 }
 
-.card button:hover{
-background:linear-gradient(90deg,#3b465e,#202a40);
+.unlock{
+    width:100%;
+    padding:13px;
+    border:0;
+    border-radius:12px;
+    background:linear-gradient(90deg,#00bcd4,#7c4dff);
+    color:white;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
 }
 
-/* MY SELF */
+.unlock:hover{
+    transform:scale(1.03);
+}
+
+/* ABOUT */
 .about{
-max-width:1000px;
-margin:55px auto;
-padding:30px 18px;
-border-radius:30px;
-background:
-radial-gradient(circle at 50% 0%,rgba(0,234,255,.11),transparent 35%),
-linear-gradient(145deg,rgba(14,27,58,.97),rgba(5,11,28,.97));
-border:1px solid rgba(0,234,255,.3);
-box-shadow:0 0 40px rgba(0,234,255,.12);
+    margin-top:60px;
+    padding:30px;
+    background:#0b1230;
+    border:1px solid #26345f;
+    border-radius:22px;
+    text-align:center;
 }
 
-.about-heading{
-display:flex;
-align-items:center;
-justify-content:center;
-gap:12px;
-margin-bottom:25px;
+.about img{
+    width:130px;
+    height:130px;
+    border-radius:50%;
+    object-fit:cover;
+    border:3px solid #00eaff;
+    margin:15px;
 }
 
-.about-heading h2{
-font-size:25px;
+.about h2{
+    color:#00eaff;
 }
 
-.about-heading span{
-background:linear-gradient(90deg,#00eaff,#8b5cff,#ff00c8);
--webkit-background-clip:text;
-color:transparent;
-}
-
-.about-line{
-width:40px;
-height:2px;
-background:linear-gradient(90deg,#00eaff,#ff00c8);
-}
-
-.loyal-profile{
-text-align:center;
-padding:30px 15px;
-}
-
-.loyal-photo{
-width:170px;
-height:170px;
-margin:auto;
-padding:5px;
-border-radius:50%;
-background:linear-gradient(135deg,#00eaff,#7b2cff,#ff00c8,#00eaff);
-background-size:300%;
-animation:borderMove 4s linear infinite;
-box-shadow:0 0 20px #00eaff,0 0 45px rgba(150,0,255,.45);
-}
-
-@keyframes borderMove{
-0%{background-position:0}
-100%{background-position:300%}
-}
-
-.loyal-photo img{
-width:100%;
-height:100%;
-display:block;
-object-fit:cover;
-border-radius:50%;
-border:4px solid #061027;
-}
-
-.loyal-profile h1{
-margin-top:22px;
-font-size:38px;
-letter-spacing:6px;
-background:linear-gradient(90deg,#00eaff,#8b5cff,#ff00c8,#00eaff);
-background-size:300%;
--webkit-background-clip:text;
-color:transparent;
-animation:gradient 4s linear infinite;
-}
-
-.loyal-role{
-margin-top:8px;
-color:#b9c8e8;
-}
-
-.about-info{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:13px;
-margin-top:20px;
-}
-
-.info-box{
-padding:18px;
-border-radius:18px;
-background:rgba(255,255,255,.045);
-border:1px solid rgba(255,255,255,.08);
-}
-
-.info-box b{
-display:block;
-margin-top:7px;
-color:#00eaff;
-}
-
-.info-box p{
-margin-top:5px;
-color:#d7def0;
-}
-
-.skills-title{
-margin:30px 0 15px;
+.about p{
+    color:#aeb9d8;
+    margin:8px;
 }
 
 .skills{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:9px;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:8px;
+    margin-top:20px;
 }
 
-.skills span{
-padding:9px 13px;
-border-radius:25px;
-background:rgba(0,234,255,.07);
-border:1px solid rgba(0,234,255,.18);
-color:#d9f8ff;
-font-size:12px;
+.skill{
+    padding:8px 13px;
+    background:#111c40;
+    border-radius:20px;
+    color:#d9e1ff;
+    font-size:13px;
 }
 
-.loyal-quote{
-margin-top:25px;
-padding:18px;
-text-align:center;
-border-left:3px solid #00eaff;
-border-radius:12px;
-background:rgba(0,234,255,.05);
-color:#cbd8ef;
-font-style:italic;
-}
-
+/* FOOTER */
 footer{
-text-align:center;
-padding:30px 15px;
-margin-top:40px;
-background:#050a19;
-border-top:1px solid rgba(0,234,255,.18);
-color:#9aaaca;
-line-height:1.8;
+    text-align:center;
+    padding:30px 20px;
+    margin-top:50px;
+    border-top:1px solid #26345f;
+    color:#8894b7;
 }
 
 footer strong{
-color:#00eaff;
-font-size:21px;
+    color:#00eaff;
 }
 
-/* MENU */
-.overlay{
-position:fixed;
-inset:0;
-z-index:200;
-background:rgba(0,0,0,.72);
-backdrop-filter:blur(4px);
-opacity:0;
-visibility:hidden;
-transition:.3s;
-}
-
-.overlay.active{
-opacity:1;
-visibility:visible;
-}
-
-.sideMenu{
-position:fixed;
-top:0;
-right:-330px;
-z-index:201;
-width:310px;
-height:100vh;
-padding:24px 20px;
-overflow-y:auto;
-background:linear-gradient(180deg,#071126,#0b1733,#040914);
-border-left:1px solid #00eaff;
-box-shadow:-10px 0 40px rgba(0,234,255,.22);
-transition:.45s;
-}
-
-.sideMenu.active{
-right:0;
-}
-
-.close{
-text-align:right;
-font-size:30px;
-cursor:pointer;
-margin-bottom:20px;
-}
-
-.sideMenu h2{
-color:#00eaff;
-margin-bottom:20px;
-}
-
-.menuItem{
-display:block;
-padding:14px 13px;
-margin:9px 0;
-color:#fff;
-text-decoration:none;
-border-radius:13px;
-background:rgba(255,255,255,.045);
-border:1px solid rgba(255,255,255,.07);
-}
-
-.menuPaid{
-float:right;
-color:#ff6f9a;
-font-size:10px;
-font-weight:bold;
-}
-
+/* MOBILE */
 @media(max-width:600px){
-.hero h1{font-size:30px}
-.grid{grid-template-columns:1fr}
-.about-info{grid-template-columns:1fr 1fr}
-.loyal-photo{width:150px;height:150px}
-.loyal-profile h1{font-size:31px}
-.sideMenu{width:290px}
+    .hero h1{
+        font-size:32px;
+    }
+
+    .container{
+        padding:25px 15px;
+    }
 }
 </style>
 </head>
@@ -436,416 +301,437 @@ font-weight:bold;
 <body>
 
 <header>
-<div class="logo">
-<img src="logo.png" alt="Vishrat">
-<span>Vishrat</span>
-</div>
+    <div class="logo-box">
+        <img src="logo.png" alt="Vishrat Logo">
+        <span>Vishrat</span>
+    </div>
 
-<button class="menuBtn" onclick="openMenu()">☰</button>
+    <div class="menu-btn" onclick="openMenu()">☰</div>
 </header>
 
+<!-- SIDE MENU -->
+<div class="side-menu" id="sideMenu">
 
-<div class="overlay" id="overlay" onclick="closeMenu()"></div>
+    <div class="close-btn" onclick="closeMenu()">✕</div>
 
-<div class="sideMenu" id="sideMenu">
+    <h2>☰ Menu</h2>
 
-<div class="close" onclick="closeMenu()">✕</div>
+    <a href="index.html">🏠 Home</a>
 
-<h2>📚 Vishrat Menu</h2>
+    <a href="NCERT%20Geography/index.html">
+        🌎 NCERT Geography
+        <span class="paid">PAID</span>
+    </a>
 
-<a class="menuItem" href="index.html">🏠 Home</a>
+    <a href="History/index.html">
+        🏛️ Indian History
+        <span class="paid">PAID</span>
+    </a>
 
-<a class="menuItem" href="NCERT%20Geography/index.html">
-🌎 NCERT Geography
-<span class="menuPaid">🔒 PAID</span>
-</a>
+    <a href="#">
+        ⚖️ Indian Polity
+        <span class="paid">PAID</span>
+    </a>
 
-<a class="menuItem" href="History/index.html">
-🏛️ Indian History
-<span class="menuPaid">🔒 PAID</span>
-</a>
+    <a href="#">
+        💰 Indian Economy
+        <span class="paid">PAID</span>
+    </a>
 
-<a class="menuItem" href="#">
-⚖️ Indian Polity
-<span class="menuPaid">🔒 PAID</span>
-</a>
+    <a href="#">
+        🐍 Python Programming
+        <span class="paid">PAID</span>
+    </a>
 
-<a class="menuItem" href="#">
-💰 Indian Economy
-<span class="menuPaid">🔒 PAID</span>
-</a>
+    <a href="#">
+        ☕ Java Programming
+        <span class="paid">PAID</span>
+    </a>
 
-<a class="menuItem" href="#">
-🐍 Python Programming
-<span class="menuPaid">🔒 PAID</span>
-</a>
+    <a href="#">
+        🌐 Web Development
+        <span class="paid">PAID</span>
+    </a>
 
-<a class="menuItem" href="#">
-☕ Java Programming
-<span class="menuPaid">🔒 PAID</span>
-</a>
+    <a href="#">
+        📱 Android Development
+        <span class="paid">PAID</span>
+    </a>
 
-<a class="menuItem" href="#">
-🌐 Web Development
-<span class="menuPaid">🔒 PAID</span>
-</a>
+    <a href="#">
+        💻 Full Programming
+        <span class="paid">PAID</span>
+    </a>
 
-<a class="menuItem" href="#">
-🤖 Android Development
-<span class="menuPaid">🔒 PAID</span>
-</a>
-
-<a class="menuItem" href="#">
-💻 Full Programming
-<span class="menuPaid">🔒 PAID</span>
-</a>
-
-<a class="menuItem" href="#about">
-👨‍💻 My Self — LOYAL
-</a>
+    <a href="#about">👨‍💻 My Self</a>
 
 </div>
 
-
+<!-- HERO -->
 <section class="hero">
 
-<h1>आपकी तैयारी, हमारी जिम्मेदारी 🎓</h1>
+    <h1>आपकी तैयारी, हमारी जिम्मेदारी 🎓</h1>
 
-<p>Learn • Practice • Grow • Achieve 🚀</p>
+    <p>
+        Vishrat — Learn • Practice • Grow 🚀
+    </p>
 
-<div class="search">
-<input
-id="searchBox"
-type="text"
-placeholder="🔎 Course search करें..."
-onkeyup="searchCourse()">
-</div>
+    <div class="search">
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="🔍 Search Batch..."
+            onkeyup="searchCourse()">
+    </div>
 
 </section>
 
+<!-- COURSES -->
+<div class="container">
 
-<div class="chips">
-<div class="chip">📚 All Courses</div>
-<div class="chip">🌎 Geography</div>
-<div class="chip">🏛️ History</div>
-<div class="chip">⚖️ Polity</div>
-<div class="chip">💰 Economy</div>
-<div class="chip">💻 Programming</div>
+    <h2 class="section-title">🔥 Premium Batches</h2>
+
+    <div class="courses" id="courseList">
+
+        <!-- GEOGRAPHY -->
+        <div class="card course">
+
+            <div class="icon">🌎</div>
+
+            <h3>NCERT Geography</h3>
+
+            <p>
+                NCERT Geography का complete lecture batch.
+            </p>
+
+            <span class="lock">
+                🔒 LOCKED • PAID
+            </span>
+
+            <div class="price">₹49</div>
+
+            <button class="unlock"
+                onclick="showPayment('NCERT Geography','₹49')">
+                🔐 Unlock Batch
+            </button>
+
+        </div>
+
+
+        <!-- HISTORY -->
+        <div class="card course">
+
+            <div class="icon">🏛️</div>
+
+            <h3>Indian History</h3>
+
+            <p>
+                Indian History का complete preparation batch.
+            </p>
+
+            <span class="lock">
+                🔒 LOCKED • PAID
+            </span>
+
+            <div class="price">₹49</div>
+
+            <button class="unlock"
+                onclick="showPayment('Indian History','₹49')">
+                🔐 Unlock Batch
+            </button>
+
+        </div>
+
+
+        <!-- POLITY -->
+        <div class="card course">
+
+            <div class="icon">⚖️</div>
+
+            <h3>Indian Polity</h3>
+
+            <p>
+                Indian Polity complete premium batch.
+            </p>
+
+            <span class="lock">
+                🔒 LOCKED • PAID
+            </span>
+
+            <div class="price">₹49</div>
+
+            <button class="unlock"
+                onclick="showPayment('Indian Polity','₹49')">
+                🔐 Unlock Batch
+            </button>
+
+        </div>
+
+
+        <!-- ECONOMY -->
+        <div class="card course">
+
+            <div class="icon">💰</div>
+
+            <h3>Indian Economy</h3>
+
+            <p>
+                Indian Economy complete premium batch.
+            </p>
+
+            <span class="lock">
+                🔒 LOCKED • PAID
+            </span>
+
+            <div class="price">₹49</div>
+
+            <button class="unlock"
+                onclick="showPayment('Indian Economy','₹49')">
+                🔐 Unlock Batch
+            </button>
+
+        </div>
+
+
+        <!-- PYTHON -->
+        <div class="card course">
+
+            <div class="icon">🐍</div>
+
+            <h3>Python Programming</h3>
+
+            <p>
+                Python programming from beginner to advanced.
+            </p>
+
+            <span class="lock">
+                🔒 LOCKED • PAID
+            </span>
+
+            <div class="price">₹399</div>
+
+            <button class="unlock"
+                onclick="showPayment('Python Programming','₹399')">
+                🔐 Unlock Batch
+            </button>
+
+        </div>
+
+
+        <!-- JAVA -->
+        <div class="card course">
+
+            <div class="icon">☕</div>
+
+            <h3>Java Programming</h3>
+
+            <p>
+                Java programming complete premium course.
+            </p>
+
+            <span class="lock">
+                🔒 LOCKED • PAID
+            </span>
+
+            <div class="price">₹499</div>
+
+            <button class="unlock"
+                onclick="showPayment('Java Programming','₹499')">
+                🔐 Unlock Batch
+            </button>
+
+        </div>
+
+
+        <!-- WEB -->
+        <div class="card course">
+
+            <div class="icon">🌐</div>
+
+            <h3>Web Development</h3>
+
+            <p>
+                HTML, CSS, JavaScript और Web Development.
+            </p>
+
+            <span class="lock">
+                🔒 LOCKED • PAID
+            </span>
+
+            <div class="price">₹399</div>
+
+            <button class="unlock"
+                onclick="showPayment('Web Development','₹399')">
+                🔐 Unlock Batch
+            </button>
+
+        </div>
+
+
+        <!-- ANDROID -->
+        <div class="card course">
+
+            <div class="icon">📱</div>
+
+            <h3>Android Development</h3>
+
+            <p>
+                Android app development complete batch.
+            </p>
+
+            <span class="lock">
+                🔒 LOCKED • PAID
+            </span>
+
+            <div class="price">₹499</div>
+
+            <button class="unlock"
+                onclick="showPayment('Android Development','₹499')">
+                🔐 Unlock Batch
+            </button>
+
+        </div>
+
+
+        <!-- FULL PROGRAMMING -->
+        <div class="card course">
+
+            <div class="icon">💻</div>
+
+            <h3>Full Programming</h3>
+
+            <p>
+                Programming का complete premium package.
+            </p>
+
+            <span class="lock">
+                🔒 LOCKED • PAID
+            </span>
+
+            <div class="price">₹599</div>
+
+            <button class="unlock"
+                onclick="showPayment('Full Programming','₹599')">
+                🔐 Unlock Batch
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ABOUT -->
+    <section class="about" id="about">
+
+        <h2>👨‍💻 My Self — LOYAL</h2>
+
+        <img src="loyal.png" alt="LOYAL Hacker Profile">
+
+        <h3>LOYAL</h3>
+
+        <p>Creator • Developer • Learner 🚀</p>
+
+        <p><strong>Name:</strong> LOYAL</p>
+        <p><strong>Age:</strong> 23 Years</p>
+        <p><strong>Birthday:</strong> 8 February 🎂</p>
+        <p><strong>Qualification:</strong> B.Com</p>
+
+        <div class="skills">
+
+            <span class="skill">Python</span>
+            <span class="skill">Java</span>
+            <span class="skill">HTML</span>
+            <span class="skill">CSS</span>
+            <span class="skill">JavaScript</span>
+            <span class="skill">SQL</span>
+            <span class="skill">Git</span>
+            <span class="skill">GitHub</span>
+            <span class="skill">Android</span>
+            <span class="skill">Web Development</span>
+            <span class="skill">Programming</span>
+            <span class="skill">Software Development</span>
+
+        </div>
+
+        <p style="margin-top:20px;">
+            “Dream big, learn every day and keep moving forward. 🚀”
+        </p>
+
+    </section>
+
 </div>
-
-
-<section class="section">
-
-<h2>🔐 Premium Paid Batches</h2>
-
-<div class="grid" id="courses">
-
-
-<div class="card">
-
-<div class="icon">🌎</div>
-
-<h3>NCERT Geography</h3>
-
-<p>
-NCERT based Geography complete learning
-batch with lectures and study material.
-</p>
-
-<span class="lock">🔒 LOCKED • PAID</span>
-
-<button onclick="showPayment()">
-🔐 Unlock Batch
-</button>
-
-</div>
-
-
-<div class="card">
-
-<div class="icon">🏛️</div>
-
-<h3>Indian History</h3>
-
-<p>
-Ancient, Medieval और Modern History
-complete preparation batch.
-</p>
-
-<span class="lock">🔒 LOCKED • PAID</span>
-
-<button onclick="showPayment()">
-🔐 Unlock Batch
-</button>
-
-</div>
-
-
-<div class="card">
-
-<div class="icon">⚖️</div>
-
-<h3>Indian Polity</h3>
-
-<p>
-Constitution, Parliament, Governance
-और Polity preparation.
-</p>
-
-<span class="lock">🔒 LOCKED • PAID</span>
-
-<button onclick="showPayment()">
-🔐 Unlock Batch
-</button>
-
-</div>
-
-
-<div class="card">
-
-<div class="icon">💰</div>
-
-<h3>Indian Economy</h3>
-
-<p>
-Economy concepts और competitive exam
-preparation का complete batch.
-</p>
-
-<span class="lock">🔒 LOCKED • PAID</span>
-
-<button onclick="showPayment()">
-🔐 Unlock Batch
-</button>
-
-</div>
-
-
-<div class="card">
-
-<div class="icon">🐍</div>
-
-<h3>Python Programming</h3>
-
-<p>
-Basic से Advanced तक Python Programming
-complete course.
-</p>
-
-<span class="lock">🔒 LOCKED • PAID</span>
-
-<button onclick="showPayment()">
-🔐 Unlock Batch
-</button>
-
-</div>
-
-
-<div class="card">
-
-<div class="icon">☕</div>
-
-<h3>Java Programming</h3>
-
-<p>
-Core Java से Advanced Java तक
-programming concepts.
-</p>
-
-<span class="lock">🔒 LOCKED • PAID</span>
-
-<button onclick="showPayment()">
-🔐 Unlock Batch
-</button>
-
-</div>
-
-
-<div class="card">
-
-<div class="icon">🌐</div>
-
-<h3>Web Development</h3>
-
-<p>
-HTML, CSS, JavaScript और modern
-Web Development complete course.
-</p>
-
-<span class="lock">🔒 LOCKED • PAID</span>
-
-<button onclick="showPayment()">
-🔐 Unlock Batch
-</button>
-
-</div>
-
-
-<div class="card">
-
-<div class="icon">🤖</div>
-
-<h3>Android Development</h3>
-
-<p>
-Android apps बनाना step-by-step
-सीखें और projects बनाएं.
-</p>
-
-<span class="lock">🔒 LOCKED • PAID</span>
-
-<button onclick="showPayment()">
-🔐 Unlock Batch
-</button>
-
-</div>
-
-
-<div class="card">
-
-<div class="icon">💻</div>
-
-<h3>Full Programming Course</h3>
-
-<p>
-Programming और Software Development
-का complete professional batch.
-</p>
-
-<span class="lock">🔒 LOCKED • PAID</span>
-
-<button onclick="showPayment()">
-🔐 Unlock Batch
-</button>
-
-</div>
-
-</div>
-</section>
-
-
-<section class="about" id="about">
-
-<div class="about-heading">
-
-<span class="about-line"></span>
-
-<h2>👨‍💻 My Self — <span>LOYAL</span></h2>
-
-<span class="about-line"></span>
-
-</div>
-
-<div class="loyal-profile">
-
-<div class="loyal-photo">
-<img src="loyal.png" alt="LOYAL Hacker Profile">
-</div>
-
-<h1>LOYAL</h1>
-
-<p class="loyal-role">
-Creator • Developer • Learner 🚀
-</p>
-
-</div>
-
-<div class="about-info">
-
-<div class="info-box">
-<span>👤</span>
-<b>Name</b>
-<p>LOYAL</p>
-</div>
-
-<div class="info-box">
-<span>🎂</span>
-<b>Age</b>
-<p>23 Years</p>
-</div>
-
-<div class="info-box">
-<span>🎉</span>
-<b>Birthday</b>
-<p>8 February</p>
-</div>
-
-<div class="info-box">
-<span>🎓</span>
-<b>Qualification</b>
-<p>B.Com</p>
-</div>
-
-</div>
-
-<h3 class="skills-title">💻 My Skills</h3>
-
-<div class="skills">
-<span>🐍 Python</span>
-<span>☕ Java</span>
-<span>🌐 HTML</span>
-<span>🎨 CSS</span>
-<span>⚡ JavaScript</span>
-<span>🗄️ SQL</span>
-<span>🔧 Git</span>
-<span>🐙 GitHub</span>
-<span>📱 Android</span>
-<span>💻 Web Development</span>
-<span>🤖 Programming</span>
-<span>🛠️ Software Development</span>
-</div>
-
-<div class="loyal-quote">
-“Dream big, learn every day and keep moving forward.” 🚀
-</div>
-
-</section>
 
 
 <footer>
-<strong>Vishrat</strong>
-<br>
-Made with ❤️ by LOYAL
-<br>
-© 2026 Vishrat • All Rights Reserved
+
+    <strong>Vishrat</strong>
+
+    <p>Made with ❤️ by LOYAL</p>
+
+    <p>© 2026 Vishrat • All Rights Reserved</p>
+
 </footer>
 
 
 <script>
 
 function openMenu(){
-document.getElementById("sideMenu").classList.add("active");
-document.getElementById("overlay").classList.add("active");
+
+    document
+    .getElementById("sideMenu")
+    .classList.add("active");
+
 }
 
 function closeMenu(){
-document.getElementById("sideMenu").classList.remove("active");
-document.getElementById("overlay").classList.remove("active");
+
+    document
+    .getElementById("sideMenu")
+    .classList.remove("active");
+
 }
+
+
+function showPayment(batch,price){
+
+    alert(
+        "🔒 " + batch +
+        "\\n\\n💰 Price: " + price +
+        "\\n\\n🔐 यह Batch अभी Locked है." +
+        "\\n\\n💳 Payment करके Batch Unlock करें." +
+        "\\n\\nRazorpay payment system जल्द जोड़ा जाएगा."
+    );
+
+}
+
 
 function searchCourse(){
 
-let input=document.getElementById("searchBox").value.toLowerCase();
+    let input =
+        document
+        .getElementById("searchInput")
+        .value
+        .toLowerCase();
 
-let cards=document.querySelectorAll(".card");
+    let courses =
+        document.querySelectorAll(".course");
 
-cards.forEach(function(card){
+    courses.forEach(function(card){
 
-card.style.display=
-card.innerText.toLowerCase().includes(input)
-?"block":"none";
+        let text =
+            card.innerText.toLowerCase();
 
-});
+        if(text.includes(input)){
 
-}
+            card.style.display="block";
 
-function showPayment(){
+        }else{
 
-alert(
-"🔒 यह Batch अभी Locked है।\n\n" +
-"💳 Payment करके Batch Unlock करें.\n\n" +
-"Razorpay payment system जल्द जोड़ा जाएगा."
-);
+            card.style.display="none";
+
+        }
+
+    });
 
 }
 
