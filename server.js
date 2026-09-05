@@ -24,7 +24,34 @@ app.use((req, res, next) => {
   );
   next();
 });
+// CORS
+const ALLOWED_ORIGINS = new Set([
+  "https://kgsias01-source.github.io",
+  "https://http-vishrat.com.in"
+]);
 
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+
+  if (origin && ALLOWED_ORIGINS.has(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Vary", "Origin");
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "Authorization, Content-Type"
+    );
+    res.setHeader(
+      "Access-Control-Allow-Methods",
+      "GET, POST, OPTIONS"
+    );
+  }
+
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(204);
+  }
+
+  next();
+});
 // ===============================
 // RATE LIMITER
 // ===============================
