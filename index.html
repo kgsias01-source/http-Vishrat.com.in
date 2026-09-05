@@ -1,1 +1,2309 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Vishrat - Online Learning</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#050816;
+    color:white;
+    overflow-x:hidden;
+}
+
+header{
+    height:70px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 20px;
+    background:rgba(10,15,35,.95);
+    border-bottom:1px solid #26345f;
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.logo-box{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:22px;
+    font-weight:bold;
+}
+
+.logo-box img{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    object-fit:cover;
+}
+
+.header-right{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.login-btn{
+    padding:9px 14px;
+    border:1px solid #00eaff;
+    border-radius:10px;
+    background:#101936;
+    color:#00eaff;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.menu-btn{
+    font-size:28px;
+    cursor:pointer;
+    color:#00eaff;
+}
+
+.side-menu{
+    position:fixed;
+    top:0;
+    right:-300px;
+    width:290px;
+    height:100%;
+    background:#080d22;
+    border-left:1px solid #26345f;
+    z-index:2000;
+    padding:25px 20px;
+    transition:.4s;
+    overflow-y:auto;
+}
+
+.side-menu.active{
+    right:0;
+}
+
+.close-btn{
+    text-align:right;
+    font-size:30px;
+    color:#ff416c;
+    cursor:pointer;
+}
+
+.side-menu h2{
+    color:#00eaff;
+    margin:15px 0 20px;
+}
+
+.side-menu a{
+    display:block;
+    padding:14px;
+    margin:8px 0;
+    border-radius:12px;
+    background:#101936;
+    color:white;
+    text-decoration:none;
+}
+
+.paid{
+    float:right;
+    color:#ffcc00;
+    font-size:12px;
+}
+
+.loyal-menu{
+    display:none;
+    padding:14px;
+    margin:8px 0;
+    border-radius:12px;
+    background:#102d2b;
+    border:1px solid #00ffb3;
+    color:#00ffb3;
+    font-weight:bold;
+    text-align:center;
+}
+
+#loginBox{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.88);
+    z-index:5000;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.login-card{
+    width:100%;
+    max-width:400px;
+    background:#0b1230;
+    border:1px solid #26345f;
+    border-radius:22px;
+    padding:25px;
+    box-shadow:0 0 35px rgba(0,234,255,.20);
+}
+
+.login-card h2{
+    color:#00eaff;
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.login-input{
+    width:100%;
+    padding:14px;
+    margin-bottom:12px;
+    border-radius:10px;
+    border:1px solid #334577;
+    background:#101936;
+    color:white;
+    font-size:15px;
+    outline:none;
+}
+
+.login-submit,
+.otp-btn{
+    width:100%;
+    padding:14px;
+    border:0;
+    border-radius:12px;
+    background:linear-gradient(90deg,#00bcd4,#7c4dff);
+    color:white;
+    font-weight:bold;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.login-close{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    border:1px solid #334577;
+    border-radius:12px;
+    background:#101936;
+    color:white;
+    cursor:pointer;
+}
+
+.login-switch{
+    width:100%;
+    padding:10px;
+    margin-top:12px;
+    border:1px solid #00eaff;
+    border-radius:10px;
+    background:transparent;
+    color:#00eaff;
+    cursor:pointer;
+}
+
+#loginMessage{
+    text-align:center;
+    margin-top:15px;
+    color:#ffcc00;
+    min-height:20px;
+}
+
+#phoneLoginSection,
+#emailLoginSection{
+    display:none;
+}
+
+#phoneLoginSection.active,
+#emailLoginSection.active{
+    display:block;
+}
+
+.hero{
+    text-align:center;
+    padding:70px 20px 50px;
+    background:radial-gradient(circle at top,#172c65,#050816 65%);
+}
+
+.hero h1{
+    font-size:42px;
+    margin-bottom:15px;
+    background:linear-gradient(90deg,#00eaff,#7c4dff,#ff4ecd);
+    -webkit-background-clip:text;
+    color:transparent;
+}
+
+.hero p{
+    color:#b9c3df;
+    font-size:17px;
+}
+
+.search{
+    margin:25px auto;
+    max-width:550px;
+}
+
+.search input{
+    width:100%;
+    padding:15px 20px;
+    border-radius:30px;
+    border:1px solid #334577;
+    outline:none;
+    background:#0b1230;
+    color:white;
+    font-size:16px;
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:30px 20px;
+}
+
+.section-title{
+    font-size:28px;
+    margin-bottom:25px;
+    color:#00eaff;
+}
+
+.courses{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:linear-gradient(145deg,#101936,#080d20);
+    border:1px solid #26345f;
+    border-radius:20px;
+    padding:25px;
+    transition:.3s;
+    position:relative;
+    overflow:hidden;
+}
+
+.card:hover{
+    transform:translateY(-7px);
+    border-color:#00eaff;
+}
+
+.card .icon{
+    font-size:42px;
+    margin-bottom:15px;
+}
+
+.card h3{
+    font-size:21px;
+    margin-bottom:10px;
+}
+
+.card p{
+    color:#9da9c9;
+    font-size:14px;
+    min-height:40px;
+}
+
+.lock{
+    display:inline-block;
+    margin-top:15px;
+    padding:7px 10px;
+    border-radius:8px;
+    background:#261c05;
+    color:#ffd000;
+    font-size:12px;
+    border:1px solid #765f00;
+}
+
+.price{
+    font-size:27px;
+    font-weight:bold;
+    color:#00ffb3;
+    margin:15px 0;
+}
+
+.unlock{
+    width:100%;
+    padding:13px;
+    border:0;
+    border-radius:12px;
+    background:linear-gradient(90deg,#00bcd4,#7c4dff);
+    color:white;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.unlock:disabled{
+    opacity:.6;
+    cursor:wait;
+}
+
+.about{
+    margin-top:60px;
+    padding:30px;
+    background:#0b1230;
+    border:1px solid #26345f;
+    border-radius:22px;
+    text-align:center;
+}
+
+.about img{
+    width:130px;
+    height:130px;
+    border-radius:50%;
+    object-fit:cover;
+    border:3px solid #00eaff;
+    margin:15px;
+}
+
+.about h2{
+    color:#00eaff;
+}
+
+.about p{
+    color:#aeb9d8;
+    margin:8px;
+}
+
+.skills{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:8px;
+    margin-top:20px;
+}
+
+.skill{
+    padding:8px 13px;
+    background:#111c40;
+    border-radius:20px;
+    color:#d9e1ff;
+    font-size:13px;
+}
+
+footer{
+    text-align:center;
+    padding:30px 20px;
+    margin-top:50px;
+    border-top:1px solid #26345f;
+    color:#8894b7;
+}
+
+footer strong{
+    color:#00eaff;
+}
+
+@media(max-width:600px){
+
+    .hero h1{
+        font-size:32px;
+    }
+
+    .container{
+        padding:25px 15px;
+    }
+
+    .login-btn{
+        padding:8px 10px;
+        font-size:13px;
+    }
+
+    .logo-box{
+        font-size:19px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div class="logo-box">
+<img src="logo.png" alt="Vishrat Logo">
+<span>Vishrat</span>
+</div>
+
+<div class="header-right">
+
+<button
+id="loginButton"
+class="login-btn"
+onclick="openLogin()">
+🔐 Login
+</button>
+
+<div
+class="menu-btn"
+onclick="openMenu()">
+☰
+</div>
+
+</div>
+
+</header>
+
+
+<!-- LOGIN -->
+
+<div id="loginBox">
+
+<div class="login-card">
+
+<h2>🔐 Vishrat Login</h2>
+
+<div id="emailLoginSection" class="active">
+
+<input
+id="loginEmail"
+class="login-input"
+type="email"
+placeholder="📧 Email"
+autocomplete="email">
+
+<input
+id="loginPassword"
+class="login-input"
+type="password"
+placeholder="🔑 Password"
+autocomplete="current-password">
+
+<button
+class="login-submit"
+onclick="loginUser()">
+📧 Email Login
+</button>
+
+<button
+class="login-switch"
+onclick="showPhoneLogin()">
+📱 Mobile Number + OTP
+</button>
+
+</div>
+
+
+<div id="phoneLoginSection">
+
+<input
+id="phoneNumber"
+class="login-input"
+type="tel"
+placeholder="📱 10 Digit Mobile Number"
+maxlength="10"
+inputmode="numeric">
+
+<div id="recaptcha-container"></div>
+
+<button
+class="otp-btn"
+onclick="sendOTP()">
+📲 Send OTP
+</button>
+
+<input
+id="otpCode"
+class="login-input"
+type="tel"
+placeholder="🔢 6 Digit OTP"
+maxlength="6"
+inputmode="numeric"
+style="display:none;margin-top:12px;">
+
+<button
+id="verifyOtpButton"
+class="otp-btn"
+onclick="verifyOTP()"
+style="display:none;">
+✅ Verify OTP
+</button>
+
+<button
+class="login-switch"
+onclick="showEmailLogin()">
+📧 Email + Password
+</button>
+
+</div>
+
+<button
+class="login-close"
+onclick="closeLogin()">
+✕ Close
+</button>
+
+<p id="loginMessage"></p>
+
+</div>
+</div>
+
+
+<!-- SIDE MENU -->
+
+<div
+class="side-menu"
+id="sideMenu">
+
+<div
+class="close-btn"
+onclick="closeMenu()">
+✕
+</div>
+
+<h2>☰ Menu</h2>
+
+<div
+id="loyalStatus"
+class="loyal-menu">
+👑 LOYAL — ALL BATCH FREE
+</div>
+
+<a href="index.html">
+🏠 Home
+</a>
+
+<a href="NCERT%20Geography/index.html">
+🌎 NCERT Geography
+<span class="paid">FREE FOR LOYAL</span>
+</a>
+
+<a href="History/index.html">
+🏛️ Indian History
+<span class="paid">FREE FOR LOYAL</span>
+</a>
+
+<a href="#"
+onclick="openBatch('indian-polity');return false;">
+⚖️ Indian Polity
+<span class="paid">FREE FOR LOYAL</span>
+</a>
+
+<a href="#"
+onclick="openBatch('indian-economy');return false;">
+💰 Indian Economy
+<span class="paid">FREE FOR LOYAL</span>
+</a>
+
+<a href="#"
+onclick="openBatch('python');return false;">
+🐍 Python Programming
+<span class="paid">FREE FOR LOYAL</span>
+</a>
+
+<a href="#"
+onclick="openBatch('java');return false;">
+☕ Java Programming
+<span class="paid">FREE FOR LOYAL</span>
+</a>
+
+<a href="#"
+onclick="openBatch('web-development');return false;">
+🌐 Web Development
+<span class="paid">FREE FOR LOYAL</span>
+</a>
+
+<a href="#"
+onclick="openBatch('android-development');return false;">
+📱 Android Development
+<span class="paid">FREE FOR LOYAL</span>
+</a>
+
+<a href="#"
+onclick="openBatch('full-programming');return false;">
+💻 Full Programming
+<span class="paid">FREE FOR LOYAL</span>
+</a>
+
+<a href="#about">
+👨‍💻 My Self
+</a>
+
+<a href="#"
+id="logoutMenu"
+onclick="logoutUser();return false;"
+style="display:none;color:#ff416c;">
+🚪 Logout
+</a>
+
+</div>
+
+
+<!-- HERO -->
+
+<section class="hero">
+
+<h1>
+आपकी तैयारी, हमारी जिम्मेदारी 🎓
+</h1>
+
+<p>
+Vishrat — Learn • Practice • Grow 🚀
+</p>
+
+<div class="search">
+
+<input
+type="text"
+id="searchInput"
+placeholder="🔍 Search Batch..."
+onkeyup="searchCourse()">
+
+</div>
+
+</section>
+
+
+<!-- COURSES -->
+
+<div class="container">
+
+<h2 class="section-title">
+🔥 Premium Batches
+</h2>
+
+<div
+class="courses"
+id="courseList">
+
+
+<!-- GEOGRAPHY -->
+
+<div
+class="card course"
+data-batch="ncert-geography">
+
+<div class="icon">🌎</div>
+
+<h3>
+NCERT Geography
+</h3>
+
+<p>
+NCERT Geography का complete lecture batch.
+</p>
+
+<span class="lock">
+🔒 LOCKED • PAID
+</span>
+
+<div class="price">
+₹49
+</div>
+
+<button
+class="unlock"
+onclick="openBatch('ncert-geography','NCERT%20Geography/index.html',this)">
+🔐 Unlock Batch
+</button>
+
+</div>
+
+
+<!-- HISTORY -->
+
+<div
+class="card course"
+data-batch="indian-history">
+
+<div class="icon">🏛️</div>
+
+<h3>
+Indian History
+</h3>
+
+<p>
+Indian History का complete preparation batch.
+</p>
+
+<span class="lock">
+🔒 LOCKED • PAID
+</span>
+
+<div class="price">
+₹49
+</div>
+
+<button
+class="unlock"
+onclick="openBatch('indian-history','History/index.html',this)">
+🔐 Unlock Batch
+</button>
+
+</div>
+
+
+<!-- POLITY -->
+
+<div
+class="card course"
+data-batch="indian-polity">
+
+<div class="icon">⚖️</div>
+
+<h3>
+Indian Polity
+</h3>
+
+<p>
+Indian Polity complete premium batch.
+</p>
+
+<span class="lock">
+🔒 LOCKED • PAID
+</span>
+
+<div class="price">
+₹49
+</div>
+
+<button
+class="unlock"
+onclick="openBatch('indian-polity',null,this)">
+🔐 Unlock Batch
+</button>
+
+</div>
+
+
+<!-- ECONOMY -->
+
+<div
+class="card course"
+data-batch="indian-economy">
+
+<div class="icon">💰</div>
+
+<h3>
+Indian Economy
+</h3>
+
+<p>
+Indian Economy complete premium batch.
+</p>
+
+<span class="lock">
+🔒 LOCKED • PAID
+</span>
+
+<div class="price">
+₹49
+</div>
+
+<button
+class="unlock"
+onclick="openBatch('indian-economy',null,this)">
+🔐 Unlock Batch
+</button>
+
+</div>
+
+
+<!-- PYTHON -->
+
+<div
+class="card course"
+data-batch="python">
+
+<div class="icon">🐍</div>
+
+<h3>
+Python Programming
+</h3>
+
+<p>
+Python programming from beginner to advanced.
+</p>
+
+<span class="lock">
+🔒 LOCKED • PAID
+</span>
+
+<div class="price">
+₹399
+</div>
+
+<button
+class="unlock"
+onclick="openBatch('python',null,this)">
+🔐 Unlock Batch
+</button>
+
+</div>
+
+
+<!-- JAVA -->
+
+<div
+class="card course"
+data-batch="java">
+
+<div class="icon">☕</div>
+
+<h3>
+Java Programming
+</h3>
+
+<p>
+Java programming complete premium course.
+</p>
+
+<span class="lock">
+🔒 LOCKED • PAID
+</span>
+
+<div class="price">
+₹499
+</div>
+
+<button
+class="unlock"
+onclick="openBatch('java',null,this)">
+🔐 Unlock Batch
+</button>
+
+</div>
+
+
+<!-- WEB -->
+
+<div
+class="card course"
+data-batch="web-development">
+
+<div class="icon">🌐</div>
+
+<h3>
+Web Development
+</h3>
+
+<p>
+HTML, CSS, JavaScript और Web Development.
+</p>
+
+<span class="lock">
+🔒 LOCKED • PAID
+</span>
+
+<div class="price">
+₹399
+</div>
+
+<button
+class="unlock"
+onclick="openBatch('web-development',null,this)">
+🔐 Unlock Batch
+</button>
+
+</div>
+
+
+<!-- ANDROID -->
+
+<div
+class="card course"
+data-batch="android-development">
+
+<div class="icon">📱</div>
+
+<h3>
+Android Development
+</h3>
+
+<p>
+Android app development complete batch.
+</p>
+
+<span class="lock">
+🔒 LOCKED • PAID
+</span>
+
+<div class="price">
+₹499
+</div>
+
+<button
+class="unlock"
+onclick="openBatch('android-development',null,this)">
+🔐 Unlock Batch
+</button>
+
+</div>
+
+
+<!-- FULL PROGRAMMING -->
+
+<div
+class="card course"
+data-batch="full-programming">
+
+<div class="icon">💻</div>
+
+<h3>
+Full Programming
+</h3>
+
+<p>
+Programming का complete premium package.
+</p>
+
+<span class="lock">
+🔒 LOCKED • PAID
+</span>
+
+<div class="price">
+₹599
+</div>
+
+<button
+class="unlock"
+onclick="openBatch('full-programming',null,this)">
+🔐 Unlock Batch
+</button>
+
+</div>
+
+</div>
+
+
+<!-- ABOUT -->
+
+<section
+class="about"
+id="about">
+
+<h2>
+👨‍💻 My Self — LOYAL
+</h2>
+
+<img
+src="loyal.png"
+alt="LOYAL Profile">
+
+<h3>
+LOYAL
+</h3>
+
+<p>
+Creator • Developer • Learner 🚀
+</p>
+
+<p>
+<strong>Name:</strong> LOYAL
+</p>
+
+<p>
+<strong>Age:</strong> 23 Years
+</p>
+
+<p>
+<strong>Birthday:</strong> 8 February 🎂
+</p>
+
+<p>
+<strong>Qualification:</strong> B.Com
+</p>
+
+<div class="skills">
+
+<span class="skill">Python</span>
+<span class="skill">Java</span>
+<span class="skill">HTML</span>
+<span class="skill">CSS</span>
+<span class="skill">JavaScript</span>
+<span class="skill">SQL</span>
+<span class="skill">Git</span>
+<span class="skill">GitHub</span>
+<span class="skill">Android</span>
+<span class="skill">Web Development</span>
+<span class="skill">Programming</span>
+<span class="skill">Software Development</span>
+
+</div>
+
+<p style="margin-top:20px;">
+“Dream big, learn every day and keep moving forward. 🚀”
+</p>
+
+</section>
+
+</div>
+
+
+<footer>
+
+<strong>
+Vishrat
+</strong>
+
+<p>
+Made with ❤️ by LOYAL
+</p>
+
+<p>
+© 2026 Vishrat • All Rights Reserved
+</p>
+
+</footer>
+
+
+<script>
+
+/* =====================================================
+   VISHRAТ BACKEND
+   ===================================================== */
+
+/*
+   ⚠️ सिर्फ इस URL को अपने Render Web Service URL से बदलना है.
+
+   Example:
+   const BACKEND_URL =
+   "https://vishrat-backend-01.onrender.com";
+*/
+
+const BACKEND_URL =
+"https://YOUR-RENDER-URL.onrender.com";
+
+
+/* =====================================================
+   BASIC MENU
+   ===================================================== */
+
+function openMenu(){
+
+    document
+    .getElementById("sideMenu")
+    .classList.add("active");
+
+}
+
+function closeMenu(){
+
+    document
+    .getElementById("sideMenu")
+    .classList.remove("active");
+
+}
+
+
+/* =====================================================
+   LOGIN BOX
+   ===================================================== */
+
+function openLogin(){
+
+    document
+    .getElementById("loginBox")
+    .style.display="flex";
+
+    document
+    .getElementById("loginMessage")
+    .innerText="";
+
+}
+
+function closeLogin(){
+
+    document
+    .getElementById("loginBox")
+    .style.display="none";
+
+}
+
+function showEmailLogin(){
+
+    document
+    .getElementById("emailLoginSection")
+    .classList.add("active");
+
+    document
+    .getElementById("phoneLoginSection")
+    .classList.remove("active");
+
+}
+
+function showPhoneLogin(){
+
+    document
+    .getElementById("emailLoginSection")
+    .classList.remove("active");
+
+    document
+    .getElementById("phoneLoginSection")
+    .classList.add("active");
+
+    setTimeout(function(){
+
+        if(window.setupRecaptcha){
+            window.setupRecaptcha();
+        }
+
+    },300);
+
+}
+
+
+/* =====================================================
+   SEARCH
+   ===================================================== */
+
+function searchCourse(){
+
+    const input =
+    document
+    .getElementById("searchInput")
+    .value
+    .toLowerCase()
+    .trim();
+
+    const courses =
+    document
+    .querySelectorAll(".course");
+
+    courses.forEach(function(card){
+
+        const text =
+        card.innerText.toLowerCase();
+
+        card.style.display =
+        text.includes(input)
+        ? "block"
+        : "none";
+
+    });
+
+}
+
+
+/* =====================================================
+   FIREBASE ACCESS CHECK
+   ===================================================== */
+
+async function checkBatchAccess(batch){
+
+    try{
+
+        if(!BACKEND_URL ||
+           BACKEND_URL.includes("YOUR-RENDER-URL")){
+
+            throw new Error(
+                "Render backend URL not configured"
+            );
+
+        }
+
+        if(!window.getCurrentFirebaseUser){
+
+            throw new Error(
+                "Firebase not ready"
+            );
+
+        }
+
+        const user =
+        window.getCurrentFirebaseUser();
+
+        if(!user){
+
+            return {
+                allowed:false,
+                reason:"login"
+            };
+
+        }
+
+        const token =
+        await user.getIdToken(true);
+
+        const response =
+        await fetch(
+            BACKEND_URL +
+            "/api/access/" +
+            encodeURIComponent(batch),
+            {
+                method:"GET",
+                headers:{
+                    "Authorization":
+                    "Bearer " + token,
+                    "Accept":
+                    "application/json"
+                },
+                cache:"no-store"
+            }
+        );
+
+        if(response.status === 401){
+
+            return {
+                allowed:false,
+                reason:"login"
+            };
+
+        }
+
+        if(response.status === 403){
+
+            return {
+                allowed:false,
+                reason:"paid"
+            };
+
+        }
+
+        if(!response.ok){
+
+            throw new Error(
+                "Backend error " +
+                response.status
+            );
+
+        }
+
+        const data =
+        await response.json();
+
+        return data;
+
+    }
+    catch(error){
+
+        console.error(
+            "ACCESS CHECK ERROR:",
+            error
+        );
+
+        return {
+            allowed:false,
+            reason:"server"
+        };
+
+    }
+
+}
+
+
+/* =====================================================
+   OPEN BATCH
+   ===================================================== */
+
+async function openBatch(
+    batch,
+    url=null,
+    button=null
+){
+
+    const user =
+    window.getCurrentFirebaseUser
+    ? window.getCurrentFirebaseUser()
+    : null;
+
+
+    if(!user){
+
+        openLogin();
+
+        document
+        .getElementById("loginMessage")
+        .innerText =
+        "🔐 पहले Login करो";
+
+        return;
+
+    }
+
+
+    if(button){
+
+        button.disabled=true;
+
+        button.innerText =
+        "⏳ Checking Access...";
+
+    }
+
+
+    const result =
+    await checkBatchAccess(batch);
+
+
+    if(button){
+
+        button.disabled=false;
+
+    }
+
+
+    /* FREE / PAID ACCESS */
+
+    if(result.allowed === true){
+
+        if(result.free === true){
+
+            window.isLoyal=true;
+
+        }
+
+
+        if(url){
+
+            window.location.href=url;
+
+            return;
+
+        }
+
+
+        alert(
+            "👑 ACCESS GRANTED\n\n" +
+            "Batch: " +
+            batch +
+            "\n\n" +
+            "✅ Access Active"
+        );
+
+        return;
+
+    }
+
+
+    /* LOGIN REQUIRED */
+
+    if(result.reason === "login"){
+
+        if(button){
+
+            button.innerText =
+            "🔐 Unlock Batch";
+
+        }
+
+        openLogin();
+
+        document
+        .getElementById("loginMessage")
+        .innerText =
+        "🔐 Login required";
+
+        return;
+
+    }
+
+
+    /* PAID / LOCKED */
+
+    if(result.reason === "paid"){
+
+        if(button){
+
+            button.innerText =
+            "🔐 Unlock Batch";
+
+        }
+
+        alert(
+            "🔒 BATCH LOCKED\n\n" +
+            "यह batch अभी आपके account में unlocked नहीं है.\n\n" +
+            "Payment के बाद access मिलेगा."
+        );
+
+        return;
+
+    }
+
+
+    /* SERVER ERROR */
+
+    if(button){
+
+        button.innerText =
+        "🔐 Unlock Batch";
+
+    }
+
+    alert(
+        "⚠️ Server से connection नहीं हो पाया.\n\n" +
+        "थोड़ी देर बाद फिर try करो."
+    );
+
+}
+
+
+/* =====================================================
+   OLD SHOW PAYMENT COMPATIBILITY
+   ===================================================== */
+
+async function showPayment(
+    batch,
+    price,
+    url=null,
+    button=null
+){
+
+    const map = {
+
+        "NCERT Geography":
+        "ncert-geography",
+
+        "Indian History":
+        "indian-history",
+
+        "Indian Polity":
+        "indian-polity",
+
+        "Indian Economy":
+        "indian-economy",
+
+        "Python Programming":
+        "python",
+
+        "Java Programming":
+        "java",
+
+        "Web Development":
+        "web-development",
+
+        "Android Development":
+        "android-development",
+
+        "Full Programming":
+        "full-programming"
+
+    };
+
+    const slug =
+    map[batch] || batch;
+
+    return openBatch(
+        slug,
+        url,
+        button
+    );
+
+}
+
+
+/* =====================================================
+   BATCH UI
+   ===================================================== */
+
+function updateBatchUI(isLoyal){
+
+    const cards =
+    document
+    .querySelectorAll(".course");
+
+
+    cards.forEach(function(card){
+
+        const lock =
+        card.querySelector(".lock");
+
+        const price =
+        card.querySelector(".price");
+
+        const button =
+        card.querySelector(".unlock");
+
+
+        if(isLoyal){
+
+            if(lock){
+
+                lock.innerText =
+                "👑 LOYAL • FREE";
+
+            }
+
+            if(price){
+
+                price.innerText =
+                "FREE";
+
+            }
+
+            if(button){
+
+                button.innerText =
+                "👑 Open Free Batch";
+
+            }
+
+        }
+        else{
+
+            if(lock){
+
+                lock.innerText =
+                "🔒 LOCKED • PAID";
+
+            }
+
+            if(price){
+
+                if(
+                    card.dataset.batch ===
+                    "ncert-geography" ||
+                    card.dataset.batch ===
+                    "indian-history" ||
+                    card.dataset.batch ===
+                    "indian-polity" ||
+                    card.dataset.batch ===
+                    "indian-economy"
+                ){
+
+                    const originalPrices = {
+
+                        "ncert-geography":"₹49",
+                        "indian-history":"₹49",
+                        "indian-polity":"₹49",
+                        "indian-economy":"₹49",
+                        "python":"₹399",
+                        "java":"₹499",
+                        "web-development":"₹399",
+                        "android-development":"₹499",
+                        "full-programming":"₹599"
+
+                    };
+
+                    price.innerText =
+                    originalPrices[
+                        card.dataset.batch
+                    ] || price.innerText;
+
+                }
+
+            }
+
+            if(button){
+
+                button.innerText =
+                "🔐 Unlock Batch";
+
+            }
+
+        }
+
+    });
+
+}
+
+
+/* =====================================================
+   LOYAL UI
+   ===================================================== */
+
+function setLoyalUI(isLoyal){
+
+    window.isLoyal =
+    isLoyal === true;
+
+
+    const status =
+    document
+    .getElementById("loyalStatus");
+
+    const loginButton =
+    document
+    .getElementById("loginButton");
+
+    if(isLoyal){
+
+        if(status){
+
+            status.style.display =
+            "block";
+
+        }
+
+        if(loginButton){
+
+            loginButton.innerText =
+            "👑 LOYAL";
+
+        }
+
+        updateBatchUI(true);
+
+    }
+    else{
+
+        if(status){
+
+            status.style.display =
+            "none";
+
+        }
+
+        if(loginButton){
+
+            loginButton.innerText =
+            "🔐 Login";
+
+        }
+
+        updateBatchUI(false);
+
+    }
+
+}
+
+
+/* =====================================================
+   LOGOUT UI
+   ===================================================== */
+
+function setLoggedOutUI(){
+
+    const loginButton =
+    document
+    .getElementById("loginButton");
+
+    const logoutMenu =
+    document
+    .getElementById("logoutMenu");
+
+    if(loginButton){
+
+        loginButton.innerText =
+        "🔐 Login";
+
+    }
+
+    if(logoutMenu){
+
+        logoutMenu.style.display =
+        "none";
+
+    }
+
+    setLoyalUI(false);
+
+}
+
+
+/* =====================================================
+   FIREBASE
+   ===================================================== */
+
+</script>
+
+
+<script type="module">
+
+import {
+    initializeApp
+}
+from
+"https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+
+import {
+    getAuth,
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged,
+    RecaptchaVerifier,
+    signInWithPhoneNumber
+}
+from
+"https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+
+/* =====================================================
+   FIREBASE CONFIG
+   ===================================================== */
+
+const firebaseConfig = {
+
+    apiKey:
+    "AIzaSyCrZcJhGbghhRia-CA5AwjnnEpq0A6Asr0",
+
+    authDomain:
+    "vishrat-36bc6.firebaseapp.com",
+
+    projectId:
+    "vishrat-36bc6",
+
+    storageBucket:
+    "vishrat-36bc6.firebasestorage.app",
+
+    messagingSenderId:
+    "713177652515",
+
+    appId:
+    "1:713177652515:web:9a6c545278563e77640096",
+
+    measurementId:
+    "G-LN2N5Z0BBF"
+
+};
+
+
+const app =
+initializeApp(firebaseConfig);
+
+const auth =
+getAuth(app);
+
+
+let confirmationResult =
+null;
+
+let recaptchaVerifier =
+null;
+
+
+/* =====================================================
+   CURRENT USER
+   ===================================================== */
+
+window.getCurrentFirebaseUser =
+function(){
+
+    return auth.currentUser;
+
+};
+
+
+/* =====================================================
+   CAPTCHA
+   ===================================================== */
+
+window.setupRecaptcha =
+function(){
+
+    if(recaptchaVerifier){
+
+        return;
+
+    }
+
+    recaptchaVerifier =
+    new RecaptchaVerifier(
+        auth,
+        "recaptcha-container",
+        {
+            size:"normal"
+        }
+    );
+
+};
+
+
+/* =====================================================
+   EMAIL LOGIN
+   ===================================================== */
+
+window.loginUser =
+async function(){
+
+    const email =
+    document
+    .getElementById("loginEmail")
+    .value
+    .trim()
+    .toLowerCase();
+
+    const password =
+    document
+    .getElementById("loginPassword")
+    .value;
+
+    const message =
+    document
+    .getElementById("loginMessage");
+
+
+    if(!email || !password){
+
+        message.innerText =
+        "⚠️ Email और Password डालो";
+
+        return;
+
+    }
+
+
+    message.innerText =
+    "⏳ Login हो रहा है...";
+
+
+    try{
+
+        await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+        );
+
+
+        message.innerText =
+        "⏳ Account access verify हो रहा है...";
+
+
+        const user =
+        auth.currentUser;
+
+
+        if(!user){
+
+            throw new Error(
+                "User not found"
+            );
+
+        }
+
+
+        /*
+          LOYAL status frontend पर
+          सिर्फ backend से confirm होगा.
+        */
+
+        const token =
+        await user.getIdToken(true);
+
+
+        if(
+            BACKEND_URL &&
+            !BACKEND_URL.includes(
+                "YOUR-RENDER-URL"
+            )
+        ){
+
+            try{
+
+                const response =
+                await fetch(
+                    BACKEND_URL +
+                    "/api/access/loyal",
+                    {
+                        headers:{
+                            "Authorization":
+                            "Bearer " + token
+                        },
+                        cache:"no-store"
+                    }
+                );
+
+
+                /*
+                  Backend loyal route अलग से
+                  नहीं होने पर नीचे email fallback
+                  सिर्फ UI के लिए है.
+                */
+
+                if(response.ok){
+
+                    const data =
+                    await response.json();
+
+                    if(data.free === true){
+
+                        setLoyalUI(true);
+
+                    }
+                    else{
+
+                        setLoyalUI(false);
+
+                    }
+
+                }
+                else{
+
+                    /*
+                      Backend का actual batch check
+                      openBatch() में होगा.
+                    */
+
+                    setLoyalUI(
+                        email ===
+                        "kgsias01@gmail.com"
+                    );
+
+                }
+
+            }
+            catch(error){
+
+                console.error(
+                    "LOYAL STATUS:",
+                    error
+                );
+
+                setLoyalUI(
+                    email ===
+                    "kgsias01@gmail.com"
+                );
+
+            }
+
+        }
+        else{
+
+            setLoyalUI(
+                email ===
+                "kgsias01@gmail.com"
+            );
+
+        }
+
+
+        const loginButton =
+        document
+        .getElementById("loginButton");
+
+        const logoutMenu =
+        document
+        .getElementById("logoutMenu");
+
+
+        if(logoutMenu){
+
+            logoutMenu.style.display =
+            "block";
+
+        }
+
+
+        if(loginButton){
+
+            if(window.isLoyal){
+
+                loginButton.innerText =
+                "👑 LOYAL";
+
+            }
+            else{
+
+                loginButton.innerText =
+                "✅ Logged In";
+
+            }
+
+        }
+
+
+        message.innerText =
+        window.isLoyal
+        ? "👑 LOYAL LOGIN सफल — ALL BATCH FREE ✅"
+        : "✅ Login सफल हुआ 🎉";
+
+
+        setTimeout(function(){
+
+            closeLogin();
+
+        },1000);
+
+
+    }
+    catch(error){
+
+        console.error(
+            "LOGIN ERROR:",
+            error
+        );
+
+        window.isLoyal=false;
+
+        updateBatchUI(false);
+
+        message.innerText =
+        "❌ Login failed — Email/Password check करो";
+
+    }
+
+};
+
+
+/* =====================================================
+   SEND OTP
+   ===================================================== */
+
+window.sendOTP =
+async function(){
+
+    const phone =
+    document
+    .getElementById("phoneNumber")
+    .value
+    .trim();
+
+    const message =
+    document
+    .getElementById("loginMessage");
+
+
+    if(!/^[0-9]{10}$/.test(phone)){
+
+        message.innerText =
+        "⚠️ 10 digit mobile number डालो";
+
+        return;
+
+    }
+
+
+    try{
+
+        if(!recaptchaVerifier){
+
+            window.setupRecaptcha();
+
+        }
+
+
+        message.innerText =
+        "⏳ OTP भेजा जा रहा है...";
+
+
+        confirmationResult =
+        await signInWithPhoneNumber(
+            auth,
+            "+91" + phone,
+            recaptchaVerifier
+        );
+
+
+        document
+        .getElementById("otpCode")
+        .style.display="block";
+
+
+        document
+        .getElementById("verifyOtpButton")
+        .style.display="block";
+
+
+        message.innerText =
+        "✅ OTP भेज दिया गया";
+
+    }
+    catch(error){
+
+        console.error(
+            "OTP ERROR:",
+            error
+        );
+
+        message.innerText =
+        "❌ OTP error — number/reCAPTCHA check करो";
+
+
+        if(recaptchaVerifier){
+
+            recaptchaVerifier.clear();
+
+            recaptchaVerifier=null;
+
+        }
+
+    }
+
+};
+
+
+/* =====================================================
+   VERIFY OTP
+   ===================================================== */
+
+window.verifyOTP =
+async function(){
+
+    const otp =
+    document
+    .getElementById("otpCode")
+    .value
+    .trim();
+
+    const message =
+    document
+    .getElementById("loginMessage");
+
+
+    if(!confirmationResult){
+
+        message.innerText =
+        "⚠️ पहले OTP भेजो";
+
+        return;
+
+    }
+
+
+    if(!/^[0-9]{6}$/.test(otp)){
+
+        message.innerText =
+        "⚠️ 6 digit OTP डालो";
+
+        return;
+
+    }
+
+
+    try{
+
+        await confirmationResult.confirm(
+            otp
+        );
+
+
+        const user =
+        auth.currentUser;
+
+
+        const logoutMenu =
+        document
+        .getElementById("logoutMenu");
+
+
+        if(logoutMenu){
+
+            logoutMenu.style.display =
+            "block";
+
+        }
+
+
+        /*
+          Phone user को LOYAL नहीं बनाया जाता.
+          Batch access backend UID से check होगा.
+        */
+
+        setLoyalUI(false);
+
+
+        document
+        .getElementById("loginButton")
+        .innerText =
+        "✅ Logged In";
+
+
+        message.innerText =
+        "✅ Mobile Login सफल 🎉";
+
+
+        setTimeout(function(){
+
+            closeLogin();
+
+        },1000);
+
+
+    }
+    catch(error){
+
+        console.error(
+            "VERIFY OTP ERROR:",
+            error
+        );
+
+        message.innerText =
+        "❌ गलत OTP";
+
+    }
+
+};
+
+
+/* =====================================================
+   AUTH STATE
+   ===================================================== */
+
+onAuthStateChanged(
+    auth,
+    async(user)=>{
+
+        if(!user){
+
+            window.isLoyal=false;
+
+            setLoggedOutUI();
+
+            return;
+
+        }
+
+
+        const logoutMenu =
+        document
+        .getElementById("logoutMenu");
+
+
+        if(logoutMenu){
+
+            logoutMenu.style.display =
+            "block";
+
+        }
+
+
+        /*
+          UI indication only.
+          Actual premium authorization backend करेगा.
+        */
+
+        if(
+            user.email ===
+            "kgsias01@gmail.com"
+        ){
+
+            setLoyalUI(true);
+
+        }
+        else{
+
+            setLoyalUI(false);
+
+            const loginButton =
+            document
+            .getElementById("loginButton");
+
+            if(loginButton){
+
+                loginButton.innerText =
+                "✅ Logged In";
+
+            }
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   LOGOUT
+   ===================================================== */
+
+window.logoutUser =
+async function(){
+
+    try{
+
+        await signOut(auth);
+
+        window.isLoyal=false;
+
+        alert(
+            "✅ Logout हो गया"
+        );
+
+        location.reload();
+
+    }
+    catch(error){
+
+        console.error(
+            "LOGOUT ERROR:",
+            error
+        );
+
+    }
+
+};
+
+</script>
+
+</body>
+</html>
