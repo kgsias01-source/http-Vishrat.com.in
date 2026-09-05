@@ -3,108 +3,568 @@ const admin = require("firebase-admin");
 
 const app = express();
 
-app.use(express.json());
+const PORT = Number(process.env.PORT) || 10000;
 
-const PORT = process.env.PORT || 10000;
+// ===============================
+// SERVER SECURITY
+// ===============================
 
-// Firebase Admin
+app.disable("x-powered-by");
+app.set("trust proxy", 1);
+
+// Request body limits
+app.use(express.json({ limit: "100kb" }));
+app.use(express.urlencoded({
+  extended: false,
+  limit: "50kb"
+}));
+
+// Security headers
+app.use((req, res, next) => {
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "SAMEORIGIN");
+  res.setHeader(
+    "Referrer-Policy",
+    "strict-origin-when-cross-origin"
+  );
+
+  next();
+});
+
+
+// ===============================
+// RATE LIMITER
+// ===============================
+
+const rateMap = new Map();
+
+const RATE_WINDOW = 60 * 1000; // 1 minute
+const RATE_LIMIT = 120;
+const MAX_IPS = 10000;
+
+function rateLimit(req, res, next) {
+
+  const now = Date.now();
+
+  const ip =
+    String(
+      req.ip ||
+      req.socket.remoteAddress ||
+      "unknown"
+    );
+
+  const record = rateMap.get(ip);
+
+  // New IP
+  if (
+    !record ||
+    now - record.start >= RATE_WINDOW
+  ) {
+
+    if (rateMap.size >= MAX_IPS) {
+
+      for (const [key, value] of rateMap) {
+
+        if (
+          now - value.start >= RATE_WINDOW
+        ) {
+          rateMap.delete(key);
+        }
+
+        if (rateMap.size < MAX_IPS) {
+          break;
+        }
+      }
+    }
+
+    rateMap.set(ip, {
+      start: now,
+      count: 1
+    });
+
+    return next();
+  }
+
+  record.count++;
+
+  if (record.count > RATE_LIMIT) {
+
+    const retryAfter =
+      Math.max(
+        1,
+        Math.ceil(
+          (
+            RATE_WINDOW -
+            (now - record.start)
+          ) / 1000
+        )
+      );
+
+    res.setHeader(
+      "Retry-After",
+      String(retryAfter)
+    );
+
+    return res.status(429).json({
+      error:
+        "Too many requests. Please try again shortly."
+    });
+  }
+
+  next();
+}
+
+app.use(rateLimit);
+
+
+// ===============================
+// REQUEST TIMEOUT
+// ===============================
+
+app.use((req, res, next) => {
+
+  req.setTimeout(30000);
+  res.setTimeout(30000);
+
+  next();
+});
+
+
+// ===============================
+// FIREBASE ADMIN
+// ===============================
+
 if (!admin.apps.length) {
-  const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+
+  if (!process.env.FIREBASE_SERVICE_ACCOUNT) {
+
+    throw new Error(
+      "FIREBASE_SERVICE_ACCOUNT is not configured"
+    );
+  }
+
+  const serviceAccount =
+    JSON.parse(
+      process.env.FIREBASE_SERVICE_ACCOUNT
+    );
 
   admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
+
+    credential:
+      admin.credential.cert(
+        serviceAccount
+      )
   });
 }
 
 const db = admin.firestore();
 
-// Test route
-app.get("/", (req, res) => {
-  res.json({
+
+// ===============================
+// HEALTH CHECK
+// ===============================
+
+app.get("/health", (req, res) => {
+
+  res.status(200).json({
+
     status: "ok",
-    message: "Vishrat Secure Backend is running"
+
+    service:
+      "vishrat-secure-backend"
+
   });
+
 });
 
-// Firebase login token verify
-async function verifyUser(req, res, next) {
-  try {
-    const authHeader = req.headers.authorization;
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+// ===============================
+// HOME
+// ===============================
+
+app.get("/", (req, res) => {
+
+  res.status(200).json({
+
+    status: "ok",
+
+    message:
+      "Vishrat Secure Backend is running"
+
+  });
+
+});
+
+
+// ===============================
+// FIREBASE AUTH VERIFY
+// ===============================
+
+async function verifyUser(
+  req,
+  res,
+  next
+) {
+
+  try {
+
+    const authHeader =
+      req.headers.authorization;
+
+    if (
+      !authHeader ||
+      !authHeader.startsWith(
+        "Bearer "
+      )
+    ) {
+
       return res.status(401).json({
-        error: "Login required"
+
+        error:
+          "Login required"
+
       });
     }
 
-    const idToken = authHeader.split("Bearer ")[1];
+    // "Bearer " ke baad token
+    const idToken =
+      authHeader
+        .slice(7)
+        .trim();
 
-    const decodedToken = await admin.auth().verifyIdToken(idToken);
+    if (
+      !idToken ||
+      idToken.length > 10000
+    ) {
 
-    req.user = decodedToken;
+      return res.status(401).json({
+
+        error:
+          "Invalid login token"
+
+      });
+    }
+
+    const decodedToken =
+      await admin
+        .auth()
+        .verifyIdToken(
+          idToken
+        );
+
+    req.user =
+      decodedToken;
 
     next();
+
   } catch (error) {
+
+    console.error(
+      "AUTH ERROR:",
+      error.message
+    );
+
     return res.status(401).json({
-      error: "Invalid or expired login"
+
+      error:
+        "Invalid or expired login"
+
     });
   }
 }
 
-// Check batch access
-app.get("/api/access/:batch", verifyUser, async (req, res) => {
-  try {
-    const batch = req.params.batch;
-    const uid = req.user.uid;
 
-    const userDoc = await db.collection("users").doc(uid).get();
+// ===============================
+// BATCH ACCESS
+// ===============================
 
-    if (!userDoc.exists) {
-      return res.json({
-        allowed: false
-      });
-    }
+app.get(
+  "/api/access/:batch",
+  verifyUser,
+  async (req, res) => {
 
-    const data = userDoc.data();
+    try {
 
-    // LOYAL FREE ACCESS
-    if (
-      req.user.email === "kgsias01@gmail.com" &&
-      data.freeAccess === true
-    ) {
-      return res.json({
-        allowed: true,
-        free: true,
+      const batch =
+        String(
+          req.params.batch || ""
+        ).trim();
+
+      // Invalid batch protection
+      if (
+        !batch ||
+        batch.length > 100
+      ) {
+
+        return res.status(400).json({
+
+          error:
+            "Invalid batch"
+
+        });
+      }
+
+      const uid =
+        req.user.uid;
+
+      const userDoc =
+        await db
+          .collection("users")
+          .doc(uid)
+          .get();
+
+
+      // User doesn't exist
+      if (!userDoc.exists) {
+
+        return res.status(403).json({
+
+          allowed: false,
+
+          batch: batch
+
+        });
+      }
+
+
+      const data =
+        userDoc.data() || {};
+
+
+      // =========================
+      // 👑 LOYAL FREE ACCESS
+      // =========================
+
+      if (
+
+        req.user.email ===
+          "kgsias01@gmail.com"
+
+        &&
+
+        data.freeAccess === true
+
+      ) {
+
+        return res.status(200).json({
+
+          allowed: true,
+
+          free: true,
+
+          batch: batch
+
+        });
+      }
+
+
+      // =========================
+      // PAID / PURCHASED BATCH
+      // =========================
+
+      if (
+
+        data.batches &&
+
+        data.batches[batch] === true
+
+      ) {
+
+        return res.status(200).json({
+
+          allowed: true,
+
+          free: false,
+
+          batch: batch
+
+        });
+      }
+
+
+      // =========================
+      // ACCESS DENIED
+      // =========================
+
+      return res.status(403).json({
+
+        allowed: false,
+
         batch: batch
+
+      });
+
+    } catch (error) {
+
+      console.error(
+        "ACCESS ERROR:",
+        error.message
+      );
+
+      return res.status(500).json({
+
+        error:
+          "Server temporarily unavailable"
+
       });
     }
+  }
+);
 
-    // Purchased batch access
-    if (
-      data.batches &&
-      data.batches[batch] === true
-    ) {
-      return res.json({
-        allowed: true,
-        free: false,
-        batch: batch
-      });
-    }
 
-    return res.json({
-      allowed: false,
-      batch: batch
-    });
+// ===============================
+// UNKNOWN API ROUTE
+// ===============================
 
-  } catch (error) {
-    console.error(error);
+app.use(
+  "/api",
+  (req, res) => {
 
-    return res.status(500).json({
-      error: "Server error"
+    res.status(404).json({
+
+      error:
+        "API route not found"
+
     });
   }
-});
+);
 
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Vishrat backend running on port ${PORT}`);
-});
+
+// ===============================
+// GLOBAL ERROR HANDLER
+// ===============================
+
+app.use(
+  (err, req, res, next) => {
+
+    console.error(
+      "SERVER ERROR:",
+      err.message
+    );
+
+    if (res.headersSent) {
+
+      return next(err);
+
+    }
+
+
+    // Huge request
+    if (
+      err.type ===
+      "entity.too.large"
+    ) {
+
+      return res.status(413).json({
+
+        error:
+          "Request too large"
+
+      });
+    }
+
+
+    return res.status(500).json({
+
+      error:
+        "Server error"
+
+    });
+  }
+);
+
+
+// ===============================
+// START SERVER
+// ===============================
+
+const server =
+  app.listen(
+    PORT,
+    "0.0.0.0",
+    () => {
+
+      console.log(
+        `Vishrat backend running on port ${PORT}`
+      );
+
+    }
+  );
+
+
+// ===============================
+// CONNECTION SETTINGS
+// ===============================
+
+server.keepAliveTimeout =
+  65000;
+
+server.headersTimeout =
+  66000;
+
+server.requestTimeout =
+  30000;
+
+
+// ===============================
+// GRACEFUL SHUTDOWN
+// ===============================
+
+function shutdown(signal) {
+
+  console.log(
+    `${signal} received. Shutting down safely...`
+  );
+
+  server.close(() => {
+
+    console.log(
+      "HTTP server closed."
+    );
+
+    process.exit(0);
+
+  });
+
+
+  // Force exit if something gets stuck
+  setTimeout(() => {
+
+    console.error(
+      "Shutdown timeout."
+    );
+
+    process.exit(1);
+
+  }, 10000).unref();
+
+}
+
+
+process.on(
+  "SIGTERM",
+  () => shutdown("SIGTERM")
+);
+
+process.on(
+  "SIGINT",
+  () => shutdown("SIGINT")
+);
+
+
+// ===============================
+// PREVENT UNHANDLED PROMISE
+// CRASHES
+// ===============================
+
+process.on(
+  "unhandledRejection",
+  (reason) => {
+
+    console.error(
+      "UNHANDLED REJECTION:",
+      reason
+    );
+
+  }
+);
