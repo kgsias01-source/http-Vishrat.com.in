@@ -1,8 +1,8 @@
 const express = require("express");
+const fs = require("fs");
 const admin = require("firebase-admin");
 
 const app = express();
-
 const PORT = Number(process.env.PORT) || 10000;
 
 // ===============================
@@ -12,14 +12,9 @@ const PORT = Number(process.env.PORT) || 10000;
 app.disable("x-powered-by");
 app.set("trust proxy", 1);
 
-// Request body limits
 app.use(express.json({ limit: "100kb" }));
-app.use(express.urlencoded({
-  extended: false,
-  limit: "50kb"
-}));
+app.use(express.urlencoded({ extended: false, limit: "50kb" }));
 
-// Security headers
 app.use((req, res, next) => {
   res.setHeader("X-Content-Type-Options", "nosniff");
   res.setHeader("X-Frame-Options", "SAMEORIGIN");
@@ -27,10 +22,8 @@ app.use((req, res, next) => {
     "Referrer-Policy",
     "strict-origin-when-cross-origin"
   );
-
   next();
 });
-
 
 // ===============================
 // RATE LIMITER
@@ -38,36 +31,25 @@ app.use((req, res, next) => {
 
 const rateMap = new Map();
 
-const RATE_WINDOW = 60 * 1000; // 1 minute
+const RATE_WINDOW = 60 * 1000;
 const RATE_LIMIT = 120;
 const MAX_IPS = 10000;
 
 function rateLimit(req, res, next) {
-
   const now = Date.now();
 
-  const ip =
-    String(
-      req.ip ||
-      req.socket.remoteAddress ||
-      "unknown"
-    );
+  const ip = String(
+    req.ip ||
+    req.socket.remoteAddress ||
+    "unknown"
+  );
 
   const record = rateMap.get(ip);
 
-  // New IP
-  if (
-    !record ||
-    now - record.start >= RATE_WINDOW
-  ) {
-
+  if (!record || now - record.start >= RATE_WINDOW) {
     if (rateMap.size >= MAX_IPS) {
-
       for (const [key, value] of rateMap) {
-
-        if (
-          now - value.start >= RATE_WINDOW
-        ) {
+        if (now - value.start >= RATE_WINDOW) {
           rateMap.delete(key);
         }
 
@@ -88,17 +70,12 @@ function rateLimit(req, res, next) {
   record.count++;
 
   if (record.count > RATE_LIMIT) {
-
-    const retryAfter =
-      Math.max(
-        1,
-        Math.ceil(
-          (
-            RATE_WINDOW -
-            (now - record.start)
-          ) / 1000
-        )
-      );
+    const retryAfter = Math.max(
+      1,
+      Math.ceil(
+        (RATE_WINDOW - (now - record.start)) / 1000
+      )
+    );
 
     res.setHeader(
       "Retry-After",
@@ -106,8 +83,7 @@ function rateLimit(req, res, next) {
     );
 
     return res.status(429).json({
-      error:
-        "Too many requests. Please try again shortly."
+      error: "Too many requests. Please try again shortly."
     });
   }
 
@@ -116,163 +92,130 @@ function rateLimit(req, res, next) {
 
 app.use(rateLimit);
 
-
 // ===============================
 // REQUEST TIMEOUT
 // ===============================
 
 app.use((req, res, next) => {
-
   req.setTimeout(30000);
   res.setTimeout(30000);
-
   next();
 });
-
 
 // ===============================
 // FIREBASE ADMIN
 // ===============================
 
 if (!admin.apps.length) {
+  let serviceAccount;
 
-  if (!process.env.FIREBASE_SERVICE_ACCOUNT) {
+  try {
+    // Render Environment Variable
+    if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+      serviceAccount = JSON.parse(
+        process.env.FIREBASE_SERVICE_ACCOUNT
+      );
+    } else {
+      // Render Secret File
+      const secretFile =
+        "/etc/secrets/firebase-service-account.json";
 
-    throw new Error(
-      "FIREBASE_SERVICE_ACCOUNT is not configured"
+      if (!fs.existsSync(secretFile)) {
+        throw new Error(
+          `Firebase secret file not found: ${secretFile}`
+        );
+      }
+
+      serviceAccount = JSON.parse(
+        fs.readFileSync(secretFile, "utf8")
+      );
+    }
+
+    admin.initializeApp({
+      credential: admin.credential.cert(serviceAccount)
+    });
+
+    console.log("Firebase Admin initialized successfully.");
+  } catch (error) {
+    console.error(
+      "FIREBASE INIT ERROR:",
+      error.message
     );
+
+    throw error;
   }
-
-  const serviceAccount =
-    JSON.parse(
-      process.env.FIREBASE_SERVICE_ACCOUNT
-    );
-
-  admin.initializeApp({
-
-    credential:
-      admin.credential.cert(
-        serviceAccount
-      )
-  });
 }
 
 const db = admin.firestore();
-
 
 // ===============================
 // HEALTH CHECK
 // ===============================
 
 app.get("/health", (req, res) => {
-
   res.status(200).json({
-
     status: "ok",
-
-    service:
-      "vishrat-secure-backend"
-
+    service: "vishrat-secure-backend"
   });
-
 });
-
 
 // ===============================
 // HOME
 // ===============================
 
 app.get("/", (req, res) => {
-
   res.status(200).json({
-
     status: "ok",
-
-    message:
-      "Vishrat Secure Backend is running"
-
+    message: "Vishrat Secure Backend is running"
   });
-
 });
-
 
 // ===============================
 // FIREBASE AUTH VERIFY
 // ===============================
 
-async function verifyUser(
-  req,
-  res,
-  next
-) {
-
+async function verifyUser(req, res, next) {
   try {
-
     const authHeader =
       req.headers.authorization;
 
     if (
       !authHeader ||
-      !authHeader.startsWith(
-        "Bearer "
-      )
+      !authHeader.startsWith("Bearer ")
     ) {
-
       return res.status(401).json({
-
-        error:
-          "Login required"
-
+        error: "Login required"
       });
     }
 
-    // "Bearer " ke baad token
     const idToken =
-      authHeader
-        .slice(7)
-        .trim();
+      authHeader.slice(7).trim();
 
     if (
       !idToken ||
       idToken.length > 10000
     ) {
-
       return res.status(401).json({
-
-        error:
-          "Invalid login token"
-
+        error: "Invalid login token"
       });
     }
 
-    const decodedToken =
-      await admin
-        .auth()
-        .verifyIdToken(
-          idToken
-        );
-
     req.user =
-      decodedToken;
+      await admin.auth().verifyIdToken(idToken);
 
     next();
 
   } catch (error) {
-
     console.error(
       "AUTH ERROR:",
       error.message
     );
 
     return res.status(401).json({
-
-      error:
-        "Invalid or expired login"
-
+      error: "Invalid or expired login"
     });
   }
 }
-
 
 // ===============================
 // BATCH ACCESS
@@ -284,28 +227,55 @@ app.get(
   async (req, res) => {
 
     try {
-
       const batch =
-        String(
-          req.params.batch || ""
-        ).trim();
+        String(req.params.batch || "").trim();
 
-      // Invalid batch protection
       if (
         !batch ||
         batch.length > 100
       ) {
-
         return res.status(400).json({
-
-          error:
-            "Invalid batch"
-
+          error: "Invalid batch"
         });
       }
 
-      const uid =
-        req.user.uid;
+      // ===============================
+      // 👑 LOYAL ACCOUNT
+      // ===============================
+
+      if (
+        req.user.email ===
+        "kgsias01@gmail.com"
+      ) {
+
+        const loyalDoc =
+          await db
+            .collection("users")
+            .doc("Loyal")
+            .get();
+
+        const loyalData =
+          loyalDoc.exists
+            ? loyalDoc.data() || {}
+            : {};
+
+        if (
+          loyalData.freeAccess === true
+        ) {
+
+          return res.status(200).json({
+            allowed: true,
+            free: true,
+            batch: batch
+          });
+        }
+      }
+
+      // ===============================
+      // NORMAL USER
+      // ===============================
+
+      const uid = req.user.uid;
 
       const userDoc =
         await db
@@ -313,85 +283,31 @@ app.get(
           .doc(uid)
           .get();
 
-
-      // User doesn't exist
       if (!userDoc.exists) {
-
         return res.status(403).json({
-
           allowed: false,
-
           batch: batch
-
         });
       }
-
 
       const data =
         userDoc.data() || {};
 
-
-      // =========================
-      // 👑 LOYAL FREE ACCESS
-      // =========================
-
       if (
-
-        req.user.email ===
-          "kgsias01@gmail.com"
-
-        &&
-
-        data.freeAccess === true
-
-      ) {
-
-        return res.status(200).json({
-
-          allowed: true,
-
-          free: true,
-
-          batch: batch
-
-        });
-      }
-
-
-      // =========================
-      // PAID / PURCHASED BATCH
-      // =========================
-
-      if (
-
         data.batches &&
-
         data.batches[batch] === true
-
       ) {
 
         return res.status(200).json({
-
           allowed: true,
-
           free: false,
-
           batch: batch
-
         });
       }
-
-
-      // =========================
-      // ACCESS DENIED
-      // =========================
 
       return res.status(403).json({
-
         allowed: false,
-
         batch: batch
-
       });
 
     } catch (error) {
@@ -402,77 +318,49 @@ app.get(
       );
 
       return res.status(500).json({
-
-        error:
-          "Server temporarily unavailable"
-
+        error: "Server temporarily unavailable"
       });
     }
   }
 );
-
 
 // ===============================
 // UNKNOWN API ROUTE
 // ===============================
 
-app.use(
-  "/api",
-  (req, res) => {
-
-    res.status(404).json({
-
-      error:
-        "API route not found"
-
-    });
-  }
-);
-
+app.use("/api", (req, res) => {
+  res.status(404).json({
+    error: "API route not found"
+  });
+});
 
 // ===============================
 // GLOBAL ERROR HANDLER
 // ===============================
 
-app.use(
-  (err, req, res, next) => {
+app.use((err, req, res, next) => {
 
-    console.error(
-      "SERVER ERROR:",
-      err.message
-    );
+  console.error(
+    "SERVER ERROR:",
+    err.message
+  );
 
-    if (res.headersSent) {
+  if (res.headersSent) {
+    return next(err);
+  }
 
-      return next(err);
-
-    }
-
-
-    // Huge request
-    if (
-      err.type ===
-      "entity.too.large"
-    ) {
-
-      return res.status(413).json({
-
-        error:
-          "Request too large"
-
-      });
-    }
-
-
-    return res.status(500).json({
-
-      error:
-        "Server error"
-
+  if (
+    err.type === "entity.too.large"
+  ) {
+    return res.status(413).json({
+      error: "Request too large"
     });
   }
-);
 
+  return res.status(500).json({
+    error: "Server error"
+  });
+});
 
 // ===============================
 // START SERVER
@@ -483,28 +371,15 @@ const server =
     PORT,
     "0.0.0.0",
     () => {
-
       console.log(
         `Vishrat backend running on port ${PORT}`
       );
-
     }
   );
 
-
-// ===============================
-// CONNECTION SETTINGS
-// ===============================
-
-server.keepAliveTimeout =
-  65000;
-
-server.headersTimeout =
-  66000;
-
-server.requestTimeout =
-  30000;
-
+server.keepAliveTimeout = 65000;
+server.headersTimeout = 66000;
+server.requestTimeout = 30000;
 
 // ===============================
 // GRACEFUL SHUTDOWN
@@ -523,11 +398,8 @@ function shutdown(signal) {
     );
 
     process.exit(0);
-
   });
 
-
-  // Force exit if something gets stuck
   setTimeout(() => {
 
     console.error(
@@ -537,9 +409,7 @@ function shutdown(signal) {
     process.exit(1);
 
   }, 10000).unref();
-
 }
-
 
 process.on(
   "SIGTERM",
@@ -551,20 +421,12 @@ process.on(
   () => shutdown("SIGINT")
 );
 
-
-// ===============================
-// PREVENT UNHANDLED PROMISE
-// CRASHES
-// ===============================
-
 process.on(
   "unhandledRejection",
   (reason) => {
-
     console.error(
       "UNHANDLED REJECTION:",
       reason
     );
-
   }
 );
