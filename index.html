@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vishrat - Online Learning Platform</title>
+<title>Vishrat.com.in | LOYAL</title>
 
 <style>
 *{
@@ -14,20 +14,21 @@
 
 body{
   font-family:Arial, sans-serif;
-  background:#f5f7fb;
+  background:#f4f7fb;
   color:#172033;
 }
 
 header{
-  background:white;
-  padding:14px 18px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  box-shadow:0 2px 12px rgba(0,0,0,.08);
   position:sticky;
   top:0;
   z-index:100;
+  background:rgba(255,255,255,.96);
+  backdrop-filter:blur(12px);
+  padding:13px 18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 3px 18px rgba(0,0,0,.08);
 }
 
 .logo-box{
@@ -37,14 +38,14 @@ header{
 }
 
 .logo{
-  width:45px;
-  height:45px;
+  width:44px;
+  height:44px;
   border-radius:12px;
   object-fit:cover;
 }
 
 .logo-text{
-  font-size:22px;
+  font-size:21px;
   font-weight:800;
 }
 
@@ -57,201 +58,194 @@ header{
   color:white;
   border:0;
   padding:10px 15px;
-  border-radius:9px;
-  font-size:15px;
+  border-radius:10px;
+  font-weight:bold;
 }
 
 .hero{
-  background:linear-gradient(135deg,#172554,#2563eb);
+  padding:48px 20px;
   color:white;
-  padding:38px 20px;
+  background:linear-gradient(135deg,#172554,#2563eb,#7c3aed);
 }
 
 .hero h1{
-  font-size:30px;
+  font-size:32px;
   line-height:1.2;
   margin-bottom:12px;
 }
 
 .hero p{
   font-size:16px;
-  line-height:1.6;
-  opacity:.95;
+  opacity:.92;
 }
 
 .search{
   margin-top:22px;
-  background:white;
-  border-radius:12px;
-  padding:6px;
-  display:flex;
-}
-
-.search input{
   width:100%;
+  padding:14px 16px;
   border:0;
-  outline:none;
-  padding:13px;
+  border-radius:12px;
   font-size:15px;
-}
-
-.search button{
-  background:#2563eb;
-  color:white;
-  border:0;
-  border-radius:9px;
-  padding:0 18px;
+  outline:none;
 }
 
 .container{
-  max-width:1100px;
+  max-width:1000px;
   margin:auto;
-  padding:25px 16px;
+  padding:28px 18px;
 }
 
 .section-title{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:15px;
-}
-
-.section-title h2{
-  font-size:22px;
-}
-
-.section-title a{
-  color:#2563eb;
-  text-decoration:none;
-  font-size:14px;
-  font-weight:bold;
-}
-
-.categories{
-  display:flex;
-  gap:10px;
-  overflow-x:auto;
-  padding-bottom:8px;
-}
-
-.category{
-  background:white;
-  padding:11px 17px;
-  border-radius:30px;
-  white-space:nowrap;
-  border:1px solid #e5e7eb;
-  font-size:14px;
+  font-size:24px;
+  margin-bottom:18px;
 }
 
 .courses{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
   gap:16px;
 }
 
-.card{
+.course{
   background:white;
-  border-radius:15px;
-  overflow:hidden;
-  box-shadow:0 4px 15px rgba(0,0,0,.07);
-  transition:.2s;
+  padding:22px;
+  border-radius:18px;
+  box-shadow:0 6px 22px rgba(0,0,0,.08);
+  transition:.25s;
 }
 
-.card:hover{
-  transform:translateY(-3px);
+.course:hover{
+  transform:translateY(-4px);
 }
 
-.card-top{
-  height:125px;
-  background:linear-gradient(135deg,#dbeafe,#eff6ff);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:48px;
-}
-
-.card-body{
-  padding:16px;
-}
-
-.card h3{
-  font-size:17px;
-  margin-bottom:9px;
-}
-
-.card p{
-  color:#64748b;
-  font-size:13px;
-  line-height:1.5;
-}
-
-.rating{
-  margin:12px 0;
-  font-size:13px;
-}
-
-.price{
-  font-size:20px;
-  font-weight:bold;
+.course-icon{
+  font-size:35px;
   margin-bottom:12px;
 }
 
-.btn{
-  display:block;
-  text-align:center;
-  background:#2563eb;
-  color:white;
-  padding:11px;
-  border-radius:9px;
-  text-decoration:none;
-  font-weight:bold;
+.course h3{
+  margin-bottom:8px;
 }
 
-.free{
-  background:#ecfdf5;
-  color:#047857;
-  padding:4px 8px;
-  border-radius:5px;
-  font-size:12px;
+.course p{
+  color:#64748b;
+  font-size:14px;
+  margin-bottom:16px;
+}
+
+.btn{
+  display:inline-block;
+  text-decoration:none;
+  background:#2563eb;
+  color:white;
+  padding:10px 15px;
+  border-radius:10px;
+  font-weight:bold;
+  font-size:14px;
 }
 
 .about{
-  background:white;
-  padding:22px;
-  border-radius:15px;
-  line-height:1.7;
-  margin-top:10px;
+  margin-top:35px;
+  background:linear-gradient(145deg,#ffffff,#eef4ff);
+  border-radius:22px;
+  padding:25px 20px;
+  box-shadow:0 8px 28px rgba(0,0,0,.08);
 }
 
-.about h2{
-  margin-bottom:10px;
+.about-title{
+  text-align:center;
+  font-size:28px;
+  font-weight:900;
+  color:#2563eb;
+  margin-bottom:22px;
+}
+
+.profile{
+  text-align:center;
+  margin-bottom:22px;
+}
+
+.profile h3{
+  font-size:26px;
+  margin-bottom:8px;
+}
+
+.profile p{
+  color:#64748b;
+}
+
+.info-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+
+.info{
+  background:white;
+  padding:16px;
+  border-radius:14px;
+  box-shadow:0 3px 12px rgba(0,0,0,.05);
+}
+
+.info strong{
+  display:block;
+  margin-bottom:5px;
+  color:#2563eb;
+}
+
+.skills{
+  margin-top:22px;
+}
+
+.skills h3{
+  margin-bottom:14px;
+}
+
+.skill-list{
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+}
+
+.skill{
+  background:#e8f0ff;
+  color:#1d4ed8;
+  padding:9px 12px;
+  border-radius:20px;
+  font-size:13px;
+  font-weight:bold;
+}
+
+.quote{
+  margin-top:22px;
+  padding:18px;
+  border-left:4px solid #2563eb;
+  background:white;
+  border-radius:10px;
+  color:#475569;
+  font-style:italic;
 }
 
 footer{
-  background:#111827;
-  color:white;
+  margin-top:40px;
+  padding:28px 18px;
   text-align:center;
-  padding:28px 15px;
-  margin-top:20px;
+  background:#111827;
+  color:#cbd5e1;
 }
 
-footer p{
-  color:#cbd5e1;
-  font-size:13px;
-  margin-top:8px;
+footer strong{
+  color:white;
+  font-size:20px;
 }
 
 @media(max-width:500px){
   .hero h1{
-    font-size:26px;
+    font-size:28px;
   }
 
-  .courses{
+  .info-grid{
     grid-template-columns:1fr;
-  }
-
-  .card-top{
-    height:145px;
   }
 }
 </style>
@@ -262,245 +256,166 @@ footer p{
 <header>
   <div class="logo-box">
     <img src="logo.png" class="logo" alt="Vishrat Logo">
-    <div class="logo-text">Vish<span>rat</span></div>
+    <div class="logo-text">Vishrat<span>.com.in</span></div>
   </div>
 
-  <button class="menu" onclick="alert('Menu जल्द ही उपलब्ध होगा')">
+  <button class="menu" onclick="window.scrollTo({top:0,behavior:'smooth'})">
     ☰ Menu
   </button>
 </header>
 
 <section class="hero">
   <h1>आपकी तैयारी,<br>हमारी जिम्मेदारी 🎓</h1>
+  <p>Quality Learning • Smart Preparation • Better Future</p>
 
-  <p>
-    Competitive Exams की तैयारी के लिए
-    Classes, Lectures, Notes और Test Series
-    एक ही जगह।
-  </p>
-
-  <div class="search">
-    <input id="searchBox" type="text"
-    placeholder="Search Course, Subject या Lecture...">
-
-    <button onclick="searchCourse()">🔍</button>
-  </div>
+  <input
+    class="search"
+    id="search"
+    type="text"
+    placeholder="🔎 Course search करें..."
+    onkeyup="searchCourse()"
+  >
 </section>
 
-<div class="container">
+<main class="container">
 
-  <div class="section-title">
-    <h2>Explore Courses</h2>
-  </div>
+  <h2 class="section-title">🔥 Popular Courses</h2>
 
-  <div class="categories">
-    <div class="category">📚 All Courses</div>
-    <div class="category">🌍 Geography</div>
-    <div class="category">🏛️ History</div>
-    <div class="category">⚖️ Polity</div>
-    <div class="category">💰 Economy</div>
-    <div class="category">📝 Test Series</div>
-  </div>
+  <div class="courses" id="courses">
 
-</div>
-
-<div class="container">
-
-  <div class="section-title">
-    <h2>Popular Courses 🔥</h2>
-    <a href="#">View All</a>
-  </div>
-
-  <div class="courses">
-
-    <div class="card">
-      <div class="card-top">🌍</div>
-
-      <div class="card-body">
-        <h3>NCERT Geography</h3>
-
-        <p>
-          NCERT Geography के महत्वपूर्ण
-          Lectures और Concepts.
-        </p>
-
-        <div class="rating">
-          ⭐⭐⭐⭐⭐ 4.9
-        </div>
-
-        <div class="price">
-          <span class="free">FREE</span>
-        </div>
-
-        <a class="btn" href="NCERT%20Geography/index.html">
-          View Course →
-        </a>
-      </div>
+    <div class="course" data-name="ncert geography geography">
+      <div class="course-icon">🌎</div>
+      <h3>NCERT Geography</h3>
+      <p>NCERT Geography के lectures और study material.</p>
+      <a class="btn" href="NCERT%20Geography/index.html">
+        Start Learning →
+      </a>
     </div>
 
-
-    <div class="card">
-      <div class="card-top">🏛️</div>
-
-      <div class="card-body">
-        <h3>Indian History</h3>
-
-        <p>
-          Ancient, Medieval और Modern
-          History की तैयारी.
-        </p>
-
-        <div class="rating">
-          ⭐⭐⭐⭐⭐ 4.8
-        </div>
-
-        <div class="price">
-          <span class="free">FREE</span>
-        </div>
-
-        <a class="btn" href="History/index.html">
-          View Course →
-        </a>
-      </div>
+    <div class="course" data-name="history indian history">
+      <div class="course-icon">🏛️</div>
+      <h3>Indian History</h3>
+      <p>Indian History के important lectures और topics.</p>
+      <a class="btn" href="History/index.html">
+        Start Learning →
+      </a>
     </div>
 
-
-    <div class="card">
-      <div class="card-top">⚖️</div>
-
-      <div class="card-body">
-        <h3>Indian Polity</h3>
-
-        <p>
-          Constitution और Polity के
-          महत्वपूर्ण Topics.
-        </p>
-
-        <div class="rating">
-          ⭐⭐⭐⭐⭐ 4.8
-        </div>
-
-        <div class="price">
-          <span class="free">FREE</span>
-        </div>
-
-        <a class="btn" href="#">
-          Coming Soon
-        </a>
-      </div>
+    <div class="course" data-name="polity indian polity">
+      <div class="course-icon">⚖️</div>
+      <h3>Indian Polity</h3>
+      <p>Indian Polity की structured preparation.</p>
+      <a class="btn" href="#">
+        Coming Soon
+      </a>
     </div>
 
-
-    <div class="card">
-      <div class="card-top">💰</div>
-
-      <div class="card-body">
-        <h3>Indian Economy</h3>
-
-        <p>
-          Economy के Basic से Advanced
-          Concepts.
-        </p>
-
-        <div class="rating">
-          ⭐⭐⭐⭐⭐ 4.7
-        </div>
-
-        <div class="price">
-          <span class="free">FREE</span>
-        </div>
-
-        <a class="btn" href="#">
-          Coming Soon
-        </a>
-      </div>
+    <div class="course" data-name="economy indian economy">
+      <div class="course-icon">📈</div>
+      <h3>Indian Economy</h3>
+      <p>Economy concepts को आसान तरीके से समझें.</p>
+      <a class="btn" href="#">
+        Coming Soon
+      </a>
     </div>
 
   </div>
-</div>
 
+  <!-- MY SELF LOYAL -->
 
-<div class="container">
+  <section class="about">
 
-  <div class="section-title">
-    <h2>Why Choose Vishrat? 🚀</h2>
-  </div>
+    <div class="about-title">
+      👑 My Self — LOYAL
+    </div>
 
-  <div class="about">
+    <div class="profile">
+      <h3>✨ LOYAL</h3>
+      <p>Creator • Developer • Learner</p>
+    </div>
 
-    <h2>Vishrat Learning Platform</h2>
+    <div class="info-grid">
 
-    <p>
-      Vishrat का उद्देश्य विद्यार्थियों को
-      बेहतर और सरल तरीके से Competitive Exams
-      की तैयारी करवाना है।
-    </p>
+      <div class="info">
+        <strong>👤 Name</strong>
+        LOYAL
+      </div>
 
-    <br>
+      <div class="info">
+        <strong>🎂 Age</strong>
+        23 Years
+      </div>
 
-    <p>
-      यहाँ आपको Subject-wise Classes,
-      Lectures, Study Material और आगे चलकर
-      Test Series जैसी सुविधाएँ मिलेंगी।
-    </p>
+      <div class="info">
+        <strong>🎉 Birthday</strong>
+        8 February
+      </div>
 
-  </div>
+      <div class="info">
+        <strong>🎓 Qualification</strong>
+        B.Com
+      </div>
 
-</div>
+    </div>
 
+    <div class="skills">
+      <h3>💻 My Skills</h3>
+
+      <div class="skill-list">
+        <span class="skill">🐍 Python</span>
+        <span class="skill">☕ Java</span>
+        <span class="skill">🌐 HTML</span>
+        <span class="skill">🎨 CSS</span>
+        <span class="skill">⚡ JavaScript</span>
+        <span class="skill">🗄️ SQL</span>
+        <span class="skill">🔧 Git</span>
+        <span class="skill">🐙 GitHub</span>
+        <span class="skill">📱 Android</span>
+        <span class="skill">💻 Web Development</span>
+        <span class="skill">🤖 Programming</span>
+        <span class="skill">🧩 Software Development</span>
+      </div>
+    </div>
+
+    <div class="quote">
+      “Dream big, learn every day and keep moving forward. 🚀”
+    </div>
+
+  </section>
+
+</main>
 
 <footer>
-
-  <h2>Vishrat</h2>
-
-  <p>
-    Learn • Prepare • Succeed
+  <strong>Vishrat.com.in</strong>
+  <p style="margin-top:8px;">Made with ❤️ by LOYAL</p>
+  <p style="margin-top:8px;font-size:13px;">
+    © 2026 Vishrat • All Rights Reserved
   </p>
-
-  <p>
-    © 2026 Vishrat. All Rights Reserved.
-  </p>
-
 </footer>
 
-
 <script>
-
 function searchCourse(){
 
-  let text =
-    document.getElementById("searchBox")
-    .value
-    .toLowerCase()
-    .trim();
+  const value =
+    document.getElementById("search")
+    .value.toLowerCase();
 
-  if(text === ""){
-    alert("Course या Subject का नाम लिखें");
-    return;
-  }
+  const courses =
+    document.querySelectorAll(".course");
 
-  if(text.includes("geography") ||
-     text.includes("भूगोल")){
+  courses.forEach(course => {
 
-    window.location.href =
-    "NCERT%20Geography/index.html";
+    const name =
+      course.getAttribute("data-name");
 
-  }
+    if(name.includes(value)){
+      course.style.display = "";
+    }else{
+      course.style.display = "none";
+    }
 
-  else if(text.includes("history") ||
-          text.includes("इतिहास")){
-
-    window.location.href =
-    "History/index.html";
-
-  }
-
-  else{
-    alert("यह Course अभी उपलब्ध नहीं है।");
-  }
-
+  });
 }
-
 </script>
 
 </body>
